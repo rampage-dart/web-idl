@@ -372,7 +372,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
               ref(typeWithExtendedAttributes) &
               ref(token, '>')) |
           ref(recordType)) &
-      ref(nullable).optional();
+      ref(nullable);
 
   /// A `PrimitiveType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PrimitiveType).
@@ -431,7 +431,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Null` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Null).
-  Parser nullable() => ref(token, '?');
+  Parser nullable() => ref(token, '?').optional();
 
   /// A `BufferRelatedType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BufferRelatedType).
