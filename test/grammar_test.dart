@@ -17,6 +17,29 @@ ParserTestFunction reject(Parser parser) =>
 
 void main() {
   final grammar = WebIdlGrammarDefinition();
+  group('PrimitiveType', () {
+    final parser = grammar.build(start: grammar.primitiveType).end();
+    test('accept', () {
+      expect('unrestricted float', accept(parser));
+      expect('unrestricted double', accept(parser));
+      expect('float', accept(parser));
+      expect('double', accept(parser));
+      expect('short', accept(parser));
+      expect('long', accept(parser));
+      expect('long long', accept(parser));
+      expect('unsigned short', accept(parser));
+      expect('unsigned long', accept(parser));
+      expect('unsigned long long', accept(parser));
+      expect('boolean', accept(parser));
+      expect('byte', accept(parser));
+      expect('octet', accept(parser));
+    });
+    test('reject', () {
+      expect('Foo', reject(parser));
+      expect('USVString', reject(parser));
+    });
+  });
+
   group('UnrestrictedFloatType', () {
     final parser = grammar.build(start: grammar.unrestrictedFloatType).end();
     test('accept', () {
