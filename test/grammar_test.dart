@@ -29,7 +29,6 @@ void main() {
       expect('Foo', reject(parser));
       expect('USVString', reject(parser));
     });
-
   });
   group('FloatType', () {
     final parser = grammar.build(start: grammar.floatType).end();
