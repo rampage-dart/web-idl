@@ -17,6 +17,17 @@ ParserTestFunction reject(Parser parser) =>
 
 void main() {
   final grammar = WebIdlGrammarDefinition();
+  group('FloatType', () {
+    final parser = grammar.build(start: grammar.floatType).end();
+    test('accept', () {
+      expect('float', accept(parser));
+      expect('double', accept(parser));
+    });
+    test('reject', () {
+      expect('Foo', reject(parser));
+      expect('USVString', reject(parser));
+    });
+  });
   group('StringType', () {
     final parser = grammar.build(start: grammar.stringType).end();
     test('accept', () {
