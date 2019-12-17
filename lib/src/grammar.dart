@@ -431,7 +431,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Null` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Null).
-  Parser nullable() => null;
+  Parser nullable() => ref(token, '?');
 
   /// A `BufferRelatedType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BufferRelatedType).
