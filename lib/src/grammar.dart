@@ -458,6 +458,14 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser extendedAttributeNamedArgList() => null;
 
   //------------------------------------------------------------------
+  // Lexical tokens.
+  //------------------------------------------------------------------
+
+  /// An `Identifier` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#prod-identifier).
+  Parser identifier() => pattern('a-zA-Z_').seq(word().star());
+
+  //------------------------------------------------------------------
   // Keyword definitions.
   //------------------------------------------------------------------
 
