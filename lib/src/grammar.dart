@@ -44,7 +44,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ArgumentNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentNameKeyword).
-  
+
   /// A `CallbackOrInterfaceOrMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackOrInterfaceOrMixin).
   Parser callbackOrInterfaceOrMixin() => null;
@@ -240,7 +240,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `StaticMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StaticMemberRest).
   Parser staticMemberRest() => null;
-  
+
   /// An `Iterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Iterable).
   Parser iterable() => null;
@@ -383,7 +383,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `StringType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringType).
-  Parser stringType() => null;
+  Parser stringType() =>
+      ref(token, 'ByteString') |
+      ref(token, 'DOMString') |
+      ref(token, 'USVString');
 
   /// A `PromiseType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PromiseType).
