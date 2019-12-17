@@ -355,7 +355,23 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `DistinguishableType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DistinguishableType).
-  Parser distinguishableType() => null;
+  Parser distinguishableType() =>
+      (ref(primitiveType) |
+          ref(stringType) |
+          ref(identifier) |
+          (ref(token, 'sequence') &
+              ref(token, '<') &
+              ref(token, typeWithExtendedAttributes) &
+              ref(token, '>')) |
+          ref(token, 'object') |
+          ref(token, 'symbol') |
+          ref(bufferRelatedType) |
+          (ref(token, 'FrozenArray') &
+              ref(token, '<') &
+              ref(typeWithExtendedAttributes) &
+              ref(token, '>')) |
+          ref(recordType)) &
+      ref(nullable).optional();
 
   /// A `PrimitiveType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PrimitiveType).
