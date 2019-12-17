@@ -339,7 +339,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `SingleType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SingleType).
-  Parser singleType() => null;
+  Parser singleType() =>
+      ref(distinguishableType) | ref(token, 'any') | ref(promiseType);
 
   /// An `UnionType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionType).
