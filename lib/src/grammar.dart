@@ -331,7 +331,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Type` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Type).
-  Parser type() => null;
+  Parser type() => ref(singleType) | (ref(unionType) & ref(nullable));
 
   /// A `TypeWithExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-TypeWithExtendedAttributes).
