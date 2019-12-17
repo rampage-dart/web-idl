@@ -410,7 +410,18 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `BufferRelatedType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BufferRelatedType).
-  Parser bufferRelatedType() => null;
+  Parser bufferRelatedType() =>
+      ref(token, 'ArrayBuffer') |
+      ref(token, 'DataView') |
+      ref(token, 'Int8Array') |
+      ref(token, 'Int16Array') |
+      ref(token, 'Int32Array') |
+      ref(token, 'Uint8Array') |
+      ref(token, 'Uint16Array') |
+      ref(token, 'Uint32Array') |
+      ref(token, 'Uint8ClampedArray') |
+      ref(token, 'Float32Array') |
+      ref(token, 'Float64Array');
 
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
