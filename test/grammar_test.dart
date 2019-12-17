@@ -105,4 +105,24 @@ void main() {
       expect('float', reject(parser));
     });
   });
+  group('BufferRelatedType', () {
+    final parser = grammar.build(start: grammar.bufferRelatedType).end();
+    test('accept', () {
+      expect('ArrayBuffer', accept(parser));
+      expect('DataView', accept(parser));
+      expect('Int8Array', accept(parser));
+      expect('Int16Array', accept(parser));
+      expect('Int32Array', accept(parser));
+      expect('Uint8Array', accept(parser));
+      expect('Uint16Array', accept(parser));
+      expect('Uint32Array', accept(parser));
+      expect('Uint8ClampedArray', accept(parser));
+      expect('Float32Array', accept(parser));
+      expect('Float64Array', accept(parser));
+    });
+    test('reject', () {
+      expect('Foo', reject(parser));
+      expect('float', reject(parser));
+    });
+  });
 }
