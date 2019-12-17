@@ -363,7 +363,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `UnrestrictedFloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnrestrictedFloatType).
-  Parser unrestrictedFloatType() => null;
+  Parser unrestrictedFloatType() =>
+      (ref(token, 'unrestricted') & ref(floatType)) | ref(floatType);
 
   /// A `FloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatType).
