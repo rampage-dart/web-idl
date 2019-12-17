@@ -406,7 +406,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `RecordType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RecordType).
-  Parser recordType() => null;
+  Parser recordType() =>
+      ref(token, 'record') &
+      ref(token, '<') &
+      ref(typeWithExtendedAttributes) &
+      ref(token, '>');
 
   /// A `Null` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Null).
