@@ -17,6 +17,20 @@ ParserTestFunction reject(Parser parser) =>
 
 void main() {
   final grammar = WebIdlGrammarDefinition();
+  group('UnrestrictedFloatType', () {
+    final parser = grammar.build(start: grammar.unrestrictedFloatType).end();
+    test('accept', () {
+      expect('unrestricted float', accept(parser));
+      expect('unrestricted double', accept(parser));
+      expect('float', accept(parser));
+      expect('double', accept(parser));
+    });
+    test('reject', () {
+      expect('Foo', reject(parser));
+      expect('USVString', reject(parser));
+    });
+
+  });
   group('FloatType', () {
     final parser = grammar.build(start: grammar.floatType).end();
     test('accept', () {
