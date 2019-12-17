@@ -460,7 +460,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
-  Parser extendedAttributeList() => null;
+  Parser extendedAttributeList() => (ref(token, '[') &
+          //ref(extendedAttribute) &
+          //ref(extendedAttributes) &
+          ref(token, ']'))
+      .optional();
 
   /// An `ExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributes).
