@@ -376,11 +376,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `IntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IntegerType).
-  Parser integerType() => null;
+  Parser integerType() =>
+      ref(token, 'short') | (ref(token, 'long') & ref(optionalLong).optional());
 
   /// A `OptionalLong` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalLong).
-  Parser optionalLong() => null;
+  Parser optionalLong() => ref(token, 'long');
 
   /// A `StringType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringType).
