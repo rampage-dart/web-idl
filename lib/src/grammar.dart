@@ -367,7 +367,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `FloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatType).
-  Parser floatType() => null;
+  Parser floatType() => ref(token, 'float') | ref(token, 'double');
 
   /// An `UnsignedIntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnsignedIntegerType).
