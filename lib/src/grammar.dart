@@ -19,6 +19,19 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   @override
   Parser start() => ref(definitions).end();
 
+  /// Parses the [input] token.
+  Parser token(Object input) {
+    if (input is Parser) {
+      return input.token().trim(ref(whitespace));
+    } else if (input is String) {
+      return token(input.length == 1 ? char(input) : string(input));
+    } else if (input is Function) {
+      return token(ref(input));
+    }
+
+    throw ArgumentError.value(input, 'invalid token parser');
+  }
+
   /// The `Definitions` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Definitions).
   ///
