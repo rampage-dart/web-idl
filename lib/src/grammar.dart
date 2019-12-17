@@ -354,7 +354,9 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `UnionMemberType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionMemberType).
-  Parser unionMemberType() => null;
+  Parser unionMemberType() =>
+      (ref(extendedAttribute) & ref(distinguishableType)) |
+      (ref(unionType) & ref(nullable));
 
   /// An `UnionMemberTypes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionMemberTypes).
