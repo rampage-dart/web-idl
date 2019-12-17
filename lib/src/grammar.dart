@@ -398,7 +398,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PromiseType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PromiseType).
-  Parser promiseType() => null;
+  Parser promiseType() =>
+      ref(token, 'Promise') &
+      ref(token, '<') &
+      ref(returnType) &
+      ref(token, '>');
 
   /// A `RecordType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RecordType).
