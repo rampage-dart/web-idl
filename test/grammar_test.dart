@@ -41,6 +41,22 @@ void main() {
       expect('USVString', reject(parser));
     });
   });
+  group('UnsignedIntegerType', () {
+    final parser = grammar.build(start: grammar.unsignedIntegerType).end();
+    test('accept', () {
+      expect('short', accept(parser));
+      expect('long', accept(parser));
+      expect('long long', accept(parser));
+      expect('unsigned short', accept(parser));
+      expect('unsigned long', accept(parser));
+      expect('unsigned long long', accept(parser));
+    });
+    test('reject', () {
+      expect('Foo', reject(parser));
+      expect('USVString', reject(parser));
+      expect('double', reject(parser));
+    });
+  });
   group('IntegerType', () {
     final parser = grammar.build(start: grammar.integerType).end();
     test('accept', () {
