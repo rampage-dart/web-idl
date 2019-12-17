@@ -359,7 +359,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PrimitiveType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PrimitiveType).
-  Parser primitiveType() => null;
+  Parser primitiveType() =>
+      ref(unsignedIntegerType) |
+      ref(unrestrictedFloatType) |
+      ref(token, 'boolean') |
+      ref(token, 'byte') |
+      ref(token, 'octet');
 
   /// An `UnrestrictedFloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnrestrictedFloatType).
