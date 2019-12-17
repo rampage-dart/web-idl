@@ -456,4 +456,83 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `ExtendedAttributeNamedArgList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeNamedArgList).
   Parser extendedAttributeNamedArgList() => null;
+
+  //------------------------------------------------------------------
+  // Keyword definitions.
+  //------------------------------------------------------------------
+
+  /// The `async` keyword.
+  Parser asyncKeyword() => ref(token, 'async');
+
+  /// The `attribute` keyword.
+  Parser attributeKeyword() => ref(token, 'attribute');
+
+  /// The `callback` keyword.
+  Parser callbackKeyword() => ref(token, 'callback');
+
+  /// The `const` keyword.
+  Parser constKeyword() => ref(token, 'const');
+
+  /// The `constructor` keyword.
+  Parser constructorKeyword() => ref(token, 'constructor');
+
+  /// The `deleter` keyword.
+  Parser deleterKeyword() => ref(token, 'deleter');
+
+  /// The `dictionary` keyword.
+  Parser dictionaryKeyword() => ref(token, 'dictionary');
+
+  /// The `enum` keyword.
+  Parser enumKeyword() => ref(token, 'enum');
+
+  /// The `getter` keyword.
+  Parser getterKeyword() => ref(token, 'getter');
+
+  /// The `includes` keyword.
+  Parser includesKeyword() => ref(token, 'includes');
+
+  /// The `inherit` keyword.
+  Parser inheritKeyword() => ref(token, 'inherit');
+
+  /// The `interface` keyword.
+  Parser interfaceKeyword() => ref(token, 'interface');
+
+  /// The `iterable` keyword.
+  Parser iterableKeyword() => ref(token, 'iterable');
+
+  /// The `maplike` keyword.
+  Parser maplikeKeyword() => ref(token, 'maplike');
+
+  /// The `mixin` keyword.
+  Parser mixinKeyword() => ref(token, 'mixin');
+
+  /// The `namespace` keyword.
+  Parser namespaceKeyword() => ref(token, 'namespace');
+
+  /// The `partial` keyword.
+  Parser partialKeyword() => ref(token, 'partial');
+
+  /// The `readonly` keyword.
+  Parser readonlyKeyword() => ref(token, 'readonly');
+
+  /// The `required` keyword.
+  Parser requiredKeyword() => ref(token, 'required');
+
+  /// The `setlike` keyword.
+  Parser setlikeKeyword() => ref(token, 'setlike');
+
+  /// The `setter` keyword.
+  Parser setterKeyword() => ref(token, 'setter');
+
+  /// The `static` keyword.
+  Parser staticKeyword() => ref(token, 'static');
+
+  /// The `stringifier` keyword.
+  Parser stringifierKeyword() => ref(token, 'stringifier');
+
+  /// The `typedef` keyword.
+  Parser typedefKeyword() => ref(token, 'typedef');
+
+  /// The `unrestricted` keyword.
+  Parser unrestrictedKeyword() => ref(token, 'unrestricted');
 }
