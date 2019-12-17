@@ -372,7 +372,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `UnsignedIntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnsignedIntegerType).
-  Parser unsignedIntegerType() => null;
+  Parser unsignedIntegerType() =>
+      ref(token, 'unsigned').optional() & ref(integerType);
 
   /// An `IntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IntegerType).
