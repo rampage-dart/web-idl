@@ -338,7 +338,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Typedef` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Typedef).
-  Parser typedef() => null;
+  Parser typeDefinition() =>
+      ref(typedefKeyword) &
+      ref(typeWithExtendedAttributes) &
+      ref(identifier) &
+      ref(token, ';');
 
   /// A `Type` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Type).
