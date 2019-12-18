@@ -123,7 +123,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `ConstValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ConstValue).
-  Parser constantValue() => null;
+  Parser constantValue() =>
+      ref(booleanLiteral) | ref(floatLiteral) | ref(integer);
 
   /// A `BooleanLiteral` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BooleanLiteral).
