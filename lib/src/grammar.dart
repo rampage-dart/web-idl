@@ -119,7 +119,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Const` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Const).
-  Parser constant() => null;
+  Parser constant() =>
+      ref(constKeyword) &
+      ref(constantType) &
+      ref(identifier) &
+      ref(token, '=') &
+      ref(constantValue) &
+      ref(token, ';');
 
   /// A `ConstValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ConstValue).
