@@ -136,4 +136,15 @@ void main() {
       expect('float', reject(parser));
     });
   });
+  group('ExtendedAttributeList', () {
+    final parser = grammar.build(start: grammar.extendedAttributeList).end();
+    test('accept', () {
+      expect('[Exposed=Window]', accept(parser));
+      expect('[Exposed=(Window,Worker)]', accept(parser));
+      expect('[SameObject]', accept(parser));
+      expect('[CEReactions, Unscopable]', accept(parser));
+      expect('', accept(parser));
+    });
+    test('reject', () {});
+  });
 }
