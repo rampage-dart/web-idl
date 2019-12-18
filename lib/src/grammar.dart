@@ -174,7 +174,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `ReadOnly` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadOnly).
-  Parser readOnly() => null;
+  Parser readOnly() => ref(readonlyKeyword).optional();
 
   /// A `DefaultValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DefaultValue).
