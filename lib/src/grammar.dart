@@ -530,6 +530,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#prod-identifier).
   Parser identifier() => pattern('a-zA-Z_').seq(word().star());
 
+  /// An `Integer` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#prod-integer).
+  Parser integer() => ref(digit).plus();
+
   /// A `Decimal` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-decimal).
   Parser decimal() =>
