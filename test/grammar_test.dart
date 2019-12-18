@@ -105,6 +105,18 @@ void main() {
       expect('float', reject(parser));
     });
   });
+  group('Promise', () {
+    final parser = grammar.build(start: grammar.promiseType).end();
+    test('accept', () {
+      expect('Promise<void>', accept(parser));
+      expect('Promise<any>', accept(parser));
+      expect('Promise<DOMString>', accept(parser));
+      expect('Promise<float>', accept(parser));
+      expect('Promise<object>', accept(parser));
+      expect('Promise<symbol>', accept(parser));
+      expect('Promise<Foo>', accept(parser));
+    });
+  });
   group('Null', () {
     final parser = grammar.build(start: grammar.nullable).end();
     test('accept', () {
