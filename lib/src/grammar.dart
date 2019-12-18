@@ -127,7 +127,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `BooleanLiteral` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BooleanLiteral).
-  Parser booleanLiteral() => null;
+  Parser booleanLiteral() => ref(token, 'true') | ref(token, 'false');
 
   /// A `FloatLiteral` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatLiteral).
