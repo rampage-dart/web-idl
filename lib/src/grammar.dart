@@ -215,7 +215,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Argument` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Argument).
-  Parser argument() => ref(extendedAttributeArgList) & ref(argumentRest);
+  Parser argument() => ref(extendedAttributeList) & ref(argumentRest);
 
   /// An `ArgumentRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentRest).
@@ -362,7 +362,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `TypeWithExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-TypeWithExtendedAttributes).
   Parser typeWithExtendedAttributes() =>
-      ref(extendedAttributeArgList) & ref(type);
+      ref(extendedAttributeList) & ref(type);
 
   /// A `SingleType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SingleType).
@@ -382,7 +382,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `UnionMemberType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionMemberType).
   Parser unionMemberType() =>
-      (ref(extendedAttribute) & ref(distinguishableType)) |
+      (ref(extendedAttributeList) & ref(distinguishableType)) |
       (ref(unionType) & ref(nullable));
 
   /// An `UnionMemberTypes` within the [WebIDL grammar]
