@@ -206,7 +206,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ArgumentList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentList).
-  Parser argumentList() => null;
+  Parser argumentList() => (ref(argument) & ref(arguments)).optional();
 
   /// An `Arguments` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Arguments).
