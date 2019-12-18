@@ -240,7 +240,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Constructor` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Constructor).
-  Parser constructor() => null;
+  Parser constructor() =>
+      ref(constructorKeyword) &
+      ref(token, '(') &
+      ref(argumentList) &
+      ref(token, ')') &
+      ref(token, ';');
 
   /// A `Stringifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Stringifier).
