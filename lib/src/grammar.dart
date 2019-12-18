@@ -170,7 +170,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `AttributeNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeNameKeyword).
-  Parser attributeNameKeyword() => null;
+  Parser attributeNameKeyword() => ref(asyncKeyword) | ref(requiredKeyword);
 
   /// A `ReadOnly` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadOnly).
