@@ -131,7 +131,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `FloatLiteral` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatLiteral).
-  Parser floatLiteral() => null;
+  Parser floatLiteral() =>
+      ref(decimal) |
+      ref(token, '-Infinity') |
+      ref(token, 'Infinity') |
+      ref(token, 'NaN');
 
   /// A `ConstType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ConstType).
@@ -525,6 +529,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `Identifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-identifier).
   Parser identifier() => pattern('a-zA-Z_').seq(word().star());
+
+  /// A `Decimal` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#prod-decimal).
+  Parser decimal() =>
+      char('-').optional() &
+      char('0').or(digit().plus()) &
+      char('.').seq(digit().plus()).optional() &
+      pattern('eE')
+          .seq(pattern('-+').optional())
+          .seq(digit().plus())
+          .optional();
 
   //------------------------------------------------------------------
   // Keyword definitions.
