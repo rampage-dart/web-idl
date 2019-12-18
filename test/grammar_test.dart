@@ -105,6 +105,17 @@ void main() {
       expect('float', reject(parser));
     });
   });
+  group('Null', () {
+    final parser = grammar.build(start: grammar.nullable).end();
+    test('accept', () {
+      expect('?', accept(parser));
+      expect('', accept(parser));
+    });
+    test('reject', () {
+      expect('!', reject(parser));
+      expect('Foo', reject(parser));
+    });
+  });
   group('BufferRelatedType', () {
     final parser = grammar.build(start: grammar.bufferRelatedType).end();
     test('accept', () {
