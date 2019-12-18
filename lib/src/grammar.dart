@@ -226,7 +226,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Ellipsis` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Ellipsis).
-  Parser ellipsis() => null;
+  Parser ellipsis() => ref(token, '...').optional();
 
   /// A `ReturnType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReturnType).
