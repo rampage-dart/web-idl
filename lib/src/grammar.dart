@@ -140,7 +140,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `ConstType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ConstType).
-  Parser constantType() => null;
+  Parser constantType() => ref(primitiveType) | ref(identifier);
 
   /// A `ReadOnlyMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadOnlyMember).
