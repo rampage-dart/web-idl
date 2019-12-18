@@ -314,7 +314,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Default` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Default).
-  Parser defaultTo() => null;
+  Parser defaultTo() => (ref(token, '=') & ref(defaultValue)).optional();
 
   /// An `Enum` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Enum).
