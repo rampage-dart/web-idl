@@ -230,7 +230,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `ReturnType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReturnType).
-  Parser returnType() => null;
+  Parser returnType() => ref(type) | ref(token, 'void');
 
   /// A `Constructor` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Constructor).
