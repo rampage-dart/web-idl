@@ -166,7 +166,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `AttributeName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeName).
-  Parser attributeName() => null;
+  Parser attributeName() => ref(attributeNameKeyword) | ref(identifier);
 
   /// An `AttributeNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeNameKeyword).
