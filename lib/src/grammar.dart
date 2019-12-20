@@ -42,7 +42,14 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Definition` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Definition).
-  Parser definition() => null;
+  Parser definition() =>
+      ref(callbackOrInterfaceOrMixin) |
+      ref(namespace) |
+      ref(partial) |
+      ref(dictionary) |
+      ref(enumeration) |
+      ref(typeDefinition) |
+      ref(includesStatement);
 
   /// An `ArgumentNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentNameKeyword).
