@@ -105,7 +105,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Inheritance` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Inheritance).
-  Parser inheritance() => null;
+  Parser inheritance() => (ref(token, ':') & ref(identifier)).optional();
 
   /// A `MixinRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MixinRest).
