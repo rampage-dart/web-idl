@@ -367,7 +367,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Iterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Iterable).
-  Parser iterable() => null;
+  Parser iterable() =>
+      ref(iterableKeyword) &
+      ref(token, '<') &
+      ref(typeWithExtendedAttributes) &
+      ref(optionalType) &
+      ref(token, '>') &
+      ref(token, ';');
 
   /// An `OptionalType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalType).
