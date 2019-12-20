@@ -270,7 +270,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `RegularOperation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RegularOperation).
-  Parser regularOperation() => null;
+  Parser regularOperation() => ref(returnType) & ref(operationRest);
 
   /// A `SpecialOperation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SpecialOperation).
