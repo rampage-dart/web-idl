@@ -17,6 +17,15 @@ ParserTestFunction reject(Parser parser) =>
 
 void main() {
   final grammar = WebIdlGrammarDefinition();
+  group('CallbackRest', () {
+    final parser = grammar.build(start: grammar.callbackRest).end();
+    test('accept', () {
+      expect(
+        'MutationCallback = void (sequence<MutationRecord> mutations, MutationObserver observer)',
+        accept(parser),
+      );
+    });
+  });
   group('PrimitiveType', () {
     final parser = grammar.build(start: grammar.primitiveType).end();
     test('accept', () {

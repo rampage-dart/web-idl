@@ -238,7 +238,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `AttributeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeRest).
-  Parser attributeRest() => null;
+  Parser attributeRest() =>
+      ref(attributeKeyword) &
+      ref(typeWithExtendedAttributes) &
+      ref(attributeName) &
+      ref(token, ';');
 
   /// An `AttributeName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeName).
