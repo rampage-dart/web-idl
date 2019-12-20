@@ -377,7 +377,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `OptionalType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalType).
-  Parser optionalType() => null;
+  Parser optionalType() =>
+      (ref(token, ',') & ref(typeWithExtendedAttributes)).optional();
 
   /// An `AsyncIterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AsyncIterable).
