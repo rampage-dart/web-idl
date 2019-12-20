@@ -189,7 +189,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `CallbackInterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackInterfaceMember).
-  Parser callbackInterfaceMember() => null;
+  Parser callbackInterfaceMember() => ref(constant) | ref(regularOperation);
 
   /// A `Const` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Const).
