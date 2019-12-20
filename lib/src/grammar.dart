@@ -36,7 +36,9 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#index-prod-Definitions).
   ///
   /// This is the root of the grammar.
-  Parser definitions() => null;
+  Parser definitions() =>
+      (ref(extendedAttributeList) & ref(definition) & ref(definition))
+          .optional();
 
   /// A `Definition` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Definition).
