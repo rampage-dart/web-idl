@@ -300,7 +300,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `OperationNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OperationNameKeyword).
-  Parser operationNameKeyword() => null;
+  Parser operationNameKeyword() => ref(includesKeyword);
 
   /// An `ArgumentList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentList).
