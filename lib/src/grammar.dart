@@ -178,7 +178,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `DefaultValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DefaultValue).
-  Parser defaultValue() => null;
+  Parser defaultValue() =>
+      ref(constantValue) |
+      //ref(string) |
+      (ref(token, '[') & ref(token, ']')) |
+      (ref(token, '{') & ref(token, '}') | ref(token, 'null'));
 
   /// An `Operation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Operation).
