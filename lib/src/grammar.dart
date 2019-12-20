@@ -283,7 +283,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `OperationRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OperationRest).
-  Parser operationRest() => null;
+  Parser operationRest() =>
+      ref(optionalOperationName) &
+      ref(token, '(') &
+      ref(argumentList) &
+      ref(token, ')') &
+      ref(token, ';');
 
   /// An `OptionalOperationName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalOperationName).
