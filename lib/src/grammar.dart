@@ -62,7 +62,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `InterfaceOrMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceOrMixin).
-  Parser interfaceOrMixin() => null;
+  Parser interfaceOrMixin() => ref(interfaceRest) | ref(mixinRest);
 
   /// An `InterfaceRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceRest).
