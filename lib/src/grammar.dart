@@ -362,7 +362,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `StaticMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StaticMemberRest).
-  Parser staticMemberRest() => null;
+  Parser staticMemberRest() =>
+      (ref(readOnly) & ref(attributeRest)) | ref(regularOperation);
 
   /// An `Iterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Iterable).
