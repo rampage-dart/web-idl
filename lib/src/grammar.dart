@@ -70,7 +70,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PartialInterfaceOrPartialMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceOrPartialMixin).
-  Parser partialInterfaceOrPartialMixin() => null;
+  Parser partialInterfaceOrPartialMixin() =>
+      ref(partialInterfaceRest) | ref(mixinRest);
 
   /// A `PartialInterfaceRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceRest).
