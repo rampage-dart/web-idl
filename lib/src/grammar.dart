@@ -439,7 +439,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `NamespaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-NamespaceMember).
-  Parser namespaceMember() => null;
+  Parser namespaceMember() =>
+      ref(regularOperation) | (ref(readonlyKeyword) & ref(attributeRest));
 
   /// A `Dictionary` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Dictionary).
