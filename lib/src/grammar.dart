@@ -345,7 +345,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `CallbackRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRest).
-  Parser callbackRest() => null;
+  Parser callbackRest() =>
+      ref(identifier) &
+      ref(token, '=') &
+      ref(returnType) &
+      ref(token, '(') &
+      ref(argumentList) &
+      ref(token, ')');
 
   /// A `Typedef` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Typedef).
