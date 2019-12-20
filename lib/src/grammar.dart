@@ -398,7 +398,14 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `MaplikeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MaplikeRest).
-  Parser maplikeRest() => null;
+  Parser maplikeRest() =>
+      ref(maplikeKeyword) &
+      ref(token, '<') &
+      ref(typeWithExtendedAttributes) &
+      ref(token, ',') &
+      ref(typeWithExtendedAttributes) &
+      ref(token, '>') &
+      ref(token, ';');
 
   /// A `ReadWriteSetlike` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteSetlike).
