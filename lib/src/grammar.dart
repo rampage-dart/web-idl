@@ -488,7 +488,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Enum` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Enum).
-  Parser enumeration() => null;
+  Parser enumeration() =>
+      ref(enumKeyword) &
+      ref(identifier) &
+      ref(token, '{') &
+      ref(enumerationValueList) &
+      ref(token, '}') &
+      ref(token, ';');
 
   /// An `EnumValueList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueList).
