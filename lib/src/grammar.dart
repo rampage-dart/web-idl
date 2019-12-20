@@ -413,7 +413,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `SetlikeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SetlikeRest).
-  Parser setlikeRest() => null;
+  Parser setlikeRest() =>
+      ref(setlikeKeyword) &
+      ref(token, '<') &
+      ref(typeWithExtendedAttributes) &
+      ref(token, '>') &
+      ref(token, ';');
 
   /// A `Namespace` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Namespace).
