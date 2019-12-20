@@ -474,7 +474,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PartialDictionary` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialDictionary).
-  Parser partialDictionary() => null;
+  Parser partialDictionary() =>
+      ref(dictionaryKeyword) &
+      ref(identifier) &
+      ref(token, '{') &
+      ref(dictionaryMembers) &
+      ref(token, '}') &
+      ref(token, ';');
 
   /// A `Default` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Default).
