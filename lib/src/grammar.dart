@@ -460,7 +460,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `DictionaryMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMember).
-  Parser dictionaryMember() => null;
+  Parser dictionaryMember() =>
+      ref(extendedAttributeList) & ref(dictionaryMemberRest);
 
   /// A `DictionaryMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMemberRest).
