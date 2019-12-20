@@ -409,7 +409,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `ReadWriteSetlike` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteSetlike).
-  Parser readWriteSetlike() => null;
+  Parser readWriteSetlike() => ref(setlikeRest);
 
   /// A `SetlikeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SetlikeRest).
