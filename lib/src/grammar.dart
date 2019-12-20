@@ -507,7 +507,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `EnumValueListString` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueListString).
-  Parser enumerationValueListString() => null;
+  Parser enumerationValueListString() =>
+      (ref(string) & ref(enumerationValueListComma)).optional();
 
   /// A `CallbackRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRest).
