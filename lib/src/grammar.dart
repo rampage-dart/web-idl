@@ -382,7 +382,15 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `AsyncIterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AsyncIterable).
-  Parser asyncIterable() => null;
+  Parser asyncIterable() =>
+      ref(asyncKeyword) &
+      ref(iterableKeyword) &
+      ref(token, '<') &
+      ref(typeWithExtendedAttributes) &
+      ref(token, ',') &
+      ref(typeWithExtendedAttributes) &
+      ref(token, '>') &
+      ref(token, ';');
 
   /// A `ReadWriteMaplike` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteMaplike).
