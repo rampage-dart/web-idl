@@ -163,7 +163,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `IncludesStatement` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IncludesStatement).
-  Parser includesStatement() => null;
+  Parser includesStatement() =>
+      ref(identifier) &
+      ref(includesKeyword) &
+      ref(identifier) &
+      ref(token, ';');
 
   /// A `CallbackRestOrInterface` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRestOrInterface).
