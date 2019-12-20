@@ -114,7 +114,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PartialInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMembers).
-  Parser partialInterfaceMembers() => null;
+  Parser partialInterfaceMembers() => (ref(extendedAttributeList) &
+          ref(partialInterfaceMember) &
+          ref(partialInterfaceMembers))
+      .optional();
 
   /// A `PartialInterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMember).
