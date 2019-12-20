@@ -59,7 +59,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `Partial` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Partial).
-  Parser partial() => null;
+  Parser partial() => ref(partialKeyword) & ref(partialDefinition);
 
   /// A `PartialDefinition` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialDefinition).
