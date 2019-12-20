@@ -155,7 +155,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `MixinMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MixinMember).
-  Parser mixinMember() => null;
+  Parser mixinMember() =>
+      ref(constant) |
+      ref(regularOperation) |
+      ref(stringifier) |
+      (ref(readOnly) & ref(attributeRest));
 
   /// An `IncludesStatement` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IncludesStatement).
