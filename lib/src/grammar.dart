@@ -228,7 +228,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `ReadOnlyMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadOnlyMemberRest).
-  Parser readOnlyMemberRest() => null;
+  Parser readOnlyMemberRest() =>
+      ref(attributeRest) | ref(maplikeRest) | ref(setlikeRest);
 
   /// A `ReadWriteAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteAttribute).
