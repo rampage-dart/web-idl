@@ -259,7 +259,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `ReadWriteAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteAttribute).
   Parser readWriteAttribute() =>
-      (ref(inheritKeyword) & ref(attributeRest)) | ref(attributeRest);
+      ref(attributeRest);
 
   /// An `AttributeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeRest).
