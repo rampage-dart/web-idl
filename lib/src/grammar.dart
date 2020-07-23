@@ -288,7 +288,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#index-prod-DefaultValue).
   Parser defaultValue() =>
       ref(constantValue) |
-      ref(string) |
+      ref(stringLiteral) |
       (ref(token, '[') & ref(token, ']')) |
       (ref(token, '{') & ref(token, '}') | ref(token, 'null'));
 
@@ -531,7 +531,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `EnumValueList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueList).
-  Parser enumerationValueList() => ref(string) & ref(enumerationValueListComma);
+  Parser enumerationValueList() =>
+      ref(stringLiteral) & ref(enumerationValueListComma);
 
   /// An `EnumValueListComma` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueListComma).
@@ -541,7 +542,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `EnumValueListString` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueListString).
   Parser enumerationValueListString() =>
-      (ref(string) & ref(enumerationValueListComma)).optional();
+      (ref(stringLiteral) & ref(enumerationValueListComma)).optional();
 
   /// A `CallbackRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRest).
@@ -746,7 +747,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(integer) |
       ref(decimal) |
       ref(identifier) |
-      ref(string) |
+      ref(stringLiteral) |
       ref(other) |
       ref(token, '-') |
       ref(token, '-Infinity') |
@@ -840,6 +841,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `Identifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-identifier).
   Parser identifier() => pattern('a-zA-Z_').seq(word().star());
+
+  /// A `String` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#prod-string).
+  Parser stringLiteral() => char('"') & pattern('^"').star() & char('"');
 
   /// An `Integer` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-integer).
