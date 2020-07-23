@@ -53,6 +53,32 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ArgumentNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentNameKeyword).
+  Parser argumentNameKeyword() =>
+      ref(asyncKeyword) |
+      ref(attributeKeyword) |
+      ref(callbackKeyword) |
+      ref(constKeyword) |
+      ref(constructorKeyword) |
+      ref(deleterKeyword) |
+      ref(dictionaryKeyword) |
+      ref(enumKeyword) |
+      ref(getterKeyword) |
+      ref(includesKeyword) |
+      ref(inheritKeyword) |
+      ref(interfaceKeyword) |
+      ref(iterableKeyword) |
+      ref(maplikeKeyword) |
+      ref(mixinKeyword) |
+      ref(namespaceKeyword) |
+      ref(partialKeyword) |
+      ref(readonlyKeyword) |
+      ref(requiredKeyword) |
+      ref(setlikeKeyword) |
+      ref(setterKeyword) |
+      ref(staticKeyword) |
+      ref(stringifierKeyword) |
+      ref(typedefKeyword) |
+      ref(unrestrictedKeyword);
 
   /// A `CallbackOrInterfaceOrMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackOrInterfaceOrMixin).
