@@ -355,7 +355,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ArgumentName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentName).
-  Parser argumentName() => ref(identifier);
+  Parser argumentName() => ref(argumentNameKeyword) | ref(identifier);
 
   /// An `Ellipsis` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Ellipsis).
