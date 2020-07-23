@@ -416,10 +416,15 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(iterableKeyword) &
       ref(token, '<') &
       ref(typeWithExtendedAttributes) &
-      ref(token, ',') &
-      ref(typeWithExtendedAttributes) &
+      ref(optionalType) &
       ref(token, '>') &
+      ref(optionalArgumentList) &
       ref(token, ';');
+
+  /// An `OptionalArgumentList` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#index-prod-OptionalArgumentList).
+  Parser optionalArgumentList() =>
+      (ref(token, '(') & ref(argumentList) & ref(token, ')')).optional();
 
   /// A `ReadWriteMaplike` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteMaplike).
