@@ -184,7 +184,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(constant) |
       ref(regularOperation) |
       ref(stringifier) |
-      (ref(readOnly) & ref(attributeRest));
+      (ref(optionalReadOnly) & ref(attributeRest));
 
   /// An `IncludesStatement` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IncludesStatement).
@@ -281,9 +281,9 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#index-prod-AttributeNameKeyword).
   Parser attributeNameKeyword() => ref(asyncKeyword) | ref(requiredKeyword);
 
-  /// A `ReadOnly` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-ReadOnly).
-  Parser readOnly() => ref(readonlyKeyword).optional();
+  /// An `OptionalReadOnly` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#index-prod-OptionalReadOnly).
+  Parser optionalReadOnly() => ref(readonlyKeyword).optional();
 
   /// A `DefaultValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DefaultValue).
@@ -381,7 +381,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `StringifierRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringifierRest).
   Parser stringifierRest() =>
-      (ref(readOnly) & ref(attributeRest)) |
+      (ref(optionalReadOnly) & ref(attributeRest)) |
       ref(regularOperation) |
       ref(token, ';');
 
@@ -392,7 +392,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `StaticMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StaticMemberRest).
   Parser staticMemberRest() =>
-      (ref(readOnly) & ref(attributeRest)) | ref(regularOperation);
+      (ref(optionalReadOnly) & ref(attributeRest)) | ref(regularOperation);
 
   /// An `Iterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Iterable).
