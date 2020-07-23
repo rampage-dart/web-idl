@@ -261,6 +261,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser readWriteAttribute() =>
       ref(attributeRest);
 
+  /// An `InheritAttribute` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#index-prod-InheritAttribute)
+  Parser inheritAttribute() => ref(inheritKeyword) & ref(attributeRest);
+
   /// An `AttributeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeRest).
   Parser attributeRest() =>
@@ -268,10 +272,6 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(typeWithExtendedAttributes) &
       ref(attributeName) &
       ref(token, ';');
-
-  /// An `InheritAttribute` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-InheritAttribute)
-  Parser inheritAttribute() => ref(inheritKeyword) & ref(attributeRest);
 
   /// An `AttributeName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeName).
