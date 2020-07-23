@@ -288,7 +288,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#index-prod-DefaultValue).
   Parser defaultValue() =>
       ref(constantValue) |
-      //ref(string) |
+      ref(string) |
       (ref(token, '[') & ref(token, ']')) |
       (ref(token, '{') & ref(token, '}') | ref(token, 'null'));
 
@@ -742,11 +742,55 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Other` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Other).
-  Parser other() => null;
+  Parser other() =>
+      ref(integer) |
+      ref(decimal) |
+      ref(identifier) |
+      ref(string) |
+      ref(other) |
+      ref(token, '-') |
+      ref(token, '-Infinity') |
+      ref(token, '.') |
+      ref(token, '...') |
+      ref(token, ':') |
+      ref(token, ';') |
+      ref(token, '<') |
+      ref(token, '=') |
+      ref(token, '>') |
+      ref(token, '?') |
+      ref(token, 'ByteString') |
+      ref(token, 'DOMString') |
+      ref(token, 'FrozenArray') |
+      ref(token, 'Infinity') |
+      ref(token, 'NaN') |
+      ref(token, 'ObservableArray') |
+      ref(token, 'Promise') |
+      ref(token, 'USVString') |
+      ref(token, 'any') |
+      ref(token, 'boolean') |
+      ref(token, 'byte') |
+      ref(token, 'double') |
+      ref(token, 'false') |
+      ref(token, 'float') |
+      ref(token, 'long') |
+      ref(token, 'null') |
+      ref(token, 'object') |
+      ref(token, 'octet') |
+      ref(token, 'or') |
+      ref(token, 'optional') |
+      ref(token, 'record') |
+      ref(token, 'sequence') |
+      ref(token, 'short') |
+      ref(token, 'symbol') |
+      ref(token, 'true') |
+      ref(token, 'unsigned') |
+      ref(token, 'void') |
+      ref(argumentNameKeyword) |
+      ref(bufferRelatedType);
 
   /// An `OtherOrComma` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OtherOrComma).
-  Parser otherOrComma() => null;
+  Parser otherOrComma() => ref(other) & ref(token, ',');
 
   /// An `IdentifierList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IdentifierList).
