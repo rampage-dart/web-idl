@@ -155,7 +155,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(readOnlyMember) |
       ref(readWriteAttribute) |
       ref(readWriteMaplike) |
-      ref(readWriteSetlike);
+      ref(readWriteSetlike) |
+      ref(inheritAttribute);
 
   /// An `Inheritance` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Inheritance).
@@ -267,6 +268,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(typeWithExtendedAttributes) &
       ref(attributeName) &
       ref(token, ';');
+
+  /// An `InheritAttribute` within the [WebIDL grammar]
+  /// (https://heycam.github.io/webidl/#index-prod-InheritAttribute)
+  Parser inheritAttribute() => ref(inheritKeyword) & ref(attributeRest);
 
   /// An `AttributeName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeName).
