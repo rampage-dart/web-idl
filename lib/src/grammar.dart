@@ -693,26 +693,43 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
   Parser extendedAttributeList() => (ref(token, '[') &
-          //ref(extendedAttribute) &
-          //ref(extendedAttributes) &
+          ref(extendedAttribute) &
+          ref(extendedAttributes) &
           ref(token, ']'))
       .optional();
 
   /// An `ExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributes).
-  Parser extendedAttributes() => null;
+  Parser extendedAttributes() =>
+      (ref(token, ',') & ref(extendedAttribute) & ref(extendedAttributes))
+          .optional();
 
   /// An `ExtendedAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttribute).
-  Parser extendedAttribute() => null;
+  Parser extendedAttribute() =>
+      ((ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')')) |
+          (ref(token, '[') & ref(extendedAttributeInner) & ref(token, ']')) |
+          (ref(token, '{') & ref(extendedAttributeInner) & ref(token, '}')) |
+          ref(other)) &
+      ref(extendedAttributeRest);
 
   /// An `ExtendedAttributeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeRest).
-  Parser extendedAttributeRest() => null;
+  Parser extendedAttributeRest() => ref(extendedAttribute).optional();
 
   /// An `ExtendedAttributeInner` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeInner).
-  Parser extendedAttributeInner() => null;
+  Parser extendedAttributeInner() =>
+      (((ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')')) |
+                  (ref(token, '[') &
+                      ref(extendedAttributeInner) &
+                      ref(token, ']')) |
+                  (ref(token, '{') &
+                      ref(extendedAttributeInner) &
+                      ref(token, '}')) |
+                  ref(otherOrComma)) &
+              ref(extendedAttributeInner))
+          .optional();
 
   /// An `Other` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Other).
@@ -733,23 +750,35 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ExtendedAttributeNoArgs` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeNoArgs).
-  Parser extendedAttributeNoArgs() => null;
+  Parser extendedAttributeNoArgs() => ref(identifier);
 
   /// An `ExtendedAttributeArgList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeArgList).
-  Parser extendedAttributeArgList() => null;
+  Parser extendedAttributeArgList() =>
+      ref(identifier) & ref(token, '(') & ref(argumentList) & ref(token, ')');
 
   /// An `ExtendedAttributeIdent` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeIdent).
-  Parser extendedAttributeIdent() => null;
+  Parser extendedAttributeIdent() =>
+      ref(identifier) & ref(token, '=') & ref(identifier);
 
   /// An `ExtendedAttributeIdentList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeIdentList).
-  Parser extendedAttributeIdentList() => null;
+  Parser extendedAttributeIdentList() =>
+      ref(identifier) &
+      ref(token, '=') &
+      ref(token, '(') &
+      ref(identifierList) &
+      ref(token, ')');
 
   /// An `ExtendedAttributeNamedArgList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeNamedArgList).
-  Parser extendedAttributeNamedArgList() => null;
+  Parser extendedAttributeNamedArgList() =>
+      ref(identifier) &
+      ref(token, '=') &
+      ref(token, '(') &
+      ref(argumentList) &
+      ref(token, ')');
 
   //------------------------------------------------------------------
   // Lexical tokens.
