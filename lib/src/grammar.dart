@@ -83,7 +83,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `CallbackOrInterfaceOrMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackOrInterfaceOrMixin).
   Parser callbackOrInterfaceOrMixin() =>
-      (ref(token, 'callback') & ref(callbackRestOrInterface)) |
+      (ref(callbackKeyword) & ref(callbackRestOrInterface)) |
       (ref(interfaceKeyword) & ref(interfaceOrMixin));
 
   /// An `InterfaceOrMixin` within the [WebIDL grammar]
