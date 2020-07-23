@@ -121,7 +121,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser partialInterfaceRest() =>
       ref(identifier) &
       ref(token, '{') &
-      ref(partialInterfaceMember) &
+      ref(partialInterfaceMembers) &
       ref(token, '}') &
       ref(token, ';');
 
