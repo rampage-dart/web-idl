@@ -725,11 +725,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `IdentifierList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IdentifierList).
-  Parser identifierList() => null;
+  Parser identifierList() => ref(identifier) & ref(identifiers);
 
   /// An `Identifiers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Identifiers).
-  Parser identifiers() => null;
+  Parser identifiers() =>
+      (ref(token, ',') & ref(identifier) & ref(identifiers)).optional();
 
   /// An `ExtendedAttributeNoArgs` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeNoArgs).
