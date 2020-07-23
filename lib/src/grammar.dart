@@ -598,23 +598,27 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `DistinguishableType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DistinguishableType).
-  Parser distinguishableType() =>
-      (ref(primitiveType) |
-          ref(stringType) |
-          ref(identifier) |
-          (ref(token, 'sequence') &
-              ref(token, '<') &
-              ref(token, typeWithExtendedAttributes) &
-              ref(token, '>')) |
-          ref(token, 'object') |
-          ref(token, 'symbol') |
-          ref(bufferRelatedType) |
-          (ref(token, 'FrozenArray') &
-              ref(token, '<') &
-              ref(typeWithExtendedAttributes) &
-              ref(token, '>')) |
-          ref(recordType)) &
-      ref(nullable);
+  Parser distinguishableType() {
+    final sequenceType = ref(token, 'sequence') &
+        ref(token, '<') &
+        ref(token, typeWithExtendedAttributes) &
+        ref(token, '>');
+    final frozenArrayType = ref(token, 'FrozenArray') &
+        ref(token, '<') &
+        ref(typeWithExtendedAttributes) &
+        ref(token, '>');
+    final types = ref(primitiveType) |
+        ref(stringType) |
+        ref(identifier) |
+        sequenceType |
+        ref(token, 'object') |
+        ref(token, 'symbol') |
+        ref(bufferRelatedType) |
+        frozenArrayType |
+        ref(recordType);
+
+    return types & ref(nullable);
+  }
 
   /// A `PrimitiveType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PrimitiveType).
@@ -706,12 +710,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ExtendedAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttribute).
-  Parser extendedAttribute() =>
-      ((ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')')) |
-          (ref(token, '[') & ref(extendedAttributeInner) & ref(token, ']')) |
-          (ref(token, '{') & ref(extendedAttributeInner) & ref(token, '}')) |
-          ref(other)) &
-      ref(extendedAttributeRest);
+  Parser extendedAttribute() {
+    final withParen =
+        ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')');
+    final withSquare =
+        ref(token, '[') & ref(extendedAttributeInner) & ref(token, ']');
+    final withCurly =
+        ref(token, '{') & ref(extendedAttributeInner) & ref(token, '}');
+    final ors = withParen | withSquare | withCurly | ref(other);
+
+    return ors & ref(extendedAttributeRest);
+  }
 
   /// An `ExtendedAttributeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeRest).
@@ -719,17 +728,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ExtendedAttributeInner` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeInner).
-  Parser extendedAttributeInner() =>
-      (((ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')')) |
-                  (ref(token, '[') &
-                      ref(extendedAttributeInner) &
-                      ref(token, ']')) |
-                  (ref(token, '{') &
-                      ref(extendedAttributeInner) &
-                      ref(token, '}')) |
-                  ref(otherOrComma)) &
-              ref(extendedAttributeInner))
-          .optional();
+  Parser extendedAttributeInner() {
+    final withParen =
+        ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')');
+    final withSquare =
+        ref(token, '[') & ref(extendedAttributeInner) & ref(token, ']');
+    final withCurly =
+        ref(token, '{') & ref(extendedAttributeInner) & ref(token, '}');
+    final ors = withParen | withSquare | withCurly | ref(otherOrComma);
+
+    return (ors & ref(extendedAttributeInner)).optional();
+  }
 
   /// An `Other` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Other).
