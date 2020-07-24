@@ -44,6 +44,16 @@ void main() {
       );
     });
   });
+  group('ArgumentName', () {
+    final parser = grammar.build(start: grammar.argumentName).end();
+    test('accept', () {
+      acceptAll(parser, _validIdentifiers);
+      acceptAll(parser, _argumentNameKeywords);
+    });
+    test('reject', () {
+      rejectAll(parser, _invalidIdentifiers);
+    });
+  });
   group('Type', () {
     final parser = grammar.build(start: grammar.type).end();
     test('accept', () {
@@ -449,6 +459,28 @@ final _argumentNameKeywords = <String>[
   'stringifier',
   'typedef',
   'unrestricted',
+];
+
+final _validIdentifiers = [
+  'foo',
+  'bar',
+  'baz',
+  'fooBar',
+  'fooBarBaz',
+  'Foo',
+  'Bar',
+  'Baz',
+  // With numbers
+  'foo0',
+  'foo0bar1baz2',
+  // DOM names
+  'Element',
+  'MutationObserver',
+];
+
+final _invalidIdentifiers = [
+  '0',
+  '*foo',
 ];
 
 //------------------------------------------------------------------
