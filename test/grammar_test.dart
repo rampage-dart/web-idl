@@ -32,9 +32,7 @@ void main() {
   group('ArgumentNameKeyword', () {
     final parser = grammar.build(start: grammar.argumentNameKeyword).end();
     test('accept', () {
-      for (final val in _argumentNameKeywords) {
-        expect(val, accept(parser));
-      }
+      acceptAll(parser, _argumentNameKeywords);
     });
   });
   group('CallbackRest', () {
@@ -49,101 +47,159 @@ void main() {
   group('PrimitiveType', () {
     final parser = grammar.build(start: grammar.primitiveType).end();
     test('accept', () {
-      expect('unrestricted float', accept(parser));
-      expect('unrestricted double', accept(parser));
-      expect('float', accept(parser));
-      expect('double', accept(parser));
-      expect('short', accept(parser));
-      expect('long', accept(parser));
-      expect('long long', accept(parser));
-      expect('unsigned short', accept(parser));
-      expect('unsigned long', accept(parser));
-      expect('unsigned long long', accept(parser));
-      expect('boolean', accept(parser));
-      expect('byte', accept(parser));
-      expect('octet', accept(parser));
+      acceptAll(parser, _primitiveTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('USVString', reject(parser));
+      // Misspellings
+      expect('booleans', reject(parser));
+      expect('bytes', reject(parser));
+      expect('octets', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
 
   group('UnrestrictedFloatType', () {
     final parser = grammar.build(start: grammar.unrestrictedFloatType).end();
     test('accept', () {
-      expect('unrestricted float', accept(parser));
-      expect('unrestricted double', accept(parser));
-      expect('float', accept(parser));
-      expect('double', accept(parser));
+      acceptAll(parser, _unrestrictedFloatTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('USVString', reject(parser));
+      // Misspellings
+      expect('unrestricted floats', reject(parser));
+      expect('unrestricted doubles', reject(parser));
+      // Repeating
+      expect('unrestricted float unrestricted', reject(parser));
+      expect('unrestricted unrestricted float', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
   group('FloatType', () {
     final parser = grammar.build(start: grammar.floatType).end();
     test('accept', () {
-      expect('float', accept(parser));
-      expect('double', accept(parser));
+      acceptAll(parser, _floatTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('USVString', reject(parser));
+      // Misspellings
+      expect('floats', reject(parser));
+      expect('doubles', reject(parser));
+      // Repeating
+      expect('float float', reject(parser));
+      expect('double double', reject(parser));
+      // UnrestrictedFloatType (superset of FloatType)
+      expect('unrestricted float', reject(parser));
+      expect('unrestricted double', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
   group('UnsignedIntegerType', () {
     final parser = grammar.build(start: grammar.unsignedIntegerType).end();
     test('accept', () {
-      expect('short', accept(parser));
-      expect('long', accept(parser));
-      expect('long long', accept(parser));
-      expect('unsigned short', accept(parser));
-      expect('unsigned long', accept(parser));
-      expect('unsigned long long', accept(parser));
+      acceptAll(parser, _unsignedIntegerTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('USVString', reject(parser));
-      expect('double', reject(parser));
+      // Repeating
+      expect('short short', reject(parser));
+      expect('short long', reject(parser));
+      expect('long long long', reject(parser));
+      expect('unsigned unsigned short', reject(parser));
+      expect('unsigned unsigned long', reject(parser));
+      expect('unsigned unsigned long long', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
   group('IntegerType', () {
     final parser = grammar.build(start: grammar.integerType).end();
     test('accept', () {
-      expect('short', accept(parser));
-      expect('long', accept(parser));
-      expect('long long', accept(parser));
+      acceptAll(parser, _integerTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('USVString', reject(parser));
-      expect('double', reject(parser));
+      // Misspellings
+      expect('shorts', reject(parser));
+      expect('longs', reject(parser));
+      expect('long longs', reject(parser));
+      // Repeating
+      expect('short short', reject(parser));
+      expect('short long', reject(parser));
+      expect('long long long', reject(parser));
+      // UnsignedIntegerType (superset of IntegerType)
+      expect('unsigned short', reject(parser));
+      expect('unsigned long', reject(parser));
+      expect('unsigned long long', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
   group('StringType', () {
     final parser = grammar.build(start: grammar.stringType).end();
     test('accept', () {
-      expect('ByteString', accept(parser));
-      expect('DOMString', accept(parser));
-      expect('USVString', accept(parser));
+      acceptAll(parser, _stringTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('float', reject(parser));
+      // Misspellings
+      expect('ByteStrings', reject(parser));
+      expect('DOMStrings', reject(parser));
+      expect('USVStrings', reject(parser));
+      // Repeating
+      expect('ByteString ByteString', reject(parser));
+      expect('DOMString DOMString', reject(parser));
+      expect('USVString USVString', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
   group('Promise', () {
     final parser = grammar.build(start: grammar.promiseType).end();
     test('accept', () {
-      expect('Promise<void>', accept(parser));
-      expect('Promise<any>', accept(parser));
-      expect('Promise<DOMString>', accept(parser));
-      expect('Promise<float>', accept(parser));
-      expect('Promise<object>', accept(parser));
-      expect('Promise<symbol>', accept(parser));
-      expect('Promise<Foo>', accept(parser));
+      acceptAll(parser, _promiseTypes);
+    });
+    test('reject', () {
+      // Misspellings
+      expect('Promises<Foo>', reject(parser));
+      // Template argument errors
+      expect('Promise<>', reject(parser));
+      expect('Promise<,>', reject(parser));
+      expect('Promise<Foo, Bar>', reject(parser));
+      expect('Promise<Foo, Bar, Baz>', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _bufferRelatedTypes);
     });
   });
   group('Null', () {
@@ -160,21 +216,40 @@ void main() {
   group('BufferRelatedType', () {
     final parser = grammar.build(start: grammar.bufferRelatedType).end();
     test('accept', () {
-      expect('ArrayBuffer', accept(parser));
-      expect('DataView', accept(parser));
-      expect('Int8Array', accept(parser));
-      expect('Int16Array', accept(parser));
-      expect('Int32Array', accept(parser));
-      expect('Uint8Array', accept(parser));
-      expect('Uint16Array', accept(parser));
-      expect('Uint32Array', accept(parser));
-      expect('Uint8ClampedArray', accept(parser));
-      expect('Float32Array', accept(parser));
-      expect('Float64Array', accept(parser));
+      acceptAll(parser, _bufferRelatedTypes);
     });
     test('reject', () {
-      expect('Foo', reject(parser));
-      expect('float', reject(parser));
+      // Misspellings
+      expect('ArrayBuffers', reject(parser));
+      expect('DataViews', reject(parser));
+      expect('Int8Arrays', reject(parser));
+      expect('Int16Arrays', reject(parser));
+      expect('Int32Arrays', reject(parser));
+      expect('Uint8Arrays', reject(parser));
+      expect('Uint16Arrays', reject(parser));
+      expect('Uint32Arrays', reject(parser));
+      expect('Uint8ClampedArrays', reject(parser));
+      expect('Float32Arrays', reject(parser));
+      expect('Float64Arrays', reject(parser));
+      // Repeating
+      expect('ArrayBuffer ArrayBuffer', reject(parser));
+      expect('DataView DataView', reject(parser));
+      expect('Int8Array Int8Array', reject(parser));
+      expect('Int16Array Int16Array', reject(parser));
+      expect('Int32Array Int32Array', reject(parser));
+      expect('Uint8Array Uint8Array', reject(parser));
+      expect('Uint16Array Uint16Array', reject(parser));
+      expect('Uint32Array Uint32Array', reject(parser));
+      expect('Uint8ClampedArray Uint8ClampedArray', reject(parser));
+      expect('Float32Array Float32Array', reject(parser));
+      expect('Float64Array Float64Array', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
     });
   });
   group('ExtendedAttributeList', () {
@@ -216,4 +291,75 @@ final _argumentNameKeywords = <String>[
   'stringifier',
   'typedef',
   'unrestricted',
+];
+
+final _userDefinedTypes = <String>[
+  'Foo',
+  'Bar',
+  '_FooBar',
+  'FooBar2020',
+  'DOMParser',
+  'MutationObserver',
+];
+
+final _primitiveTypes = <String>[
+  'boolean',
+  'byte',
+  'octet',
+  ..._unsignedIntegerTypes,
+  ..._unrestrictedFloatTypes,
+];
+
+final _unrestrictedFloatTypes = <String>[
+  'unrestricted float',
+  'unrestricted double',
+  ..._floatTypes,
+];
+
+final _floatTypes = <String>[
+  'float',
+  'double',
+];
+
+final _unsignedIntegerTypes = <String>[
+  'unsigned short',
+  'unsigned long',
+  'unsigned long long',
+  ..._integerTypes,
+];
+
+final _integerTypes = <String>[
+  'short',
+  'long',
+  'long long',
+];
+
+final _stringTypes = <String>[
+  'ByteString',
+  'DOMString',
+  'USVString',
+];
+
+final _promiseTypes = <String>[
+  'Promise<void>',
+  'Promise<any>',
+  'Promise<DOMString>',
+  'Promise<float>',
+  'Promise<object>',
+  'Promise<symbol>',
+  'Promise<Foo>',
+];
+
+final _bufferRelatedTypes = <String>[
+  'ArrayBuffer',
+  'DataView',
+  'Int8Array',
+  'Int16Array',
+  'Int32Array',
+  'Uint8Array',
+  'Uint16Array',
+  'Uint32Array',
+  'Uint8ClampedArray',
+  'Float32Array',
+  'Float64Array',
 ];
