@@ -59,6 +59,7 @@ void main() {
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -81,6 +82,7 @@ void main() {
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -105,6 +107,7 @@ void main() {
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -127,6 +130,7 @@ void main() {
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -154,6 +158,7 @@ void main() {
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -177,6 +182,7 @@ void main() {
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -188,9 +194,10 @@ void main() {
     test('reject', () {
       // Misspellings
       expect('Promises<Foo>', reject(parser));
-      // Template argument errors
+      // Generic argument errors
       expect('Promise<>', reject(parser));
       expect('Promise<,>', reject(parser));
+      expect('Promise<Foo,>', reject(parser));
       expect('Promise<Foo, Bar>', reject(parser));
       expect('Promise<Foo, Bar, Baz>', reject(parser));
 
@@ -199,6 +206,34 @@ void main() {
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
+      rejectAll(parser, _recordTypes);
+      rejectAll(parser, _bufferRelatedTypes);
+    });
+  });
+  group('RecordType', () {
+    final parser = grammar.build(start: grammar.recordType).end();
+    test('accept', () {
+      acceptAll(parser, _recordTypes);
+    });
+    test('reject', () {
+      // Misspellings
+      expect('records<DOMString, Bar>', reject(parser));
+      // Key must be a StringType
+      expect('record<Foo, Bar>', reject(parser));
+      expect('record<Foo, DOMString>', reject(parser));
+      // Generic argument errors
+      expect('record<>', reject(parser));
+      expect('record<,>', reject(parser));
+      expect('record<,,>', reject(parser));
+      expect('record<DOMString, Bar,>', reject(parser));
+      expect('record<DOMString, Bar, Baz>', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
@@ -250,6 +285,7 @@ void main() {
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
     });
   });
   group('ExtendedAttributeList', () {
@@ -348,6 +384,12 @@ final _promiseTypes = <String>[
   'Promise<object>',
   'Promise<symbol>',
   'Promise<Foo>',
+];
+
+final _recordTypes = <String>[
+  'record<ByteString, Foo>',
+  'record<DOMString, Bar>',
+  'record<USVString, Baz>',
 ];
 
 final _bufferRelatedTypes = <String>[
