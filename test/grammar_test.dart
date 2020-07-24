@@ -44,6 +44,37 @@ void main() {
       );
     });
   });
+  group('UnionType', () {
+    final parser = grammar.build(start: grammar.unionType).end();
+    test('accept', () {
+      acceptAll(parser, _unionTypes);
+    });
+    test('reject', () {
+      // Needs at least two types
+      expect('()', reject(parser));
+      expect('(or)', reject(parser));
+      expect('(Foo or)', reject(parser));
+      expect('(or Bar)', reject(parser));
+      // Parenthesis errors
+      expect('Foo or Bar', reject(parser));
+      expect(')Foo or Bar(', reject(parser));
+      expect('Foo or Bar)', reject(parser));
+      expect('(Foo or Bar', reject(parser));
+      // Must be DistinguishableType
+      expect('(Promise<long> or long)', reject(parser));
+
+      // Nullable type
+      rejectAll(parser, _unionTypes.map(_makeNullable));
+      // Unrelated types
+      rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unrestrictedFloatTypes);
+      rejectAll(parser, _unsignedIntegerTypes);
+      rejectAll(parser, _stringTypes);
+      rejectAll(parser, _promiseTypes);
+      rejectAll(parser, _recordTypes);
+      rejectAll(parser, _bufferRelatedTypes);
+    });
+  });
   group('PrimitiveType', () {
     final parser = grammar.build(start: grammar.primitiveType).end();
     test('accept', () {
@@ -59,6 +90,7 @@ void main() {
       rejectAll(parser, _primitiveTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
       rejectAll(parser, _recordTypes);
@@ -83,6 +115,7 @@ void main() {
       rejectAll(parser, _unrestrictedFloatTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
@@ -110,6 +143,7 @@ void main() {
       rejectAll(parser, _floatTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
@@ -135,6 +169,7 @@ void main() {
       rejectAll(parser, _unsignedIntegerTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
@@ -165,6 +200,7 @@ void main() {
       rejectAll(parser, _integerTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _stringTypes);
       rejectAll(parser, _promiseTypes);
@@ -191,6 +227,7 @@ void main() {
       rejectAll(parser, _stringTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _promiseTypes);
@@ -217,6 +254,7 @@ void main() {
       rejectAll(parser, _promiseTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
@@ -246,6 +284,7 @@ void main() {
       rejectAll(parser, _recordTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
@@ -299,6 +338,7 @@ void main() {
       rejectAll(parser, _bufferRelatedTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
+      rejectAll(parser, _unionTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
       rejectAll(parser, _unsignedIntegerTypes);
       rejectAll(parser, _stringTypes);
@@ -363,6 +403,23 @@ final _userDefinedTypes = <String>[
   'DOMParser',
   'MutationObserver',
   'Foo?',
+];
+
+final _unionTypes = <String>[
+  '(boolean or byte)',
+  '(DOMString or unrestricted float)',
+  '(unsigned long long or unrestricted double)',
+  '(ByteString or ArrayBuffer)',
+  '(sequence<long> or long)',
+  '(long or FrozenArray<long>)',
+  '(ObservableArray<unsigned long> or unsigned long)',
+  '(Foo or Bar)',
+  '(Foo or Bar or Baz)',
+  '(Foo? or Bar or Baz)',
+  '(Foo or Bar? or Baz)',
+  '(Foo or Bar or Baz?)',
+  '(Foo? or Bar? or Baz?)',
+  '(Foo or Bar or Baz or Gaz)',
 ];
 
 final _primitiveTypes = <String>[
