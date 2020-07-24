@@ -44,6 +44,20 @@ void main() {
       );
     });
   });
+  group('Type', () {
+    final parser = grammar.build(start: grammar.type).end();
+    test('accept', () {
+      acceptAll(parser, _singleTypes);
+      acceptAll(parser, _distinguishableTypes.map(_makeNullable));
+      acceptAll(parser, _unionTypes);
+      acceptAll(parser, _unionTypes.map(_makeNullable));
+    });
+    test('reject', () {
+      // Can't be nullable
+      expect('any?', reject(parser));
+      expect('Promise<Foo>?', reject(parser));
+    });
+  });
   group('SingleType', () {
     final parser = grammar.build(start: grammar.singleType).end();
     test('accept', () {
