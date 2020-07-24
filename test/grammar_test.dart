@@ -15,8 +15,28 @@ ParserTestFunction accept(Parser parser) =>
 ParserTestFunction reject(Parser parser) =>
     (input) => parser.parse(input).isFailure;
 
+void acceptAll(Parser parser, List<String> inputs) {
+  for (final input in inputs) {
+    expect(input, accept(parser));
+  }
+}
+
+void rejectAll(Parser parser, List<String> inputs) {
+  for (final input in inputs) {
+    expect(input, reject(parser));
+  }
+}
+
 void main() {
   final grammar = WebIdlGrammarDefinition();
+  group('ArgumentNameKeyword', () {
+    final parser = grammar.build(start: grammar.argumentNameKeyword).end();
+    test('accept', () {
+      for (final val in _argumentNameKeywords) {
+        expect(val, accept(parser));
+      }
+    });
+  });
   group('CallbackRest', () {
     final parser = grammar.build(start: grammar.callbackRest).end();
     test('accept', () {
@@ -169,3 +189,31 @@ void main() {
     test('reject', () {});
   });
 }
+
+final _argumentNameKeywords = <String>[
+  'async',
+  'attribute',
+  'callback',
+  'const',
+  'constructor',
+  'deleter',
+  'dictionary',
+  'enum',
+  'getter',
+  'includes',
+  'inherit',
+  'interface',
+  'iterable',
+  'maplike',
+  'mixin',
+  'namespace',
+  'partial',
+  'readonly',
+  'required',
+  'setlike',
+  'setter',
+  'static',
+  'stringifier',
+  'typedef',
+  'unrestricted',
+];
