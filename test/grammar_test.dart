@@ -44,6 +44,21 @@ void main() {
       );
     });
   });
+  group('SingleType', () {
+    final parser = grammar.build(start: grammar.singleType).end();
+    test('accept', () {
+      acceptAll(parser, _singleTypes);
+      acceptAll(parser, _distinguishableTypes.map(_makeNullable));
+    });
+    test('reject', () {
+      // Can't be nullable
+      expect('any?', reject(parser));
+      expect('Promise<Foo>?', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _unionTypes);
+    });
+  });
   group('UnionType', () {
     final parser = grammar.build(start: grammar.unionType).end();
     test('accept', () {
@@ -437,6 +452,12 @@ final _userDefinedTypes = <String>[
   'FooBar2020',
   'DOMParser',
   'MutationObserver',
+];
+
+final _singleTypes = <String>[
+  'any',
+  ..._promiseTypes,
+  ..._distinguishableTypes,
 ];
 
 final _unionTypes = <String>[
