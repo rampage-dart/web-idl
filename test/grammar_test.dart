@@ -75,6 +75,41 @@ void main() {
       rejectAll(parser, _bufferRelatedTypes);
     });
   });
+  group('DistinguishableType', () {
+    final parser = grammar.build(start: grammar.distinguishableType).end();
+    test('accept', () {
+      acceptAll(parser, _distinguishableTypes);
+      acceptAll(parser, _distinguishableTypes.map(_makeNullable));
+    });
+    test('reject', () {
+      // Misspellings (generics only since others will be caught as identifiers)
+      expect('sequences<Foo>', reject(parser));
+      expect('FrozenArrays<Foo>', reject(parser));
+      expect('ObservableArrays<Foo>', reject(parser));
+      // User defined generics
+      expect('Foo<Bar>', reject(parser));
+      // Generic argument errors
+      expect('sequence<>', reject(parser));
+      expect('sequence<,>', reject(parser));
+      expect('sequence<Foo,>', reject(parser));
+      expect('sequence<Foo, Bar>', reject(parser));
+      expect('sequence<Foo, Bar, Baz>', reject(parser));
+      expect('FrozenArray<>', reject(parser));
+      expect('FrozenArray<,>', reject(parser));
+      expect('FrozenArray<Foo,>', reject(parser));
+      expect('FrozenArray<Foo, Bar>', reject(parser));
+      expect('FrozenArray<Foo, Bar, Baz>', reject(parser));
+      expect('ObservableArray<>', reject(parser));
+      expect('ObservableArray<,>', reject(parser));
+      expect('ObservableArray<Foo,>', reject(parser));
+      expect('ObservableArray<Foo, Bar>', reject(parser));
+      expect('ObservableArray<Foo, Bar, Baz>', reject(parser));
+
+      // Unrelated types
+      rejectAll(parser, _unionTypes);
+      rejectAll(parser, _promiseTypes);
+    });
+  });
   group('PrimitiveType', () {
     final parser = grammar.build(start: grammar.primitiveType).end();
     test('accept', () {
@@ -402,7 +437,6 @@ final _userDefinedTypes = <String>[
   'FooBar2020',
   'DOMParser',
   'MutationObserver',
-  'Foo?',
 ];
 
 final _unionTypes = <String>[
@@ -420,6 +454,19 @@ final _unionTypes = <String>[
   '(Foo or Bar or Baz?)',
   '(Foo? or Bar? or Baz?)',
   '(Foo or Bar or Baz or Gaz)',
+];
+
+final _distinguishableTypes = <String>[
+  'sequence<Foo>',
+  'FrozenArray<Foo>',
+  'ObservableArray<Foo>',
+  'object',
+  'symbol',
+  ..._primitiveTypes,
+  ..._stringTypes,
+  ..._bufferRelatedTypes,
+  ..._recordTypes,
+  ..._userDefinedTypes,
 ];
 
 final _primitiveTypes = <String>[
