@@ -15,13 +15,13 @@ ParserTestFunction accept(Parser parser) =>
 ParserTestFunction reject(Parser parser) =>
     (input) => parser.parse(input).isFailure;
 
-void acceptAll(Parser parser, List<String> inputs) {
+void acceptAll(Parser parser, Iterable<String> inputs) {
   for (final input in inputs) {
     expect(input, accept(parser));
   }
 }
 
-void rejectAll(Parser parser, List<String> inputs) {
+void rejectAll(Parser parser, Iterable<String> inputs) {
   for (final input in inputs) {
     expect(input, reject(parser));
   }
@@ -55,6 +55,8 @@ void main() {
       expect('bytes', reject(parser));
       expect('octets', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _primitiveTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _stringTypes);
@@ -77,6 +79,8 @@ void main() {
       expect('unrestricted float unrestricted', reject(parser));
       expect('unrestricted unrestricted float', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _unrestrictedFloatTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unsignedIntegerTypes);
@@ -102,6 +106,8 @@ void main() {
       expect('unrestricted float', reject(parser));
       expect('unrestricted double', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _floatTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unsignedIntegerTypes);
@@ -125,6 +131,8 @@ void main() {
       expect('unsigned unsigned long', reject(parser));
       expect('unsigned unsigned long long', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _unsignedIntegerTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
@@ -153,6 +161,8 @@ void main() {
       expect('unsigned long', reject(parser));
       expect('unsigned long long', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _integerTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
@@ -177,6 +187,8 @@ void main() {
       expect('DOMString DOMString', reject(parser));
       expect('USVString USVString', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _stringTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
@@ -201,6 +213,8 @@ void main() {
       expect('Promise<Foo, Bar>', reject(parser));
       expect('Promise<Foo, Bar, Baz>', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _promiseTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
@@ -228,6 +242,8 @@ void main() {
       expect('record<DOMString, Bar,>', reject(parser));
       expect('record<DOMString, Bar, Baz>', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _recordTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
@@ -279,6 +295,8 @@ void main() {
       expect('Float32Array Float32Array', reject(parser));
       expect('Float64Array Float64Array', reject(parser));
 
+      // Nullable type
+      rejectAll(parser, _bufferRelatedTypes.map(_makeNullable));
       // Unrelated types
       rejectAll(parser, _userDefinedTypes);
       rejectAll(parser, _unrestrictedFloatTypes);
@@ -329,6 +347,14 @@ final _argumentNameKeywords = <String>[
   'unrestricted',
 ];
 
+//------------------------------------------------------------------
+// Type definitions
+//
+// Used to test that types match within the Grammar.
+//------------------------------------------------------------------
+
+String _makeNullable(String str) => '$str?';
+
 final _userDefinedTypes = <String>[
   'Foo',
   'Bar',
@@ -336,6 +362,7 @@ final _userDefinedTypes = <String>[
   'FooBar2020',
   'DOMParser',
   'MutationObserver',
+  'Foo?',
 ];
 
 final _primitiveTypes = <String>[
@@ -384,12 +411,14 @@ final _promiseTypes = <String>[
   'Promise<object>',
   'Promise<symbol>',
   'Promise<Foo>',
+  'Promise<Foo?>',
 ];
 
 final _recordTypes = <String>[
   'record<ByteString, Foo>',
   'record<DOMString, Bar>',
   'record<USVString, Baz>',
+  'record<ByteString, Foo?>',
 ];
 
 final _bufferRelatedTypes = <String>[
