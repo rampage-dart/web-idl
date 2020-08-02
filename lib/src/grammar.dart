@@ -57,8 +57,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(asyncKeyword) |
       ref(attributeKeyword) |
       ref(callbackKeyword) |
-      ref(constKeyword) |
       ref(constructorKeyword) |
+      ref(constKeyword) | // Needs to come after constructor
       ref(deleterKeyword) |
       ref(dictionaryKeyword) |
       ref(enumKeyword) |
@@ -596,7 +596,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `SingleType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SingleType).
   Parser singleType() =>
-      ref(distinguishableType) | ref(token, 'any') | ref(promiseType);
+      ref(token, 'any') | ref(promiseType) | ref(distinguishableType);
 
   /// An `UnionType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionType).
@@ -638,7 +638,6 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
     final types = ref(primitiveType) |
         ref(stringType) |
-        ref(identifier) |
         sequenceType |
         ref(token, 'object') |
         ref(token, 'symbol') |
@@ -646,6 +645,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
         frozenArrayType |
         observableArrayType |
         ref(recordType);
+        // This is purposefully at the bottom since its a catch all
+        ref(identifier);
 
     return types & ref(nullable);
   }
