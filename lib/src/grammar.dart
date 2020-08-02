@@ -625,7 +625,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser distinguishableType() {
     final sequenceType = ref(token, 'sequence') &
         ref(token, '<') &
-        ref(token, typeWithExtendedAttributes) &
+        ref(typeWithExtendedAttributes) &
         ref(token, '>');
     final frozenArrayType = ref(token, 'FrozenArray') &
         ref(token, '<') &
