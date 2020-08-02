@@ -631,6 +631,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
         ref(token, '<') &
         ref(typeWithExtendedAttributes) &
         ref(token, '>');
+    final observableArrayType = ref(token, 'ObservableArray') &
+        ref(token, '<') &
+        ref(typeWithExtendedAttributes) &
+        ref(token, '>');
+
     final types = ref(primitiveType) |
         ref(stringType) |
         ref(identifier) |
@@ -639,6 +644,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
         ref(token, 'symbol') |
         ref(bufferRelatedType) |
         frozenArrayType |
+        observableArrayType |
         ref(recordType);
 
     return types & ref(nullable);
