@@ -37,7 +37,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   ///
   /// This is the root of the grammar.
   Parser definitions() =>
-      (ref(extendedAttributeList) & ref(definition) & ref(definition))
+      (ref(extendedAttributeList) & ref(definition) & ref(definitions))
           .optional();
 
   /// A `Definition` within the [WebIDL grammar]
