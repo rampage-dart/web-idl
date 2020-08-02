@@ -727,6 +727,14 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(token, 'Float32Array') |
       ref(token, 'Float64Array');
 
+  //------------------------------------------------------------------
+  // Extended Attributes
+  //
+  // The WebIDL grammar supports a more general definition for
+  // extended attributes but notes that really only 5 variants are
+  // actually used. So this only matches those 5 cases.
+  //------------------------------------------------------------------
+
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
   Parser extendedAttributeList() {
@@ -746,87 +754,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ExtendedAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttribute).
-  Parser extendedAttribute() {
-    final withParen =
-        ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')');
-    final withSquare =
-        ref(token, '[') & ref(extendedAttributeInner) & ref(token, ']');
-    final withCurly =
-        ref(token, '{') & ref(extendedAttributeInner) & ref(token, '}');
-    final ors = withParen | withSquare | withCurly | ref(other);
-
-    return ors & ref(extendedAttributeRest);
-  }
-
-  /// An `ExtendedAttributeRest` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeRest).
-  Parser extendedAttributeRest() => ref(extendedAttribute).optional();
-
-  /// An `ExtendedAttributeInner` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeInner).
-  Parser extendedAttributeInner() {
-    final withParen =
-        ref(token, '(') & ref(extendedAttributeInner) & ref(token, ')');
-    final withSquare =
-        ref(token, '[') & ref(extendedAttributeInner) & ref(token, ']');
-    final withCurly =
-        ref(token, '{') & ref(extendedAttributeInner) & ref(token, '}');
-    final ors = withParen | withSquare | withCurly | ref(otherOrComma);
-
-    return (ors & ref(extendedAttributeInner)).optional();
-  }
-
-  /// An `Other` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-Other).
-  Parser other() =>
-      ref(integer) |
-      ref(decimal) |
-      ref(identifier) |
-      ref(stringLiteral) |
-      ref(other) |
-      ref(token, '-') |
-      ref(token, '-Infinity') |
-      ref(token, '.') |
-      ref(token, '...') |
-      ref(token, ':') |
-      ref(token, ';') |
-      ref(token, '<') |
-      ref(token, '=') |
-      ref(token, '>') |
-      ref(token, '?') |
-      ref(token, 'ByteString') |
-      ref(token, 'DOMString') |
-      ref(token, 'FrozenArray') |
-      ref(token, 'Infinity') |
-      ref(token, 'NaN') |
-      ref(token, 'ObservableArray') |
-      ref(token, 'Promise') |
-      ref(token, 'USVString') |
-      ref(token, 'any') |
-      ref(token, 'boolean') |
-      ref(token, 'byte') |
-      ref(token, 'double') |
-      ref(token, 'false') |
-      ref(token, 'float') |
-      ref(token, 'long') |
-      ref(token, 'null') |
-      ref(token, 'object') |
-      ref(token, 'octet') |
-      ref(token, 'or') |
-      ref(token, 'optional') |
-      ref(token, 'record') |
-      ref(token, 'sequence') |
-      ref(token, 'short') |
-      ref(token, 'symbol') |
-      ref(token, 'true') |
-      ref(token, 'unsigned') |
-      ref(token, 'void') |
-      ref(argumentNameKeyword) |
-      ref(bufferRelatedType);
-
-  /// An `OtherOrComma` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-OtherOrComma).
-  Parser otherOrComma() => ref(other) & ref(token, ',');
+  Parser extendedAttribute() =>
+      ref(extendedAttributeArgList) |
+      ref(extendedAttributeIdent) |
+      ref(extendedAttributeIdentList) |
+      ref(extendedAttributeNamedArgList) |
+      ref(extendedAttributeNoArgs);
 
   /// An `IdentifierList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IdentifierList).
