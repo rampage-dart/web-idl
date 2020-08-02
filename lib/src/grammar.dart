@@ -696,6 +696,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser recordType() =>
       ref(token, 'record') &
       ref(token, '<') &
+      ref(stringType) &
+      ref(token, ',') &
       ref(typeWithExtendedAttributes) &
       ref(token, '>');
 
