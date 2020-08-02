@@ -106,10 +106,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PartialDefinition` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialDefinition).
-  Parser partialDefinition() =>
-      (ref(interfaceKeyword) & ref(partialInterfaceOrPartialMixin)) |
-      ref(partialDictionary) |
-      ref(namespace);
+  Parser partialDefinition() {
+    final interface =
+        ref(interfaceKeyword) & ref(partialInterfaceOrPartialMixin);
+
+    return interface | ref(partialDictionary) | ref(namespace);
+  }
 
   /// A `PartialInterfaceOrPartialMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceOrPartialMixin).
@@ -127,10 +129,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `InterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceMembers).
-  Parser interfaceMembers() => (ref(extendedAttributeList) &
-          ref(interfaceMember) &
-          ref(interfaceMembers))
-      .optional();
+  Parser interfaceMembers() {
+    final members = ref(extendedAttributeList) &
+        ref(interfaceMember) &
+        ref(interfaceMembers);
+
+    return members.optional();
+  }
 
   /// An `InterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceMember).
@@ -138,10 +143,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `PartialInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMembers).
-  Parser partialInterfaceMembers() => (ref(extendedAttributeList) &
-          ref(partialInterfaceMember) &
-          ref(partialInterfaceMembers))
-      .optional();
+  Parser partialInterfaceMembers() {
+    final members = ref(extendedAttributeList) &
+        ref(partialInterfaceMember) &
+        ref(partialInterfaceMembers);
+
+    return members.optional();
+  }
 
   /// A `PartialInterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMember).
@@ -196,21 +204,26 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `CallbackRestOrInterface` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRestOrInterface).
-  Parser callbackRestOrInterface() =>
-      ref(callbackRest) |
-      (ref(interfaceKeyword) &
-          ref(identifier) &
-          ref(token, '{') &
-          ref(callbackInterfaceMembers) &
-          ref(token, '}') &
-          ref(token, ';'));
+  Parser callbackRestOrInterface() {
+    final interface = ref(interfaceKeyword) &
+        ref(identifier) &
+        ref(token, '{') &
+        ref(callbackInterfaceMembers) &
+        ref(token, '}') &
+        ref(token, ';');
+
+    return ref(callbackRest) | interface;
+  }
 
   /// A `CallbackInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackInterfaceMembers).
-  Parser callbackInterfaceMembers() => (ref(extendedAttributeList) &
-          ref(callbackInterfaceMember) &
-          ref(callbackInterfaceMembers))
-      .optional();
+  Parser callbackInterfaceMembers() {
+    final members = ref(extendedAttributeList) &
+        ref(callbackInterfaceMember) &
+        ref(callbackInterfaceMembers);
+
+    return members.optional();
+  }
 
   /// A `CallbackInterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackInterfaceMember).
@@ -345,12 +358,15 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ArgumentRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentRest).
-  Parser argumentRest() =>
-      (ref(token, 'optional') &
-          ref(typeWithExtendedAttributes) &
-          ref(argumentName) &
-          ref(defaultTo)) |
-      (ref(type) & ref(ellipsis) & ref(argumentName));
+  Parser argumentRest() {
+    final optional = ref(token, 'optional') &
+        ref(typeWithExtendedAttributes) &
+        ref(argumentName) &
+        ref(defaultTo);
+    final require = ref(type) & ref(ellipsis) & ref(argumentName);
+
+    return optional | require;
+  }
 
   /// An `ArgumentName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentName).
@@ -465,10 +481,13 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `NamespaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-NamespaceMembers).
-  Parser namespaceMembers() => (ref(extendedAttributeList) &
-          ref(namespaceMember) &
-          ref(namespaceMembers))
-      .optional();
+  Parser namespaceMembers() {
+    final members = ref(extendedAttributeList) &
+        ref(namespaceMember) &
+        ref(namespaceMembers);
+
+    return members.optional();
+  }
 
   /// A `NamespaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-NamespaceMember).
@@ -498,12 +517,16 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `DictionaryMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMemberRest).
-  Parser dictionaryMemberRest() =>
-      (ref(requiredKeyword) &
-          ref(typeWithExtendedAttributes) &
-          ref(identifier) &
-          ref(token, ';')) |
-      (ref(type) & ref(identifier) & ref(defaultTo) & ref(token, ';'));
+  Parser dictionaryMemberRest() {
+    final require = ref(requiredKeyword) &
+        ref(typeWithExtendedAttributes) &
+        ref(identifier) &
+        ref(token, ';');
+    final member =
+        ref(type) & ref(identifier) & ref(defaultTo) & ref(token, ';');
+
+    return require | member;
+  }
 
   /// A `PartialDictionary` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialDictionary).
@@ -697,11 +720,14 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
-  Parser extendedAttributeList() => (ref(token, '[') &
-          ref(extendedAttribute) &
-          ref(extendedAttributes) &
-          ref(token, ']'))
-      .optional();
+  Parser extendedAttributeList() {
+    final attributes = ref(token, '[') &
+        ref(extendedAttribute) &
+        ref(extendedAttributes) &
+        ref(token, ']');
+
+    return attributes.optional();
+  }
 
   /// An `ExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributes).
