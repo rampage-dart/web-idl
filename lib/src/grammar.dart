@@ -575,7 +575,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(returnType) &
       ref(token, '(') &
       ref(argumentList) &
-      ref(token, ')');
+      ref(token, ')') &
+      ref(token, ';');
 
   /// A `Typedef` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Typedef).
