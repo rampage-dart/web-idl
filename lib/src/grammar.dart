@@ -644,7 +644,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
         ref(bufferRelatedType) |
         frozenArrayType |
         observableArrayType |
-        ref(recordType);
+        ref(recordType) |
         // This is purposefully at the bottom since its a catch all
         ref(identifier);
 
