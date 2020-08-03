@@ -24,3 +24,26 @@ class _Element implements Element {
   @override
   final String name;
 }
+
+//------------------------------------------------------------------
+// WebIDL definition elements
+//------------------------------------------------------------------
+
+/// Builds an immutable [EnumElement].
+class EnumBuilder extends ElementBuilder<EnumElement> {
+  /// The set of valid strings for the [EnumElement].
+  List<String> values = <String>[];
+
+  @override
+  EnumElement build() => _EnumElement(name, values);
+}
+
+@immutable
+class _EnumElement extends _Element implements EnumElement {
+  _EnumElement(String name, Iterable<String> values)
+      : values = List.unmodifiable(values),
+        super(name);
+
+  @override
+  final List<String> values;
+}
