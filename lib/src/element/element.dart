@@ -12,3 +12,16 @@ abstract class Element {
   /// a name.
   String get name;
 }
+
+//------------------------------------------------------------------
+// WebIDL definition elements
+//------------------------------------------------------------------
+
+/// A type whose valid [values] are a set of predefined strings.
+///
+/// Enumerations can be used to restrict the possible string values that can be
+/// assigned to an attribute or passed to an operation.
+abstract class EnumElement implements Element {
+  /// The set of valid strings for the enumeration.
+  List<String> get values;
+}
