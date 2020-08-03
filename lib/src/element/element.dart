@@ -17,6 +17,12 @@ abstract class Element {
 // WebIDL definition elements
 //------------------------------------------------------------------
 
+/// Contains a group of [Element] definitions.
+abstract class FragmentElement implements Element {
+  /// The enumerations defined within the WebIDL fragment.
+  List<EnumElement> get enumerations;
+}
+
 /// A type whose valid [values] are a set of predefined strings.
 ///
 /// Enumerations can be used to restrict the possible string values that can be
