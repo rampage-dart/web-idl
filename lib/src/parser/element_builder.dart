@@ -29,6 +29,28 @@ class _Element implements Element {
 // WebIDL definition elements
 //------------------------------------------------------------------
 
+/// Builds an immutable [FragmentElement].
+class FragmentBuilder extends ElementBuilder<FragmentElement> {
+  /// The [EnumElement]s defined within the [FragmentElement].
+  List<EnumBuilder> enumerations = <EnumBuilder>[];
+
+  @override
+  FragmentElement build() => _FragmentElement(
+        name,
+        enumerations.map((b) => b.build()),
+      );
+}
+
+@immutable
+class _FragmentElement extends _Element implements FragmentElement {
+  _FragmentElement(String name, Iterable<EnumElement> enumerations)
+      : enumerations = List.unmodifiable(enumerations),
+        super(name);
+
+  @override
+  final List<EnumElement> enumerations;
+}
+
 /// Builds an immutable [EnumElement].
 class EnumBuilder extends ElementBuilder<EnumElement> {
   /// The set of valid strings for the [EnumElement].
