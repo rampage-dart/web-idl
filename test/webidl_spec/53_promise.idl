@@ -1,0 +1,8 @@
+// Example 53
+// delay is an operation that returns a promise that will be fulfilled in a
+// number of milliseconds. It illustrates how simply you can resolve a promise,
+// with one line of prose.
+
+interface I {
+  Promise<undefined> delay(unrestricted double ms);
+};

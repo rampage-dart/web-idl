@@ -1,0 +1,10 @@
+// Example 23
+// For the following interface:
+
+[Exposed=Window]
+interface A {
+  /* f1 */ undefined f(DOMString a);
+  /* f2 */ undefined f(Node a, DOMString b, double... c);
+  /* f3 */ undefined f();
+  /* f4 */ undefined f(Event a, DOMString b, optional DOMString c, double... d);
+};

@@ -1,0 +1,10 @@
+// Example 17
+// The following IDL fragment defines an interface with a getter and a setter:
+
+[Exposed=Window]
+interface Dictionary {
+  readonly attribute unsigned long propertyCount;
+
+  getter double (DOMString propertyName);
+  setter undefined (DOMString propertyName, double propertyValue);
+};

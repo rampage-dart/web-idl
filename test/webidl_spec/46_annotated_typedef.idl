@@ -1,0 +1,3 @@
+// Example 46
+
+typedef [XAttr] long xlong;

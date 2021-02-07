@@ -1,0 +1,20 @@
+// Example 10
+// The following IDL fragment demonstrates how regular operations can be
+// declared on an interface:
+
+[Exposed=Window]
+interface Dimensions {
+  attribute unsigned long width;
+  attribute unsigned long height;
+};
+
+[Exposed=Window]
+interface Button {
+
+  // An operation that takes no arguments and returns a boolean.
+  boolean isMouseOver();
+
+  // Overloaded operations.
+  undefined setDimensions(Dimensions size);
+  undefined setDimensions(unsigned long width, unsigned long height);
+};

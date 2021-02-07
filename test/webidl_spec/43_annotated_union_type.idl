@@ -1,0 +1,6 @@
+// Example 43
+
+[Exposed=Window]
+interface I {
+    attribute [XAttr] (long or Node) attrib;
+};

@@ -1,0 +1,18 @@
+// Example 7
+// The following IDL fragment defines an interface, Entry, and an interface
+// mixin, Observable. The includes statement specifies that Observable’s
+// members are always included on objects implementing Entry.
+
+interface Entry {
+  readonly attribute unsigned short entryType;
+  // ...
+};
+
+interface mixin Observable {
+  undefined addEventListener(DOMString type,
+                        EventListener listener,
+                        boolean useCapture);
+  // ...
+};
+
+Entry includes Observable;

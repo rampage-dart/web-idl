@@ -1,0 +1,8 @@
+// Example 33
+// The following IDL fragment defines a namespace.
+
+namespace VectorUtils {
+  readonly attribute Vector unit;
+  double dotProduct(Vector x, Vector y);
+  Vector crossProduct(Vector x, Vector y);
+};

@@ -1,0 +1,11 @@
+// Example 11
+// The following IDL fragment defines an interface that has two variadic
+// operations:
+
+[Exposed=Window]
+interface IntegerSet {
+  readonly attribute unsigned long cardinality;
+
+  undefined union(long... ints);
+  undefined intersection(long... ints);
+};

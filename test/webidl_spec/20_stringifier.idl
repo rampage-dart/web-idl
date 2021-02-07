@@ -1,0 +1,10 @@
+// Example 20
+// The following IDL fragment defines an interface that will stringify to the
+// value of its name attribute:
+
+[Exposed=Window]
+interface Student {
+  constructor();
+  attribute unsigned long id;
+  stringifier attribute DOMString name;
+};
