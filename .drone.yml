@@ -43,7 +43,8 @@ steps:
   - name: cache
     path: /root/.pub-cache
   commands:
-  - dart test --coverage coverage
+  # Using `pub run test` is deprecated but this step using `dart run test` does not complete
+  - pub run test --coverage coverage
 
 - name: generate-lcov
   image: google/dart:beta
