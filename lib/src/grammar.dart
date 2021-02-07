@@ -311,7 +311,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A `RegularOperation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RegularOperation).
-  Parser regularOperation() => ref(returnType) & ref(operationRest);
+  Parser regularOperation() => ref(type) & ref(operationRest);
 
   /// A `SpecialOperation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SpecialOperation).
@@ -375,10 +375,6 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `Ellipsis` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Ellipsis).
   Parser ellipsis() => ref(token, '...').optional();
-
-  /// A `ReturnType` within the [WebIDL grammar]
-  /// (https://heycam.github.io/webidl/#index-prod-ReturnType).
-  Parser returnType() => ref(token, 'void') | ref(type);
 
   /// A `Constructor` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Constructor).
@@ -572,7 +568,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser callbackRest() =>
       ref(identifier) &
       ref(token, '=') &
-      ref(returnType) &
+      ref(type) &
       ref(token, '(') &
       ref(argumentList) &
       ref(token, ')') &
@@ -694,10 +690,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `PromiseType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PromiseType).
   Parser promiseType() =>
-      ref(token, 'Promise') &
-      ref(token, '<') &
-      ref(returnType) &
-      ref(token, '>');
+      ref(token, 'Promise') & ref(token, '<') & ref(type) & ref(token, '>');
 
   /// A `RecordType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RecordType).
