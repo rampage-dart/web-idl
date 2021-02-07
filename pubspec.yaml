@@ -1,10 +1,11 @@
 name: web_idl
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
-  petitparser: ^3.1.0
+  petitparser: ^4.0.0-nullsafety
 
 dev_dependencies:
-  test: ^1.9.4
+  path: ^1.8.0-nullsafety
+  test: ^1.16.0-nullsafety

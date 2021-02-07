@@ -9,7 +9,7 @@ import 'package:web_idl/src/element.dart';
 /// Builds an immutable [Element].
 abstract class ElementBuilder<T extends Element> {
   /// The name of the [Element].
-  String name;
+  String name = '';
 
   /// Returns the [Element] specified by the builder.
   ///
