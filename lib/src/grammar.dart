@@ -819,17 +819,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
     return char('-').optional() & numberTypes;
   }
 
-  /// An `Integer` that is base 10.
+  /// A decimal, base 10, `Integer`.
   Parser decimalInteger() => digit().plus();
 
-  /// An `Integer` that is base 16.
+  /// A hexidecimal, base 16, `Integer`.
   Parser hexidecimalInteger() =>
       string('0x') & ref(_hexidecimalDigit).plus() |
       string('0X') & ref(_hexidecimalDigit).plus();
 
   Parser _hexidecimalDigit() => pattern('0-9a-fA-F');
 
-  /// An `Integer` that is base 8.
+  /// An octal, base 8, `Integer`.
   Parser octalInteger() => char('0') & pattern('0-7').star();
 
   /// A `Decimal` within the [WebIDL grammar]
