@@ -7,13 +7,7 @@ import 'package:petitparser/petitparser.dart';
 import 'package:test/test.dart';
 import 'package:web_idl/web_idl.dart';
 
-typedef ParserTestFunction = bool Function(String input);
-
-ParserTestFunction accept(Parser parser) =>
-    (input) => parser.parse(input).isSuccess;
-
-ParserTestFunction reject(Parser parser) =>
-    (input) => parser.parse(input).isFailure;
+import 'utilities.dart';
 
 void acceptAll(Parser parser, Iterable<String> inputs) {
   for (final input in inputs) {
