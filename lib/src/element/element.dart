@@ -42,8 +42,10 @@ abstract class EnumElement implements Element {
 abstract class ArgumentElement implements Element {
   /// The type for the argument.
   WebIdlType get type;
+
   /// Whether the argument is optional.
   bool get isOptional;
+
   /// Whether the argument is variadic.
   bool get isVariadic;
 }
