@@ -799,12 +799,16 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(token, ')');
 
   //------------------------------------------------------------------
-  // Lexical tokens.
+  // Lexical tokens
   //------------------------------------------------------------------
 
   /// An `Identifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-identifier).
-  Parser identifier() => pattern('a-zA-Z_').seq(word().star());
+  Parser identifier() => ref(token, _identifier);
+  Parser _identifier() =>
+      pattern('_-').optional() &
+      pattern('a-zA-Z') &
+      pattern('0-9a-zA-Z_-').star();
 
   /// A `String` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-string).
