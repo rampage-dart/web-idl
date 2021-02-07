@@ -67,3 +67,9 @@ steps:
 volumes:
 - name: cache
   temp: {}
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
