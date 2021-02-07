@@ -40,7 +40,7 @@ void main() {
     final parser = grammar.build<Object?>(start: grammar.callbackRest).end();
     test('accept', () {
       expect(
-        'MutationCallback = void (sequence<MutationRecord> mutations, MutationObserver observer)',
+        'MutationCallback = void (sequence<MutationRecord> mutations, MutationObserver observer);',
         accept(parser),
       );
     });

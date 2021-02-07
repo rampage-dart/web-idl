@@ -2,8 +2,9 @@
 // [Exposed] is intended to be used to control whether interfaces, callback
 // interfaces, namespaces, or individual interface, mixin or namespace members
 // are available for use in workers, Worklet, Window, or any combination of the above.
+//
+// The following IDL fragment shows how that might be achieved:
 
-The following IDL fragment shows how that might be achieved:
 [Exposed=Window, Global=Window]
 interface Window {
   // ...
