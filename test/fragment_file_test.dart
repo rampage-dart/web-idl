@@ -11,12 +11,12 @@ import 'package:web_idl/web_idl.dart';
 import 'utilities.dart';
 
 Future<void> main() async {
-  final files = await findTests('test/webidl_spec').toList();
+  final webIdlSpecs = await findTests('test/web_idl_spec').toList();
 
   group('spec idls', () {
     final parser = WebIdlGrammar();
 
-    for (final file in files) {
+    for (final file in webIdlSpecs) {
       test(basenameWithoutExtension(file.path), () async {
         final contents = await file.readAsString();
         expect(contents, accept(parser));
