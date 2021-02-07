@@ -23,6 +23,22 @@ void rejectAll(Parser parser, Iterable<String> inputs) {
 
 void main() {
   final grammar = WebIdlGrammarDefinition();
+  group('Definitions', () {
+    final parser = grammar.build<Object?>().end();
+    test('accept', () {
+      expect(_definition.join('\n'), accept(parser));
+    });
+  });
+  group('Definition', () {
+    final parser = grammar.build<Object?>(start: grammar.definition).end();
+    test('accept', () {
+      acceptAll(parser, _definition);
+      expect('enum MealType { "rice" };', accept(parser));
+      expect('enum MealType { "rice", "noodles", "other" };', accept(parser));
+      expect('partial interface Foo {};', accept(parser));
+      expect('Node includes EventTarget;', accept(parser));
+    });
+  });
   group('ArgumentNameKeyword', () {
     final parser =
         grammar.build<Object?>(start: grammar.argumentNameKeyword).end();
@@ -30,13 +46,136 @@ void main() {
       acceptAll(parser, _argumentNameKeywords);
     });
   });
+  group('AttributeRest', () {
+    final parser = grammar.build<Object?>(start: grammar.attributeRest).end();
+    test('accept', () {
+      expect('attribute double async;', accept(parser));
+      expect('attribute Foo foo;', accept(parser));
+    });
+  });
+  group('AttributeName', () {
+    final parser = grammar.build<Object?>(start: grammar.attributeName).end();
+    test('accept', () {
+      expect('async', accept(parser));
+      expect('required', accept(parser));
+    });
+  });
+  group('AttributeNameKeyword', () {
+    final parser =
+        grammar.build<Object?>(start: grammar.attributeNameKeyword).end();
+    test('accept', () {
+      expect('async', accept(parser));
+      expect('required', accept(parser));
+    });
+  });
+  group('Partial', () {
+    final parser = grammar.build<Object?>(start: grammar.partial).end();
+    test('accept', () {
+      expect('partial interface Foo {};', accept(parser));
+      expect('partial interface mixin Foo {};', accept(parser));
+      expect('partial namespace Foo {};', accept(parser));
+    });
+    test('reject', () {
+      expect('interface Foo {};', reject(parser));
+      expect('interface mixin Foo {};', reject(parser));
+      expect('namespace Foo {};', reject(parser));
+    });
+  });
+  group('Enum', () {
+    final parser = grammar.build<Object?>(start: grammar.enumeration).end();
+    test('accept', () {
+      expect('enum MealType { "rice" };', accept(parser));
+      expect('enum MealType { "rice", "noodles", "other" };', accept(parser));
+      // Single trailing ,
+      expect('enum MealType { "rice", "noodles", "other", };', accept(parser));
+    });
+    test('reject', () {
+      // Enum can't be empty
+      expect('enum MealType { };', reject(parser));
+      // Missing ;
+      expect('enum MealType { "rice" }', reject(parser));
+      expect('enum MealType { "rice", "noodles", "other" }', reject(parser));
+      // Missing ,
+      expect('enum MealType { "rice", "noodles" "other" };', reject(parser));
+      expect('enum MealType { "rice" "noodles", "other" };', reject(parser));
+      expect('enum MealType { "rice" "noodles" "other" };', reject(parser));
+      // Multiple trailing ,
+      expect('enum MealType { "rice", "noodles", , , };', reject(parser));
+      // Misspellings
+      expect('enu MealType { "rice", "noodles", "other" };', reject(parser));
+      // Not enum declaration
+      expect('namespace Foo { };', reject(parser));
+    });
+  });
   group('CallbackRest', () {
     final parser = grammar.build<Object?>(start: grammar.callbackRest).end();
     test('accept', () {
       expect(
+        'AsyncOperationCallback = void (DOMString status);',
+        accept(parser),
+      );
+      expect(
         'MutationCallback = void (sequence<MutationRecord> mutations, MutationObserver observer);',
         accept(parser),
       );
+    });
+  });
+  group('Const', () {
+    final parser = grammar.build<Object?>(start: grammar.constant).end();
+    test('accept', () {
+      expect('const boolean aBool = false;', accept(parser));
+      expect('const unsigned long anInt = 4;', accept(parser));
+      expect('const float aFloat = -1.0;', accept(parser));
+    });
+    test('reject', () {
+      // Nullable types
+      expect('const boolean? aBoolNullable = false;', reject(parser));
+      expect('const unsigned long? anIntNullable = 2;', reject(parser));
+      expect('const float? aFloat = -1.0;', reject(parser));
+    });
+  });
+  group('ArgumentList', () {
+    final parser = grammar.build<Object?>(start: grammar.argumentList).end();
+    test('accept', () {
+      expect('', accept(parser));
+
+      expect('any arg', accept(parser));
+      expect('Promise<Foo> promise', accept(parser));
+      expect('(double or short) num', accept(parser));
+      expect('Foo foo', accept(parser));
+      expect('optional any foo', accept(parser));
+      expect('optional Foo foo', accept(parser));
+
+      expect('Foo foo, any arg', accept(parser));
+      expect('any arg, Foo foo', accept(parser));
+    });
+  });
+  group('Argument', () {
+    final parser = grammar.build<Object?>(start: grammar.argument).end();
+    test('accept', () {
+      // Builtin types
+      expect('any arg', accept(parser));
+      expect('Promise<Foo> promise', accept(parser));
+      expect('boolean withFoo', accept(parser));
+      expect('(double or short) num', accept(parser));
+
+      expect('any... arg', accept(parser));
+      expect('Promise<Foo>... promise', accept(parser));
+      expect('boolean... withFoo', accept(parser));
+      expect('(double or short)... num', accept(parser));
+
+      expect('optional any arg', accept(parser));
+      expect('optional Promise<Foo> promise', accept(parser));
+      expect('optional boolean withFoo', accept(parser));
+      expect('optional (double or short) num', accept(parser));
+
+      // User defined
+      expect('Foo async', accept(parser));
+      expect('Foo foo', accept(parser));
+      expect('Foo? foo', accept(parser));
+      expect('Foo... foo', accept(parser));
+      expect('(Foo or Bar) foobar', accept(parser));
+      expect('(Foo or Bar)... foobars', accept(parser));
     });
   });
   group('ArgumentName', () {
@@ -433,6 +572,17 @@ void main() {
   });
 }
 
+final _definition = <String>[
+  ..._partial,
+];
+
+final _partial = <String>[
+  'partial interface Foo {};',
+  'partial interface mixin Foo {};',
+  'partial namespace Foo {};',
+  'partial dictionary Foo {};',
+];
+
 final _argumentNameKeywords = <String>[
   'async',
   'attribute',
@@ -461,7 +611,7 @@ final _argumentNameKeywords = <String>[
   'unrestricted',
 ];
 
-final _validIdentifiers = [
+final _validIdentifiers = <String>[
   'foo',
   'bar',
   'baz',
@@ -473,12 +623,16 @@ final _validIdentifiers = [
   // With numbers
   'foo0',
   'foo0bar1baz2',
+  // With _
+  'FOO',
+  'FOO_BAR',
+  'Foo_Bar_Baz',
   // DOM names
   'Element',
   'MutationObserver',
 ];
 
-final _invalidIdentifiers = [
+final _invalidIdentifiers = <String>[
   '0',
   '*foo',
 ];
