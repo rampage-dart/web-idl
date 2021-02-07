@@ -155,7 +155,6 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMember).
   Parser partialInterfaceMember() =>
       ref(constant) |
-      ref(operation) |
       ref(stringifier) |
       ref(staticMember) |
       ref(iterable) |
@@ -164,7 +163,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(readWriteAttribute) |
       ref(readWriteMaplike) |
       ref(readWriteSetlike) |
-      ref(inheritAttribute);
+      ref(inheritAttribute) |
+      ref(operation);
 
   /// An `Inheritance` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Inheritance).
