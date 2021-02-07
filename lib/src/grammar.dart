@@ -22,9 +22,9 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// Parses the [input] token.
   Parser token(Object input) {
     if (input is Parser) {
-      return input.token().trim(ref(whitespace));
+      return input.token().trim(ref(_hidden));
     } else if (input is String) {
-      return token(input.length == 1 ? char(input) : string(input));
+      return token(input.toParser());
     } else if (input is Function) {
       return token(ref(input));
     }
@@ -829,6 +829,25 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
           .seq(pattern('-+').optional())
           .seq(digit().plus())
           .optional();
+
+  // -----------------------------------------------------------------
+  // Whitespace and comments.
+  // -----------------------------------------------------------------
+
+  Parser _hidden() => ref(_hiddenStuff).plus();
+
+  Parser _hiddenStuff() =>
+      whitespace() | ref(_singleLineComment) | ref(_multiLineComment);
+
+  Parser _singleLineComment() =>
+      string('//') & ref(_newLine).neg().star() & ref(_newLine).optional();
+
+  Parser _multiLineComment() =>
+      string('/*') &
+      (ref(_multiLineComment) | string('*/').neg()).star() &
+      string('*/');
+
+  Parser _newLine() => pattern('\n\r');
 
   //------------------------------------------------------------------
   // Keyword definitions.
