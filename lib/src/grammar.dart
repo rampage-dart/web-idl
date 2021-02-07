@@ -653,9 +653,11 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser primitiveType() =>
       ref(unsignedIntegerType) |
       ref(unrestrictedFloatType) |
+      ref(token, 'undefined') |
       ref(token, 'boolean') |
       ref(token, 'byte') |
-      ref(token, 'octet');
+      ref(token, 'octet') |
+      ref(token, 'bigint');
 
   /// An `UnrestrictedFloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnrestrictedFloatType).
