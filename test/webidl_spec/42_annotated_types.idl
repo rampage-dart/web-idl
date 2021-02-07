@@ -1,0 +1,14 @@
+// Example 42
+
+[Exposed=Window]
+interface I {
+    attribute [XAttr] long attrib;
+    undefined f1(sequence<[XAttr] long> arg);
+    undefined f2(optional [XAttr] long arg);
+
+    maplike<[XAttr2] DOMString, [XAttr3] long>;
+};
+
+dictionary D {
+    required [XAttr] long member;
+};

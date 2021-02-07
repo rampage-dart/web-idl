@@ -1,0 +1,10 @@
+// Example 38
+// The following IDL fragment defines a callback function used for an API that
+// invokes a user-defined function when an operation is complete.
+
+callback AsyncOperationCallback = undefined (DOMString status);
+
+[Exposed=Window]
+interface AsyncOperations {
+  undefined performOperation(AsyncOperationCallback whenFinished);
+};

@@ -1,0 +1,20 @@
+// Example 14
+// The following IDL fragment defines an interface Transaction that has a
+// toJSON method defined in prose:
+
+[Exposed=Window]
+interface Transaction {
+  readonly attribute DOMString from;
+  readonly attribute DOMString to;
+  readonly attribute double amount;
+  readonly attribute DOMString description;
+  readonly attribute unsigned long number;
+  TransactionJSON toJSON();
+};
+
+dictionary TransactionJSON {
+  Account from;
+  Account to;
+  double amount;
+  DOMString description;
+};

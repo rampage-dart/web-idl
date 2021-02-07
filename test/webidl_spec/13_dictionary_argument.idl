@@ -1,0 +1,12 @@
+// Example 13
+// The following IDL fragment defines an interface with an operation that takes
+// a dictionary argument:
+
+dictionary LookupOptions {
+  boolean caseSensitive = false;
+};
+
+[Exposed=Window]
+interface AddressBook {
+  boolean hasAddressForName(USVString name, optional LookupOptions options = {});
+};

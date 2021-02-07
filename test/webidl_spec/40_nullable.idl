@@ -1,0 +1,8 @@
+// Example 40
+// For example, a type that allows the values true, false and null is written
+// as boolean?:
+
+[Exposed=Window]
+interface NetworkFetcher {
+  undefined get(optional boolean? areWeThereYet = false);
+};

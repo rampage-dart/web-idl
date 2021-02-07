@@ -1,0 +1,67 @@
+// Example 64
+// [Exposed] is intended to be used to control whether interfaces, callback
+// interfaces, namespaces, or individual interface, mixin or namespace members
+// are available for use in workers, Worklet, Window, or any combination of the above.
+
+The following IDL fragment shows how that might be achieved:
+[Exposed=Window, Global=Window]
+interface Window {
+  // ...
+};
+
+// By using the same identifier Worker for both SharedWorkerGlobalScope
+// and DedicatedWorkerGlobalScope, both can be addressed in an [Exposed]
+// extended attribute at once.
+[Exposed=Worker, Global=Worker]
+interface SharedWorkerGlobalScope : WorkerGlobalScope {
+  // ...
+};
+
+[Exposed=Worker, Global=Worker]
+interface DedicatedWorkerGlobalScope : WorkerGlobalScope {
+  // ...
+};
+
+// Dimensions is available for use in workers and on the main thread.
+[Exposed=(Window,Worker)]
+interface Dimensions {
+  constructor(double width, double height);
+  readonly attribute double width;
+  readonly attribute double height;
+};
+
+// WorkerNavigator is only available in workers.  Evaluating WorkerNavigator
+// in the global scope of a worker would give you its interface object, while
+// doing so on the main thread will give you a ReferenceError.
+[Exposed=Worker]
+interface WorkerNavigator {
+  // ...
+};
+
+// Node is only available on the main thread.  Evaluating Node
+// in the global scope of a worker would give you a ReferenceError.
+[Exposed=Window]
+interface Node {
+  // ...
+};
+
+// MathUtils is available for use in workers and on the main thread.
+[Exposed=(Window,Worker)]
+namespace MathUtils {
+  double someComplicatedFunction(double x, double y);
+};
+
+// WorkerUtils is only available in workers.  Evaluating WorkerUtils
+// in the global scope of a worker would give you its namespace object, while
+// doing so on the main thread will give you a ReferenceError.
+[Exposed=Worker]
+namespace WorkerUtils {
+  undefined setPriority(double x);
+};
+
+// NodeUtils is only available in the main thread.  Evaluating NodeUtils
+// in the global scope of a worker would give you a ReferenceError.
+[Exposed=Window]
+namespace NodeUtils {
+  DOMString getAllText(Node node);
+};

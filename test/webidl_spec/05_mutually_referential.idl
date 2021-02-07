@@ -1,0 +1,19 @@
+// Example 5
+// he following IDL fragment demonstrates the definition of two mutually
+// referential interfaces. Both Human and Dog inherit from Animal. Objects that
+// implement either of those two interfaces will thus have a name attribute.
+
+[Exposed=Window]
+interface Animal {
+  attribute DOMString name;
+};
+
+[Exposed=Window]
+interface Human : Animal {
+  attribute Dog? pet;
+};
+
+[Exposed=Window]
+interface Dog : Animal {
+  attribute Human? owner;
+};

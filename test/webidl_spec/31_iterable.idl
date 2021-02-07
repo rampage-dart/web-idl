@@ -1,0 +1,16 @@
+// Example 31
+// Consider the following interface SessionManager, which allows access to a
+// number of Session objects keyed by username:
+
+[Exposed=Window]
+interface SessionManager {
+  Session getSessionForUser(DOMString username);
+
+  iterable<DOMString, Session>;
+};
+
+[Exposed=Window]
+interface Session {
+  readonly attribute DOMString username;
+  // ...
+};

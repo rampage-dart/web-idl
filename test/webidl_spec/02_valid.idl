@@ -1,0 +1,13 @@
+// Example 2
+// Therefore, the following IDL fragment is valid:
+
+[Exposed=Window]
+interface B : A {
+  undefined f(SequenceOfLongs x);
+};
+
+[Exposed=Window]
+interface A {
+};
+
+typedef sequence<long> SequenceOfLongs;

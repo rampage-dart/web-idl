@@ -1,0 +1,17 @@
+// Example 39
+// The following IDL fragment demonstrates the use of typedefs to allow the use
+// of a short identifier instead of a long sequence type.
+
+[Exposed=Window]
+interface Point {
+  attribute double x;
+  attribute double y;
+};
+
+typedef sequence<Point> Points;
+
+[Exposed=Window]
+interface Widget {
+  boolean pointWithinBounds(Point p);
+  boolean allPointsWithinBounds(Points ps);
+};

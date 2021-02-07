@@ -1,0 +1,8 @@
+// Example 12
+// The following IDL fragment defines an interface with a single operation that
+// can be invoked with two different argument list lengths:
+
+[Exposed=Window]
+interface ColorCreator {
+  object createColor(double v1, double v2, double v3, optional double alpha);
+};

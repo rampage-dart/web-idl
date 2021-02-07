@@ -1,0 +1,15 @@
+// Example 6
+// The following IDL fragment defines simplified versions of a DOM interfaces
+// and a callback interface.
+
+[Exposed=Window]
+interface Node {
+  readonly attribute DOMString nodeName;
+  readonly attribute Node? parentNode;
+  Node appendChild(Node newChild);
+  undefined addEventListener(DOMString type, EventListener listener);
+};
+
+callback interface EventListener {
+  undefined handleEvent(Event event);
+};

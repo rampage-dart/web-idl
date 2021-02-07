@@ -1,0 +1,13 @@
+// Example 37
+// The following IDL fragment defines an enumeration that is used as the type
+// of an attribute and an operation argument:
+
+enum MealType { "rice", "noodles", "other" };
+
+[Exposed=Window]
+interface Meal {
+  attribute MealType type;
+  attribute double size;     // in grams
+
+  undefined initialize(MealType type, double size);
+};

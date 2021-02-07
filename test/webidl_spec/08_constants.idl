@@ -1,0 +1,11 @@
+// Example 8
+// The following IDL fragment demonstrates how constants of the above types can
+// be defined.
+
+[Exposed=Window]
+interface Util {
+  const boolean DEBUG = false;
+  const octet LF = 10;
+  const unsigned long BIT_MASK = 0x0000fc00;
+  const double AVOGADRO = 6.022e23;
+};

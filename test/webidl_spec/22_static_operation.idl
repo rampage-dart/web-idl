@@ -1,0 +1,16 @@
+// Example 22
+// The following IDL fragment defines an interface Circle that has a static
+// operation declared on it:
+
+[Exposed=Window]
+interface Point { /* ... */ };
+
+[Exposed=Window]
+interface Circle {
+  attribute double cx;
+  attribute double cy;
+  attribute double radius;
+
+  static readonly attribute long triangulationCount;
+  static Point triangulate(Circle c1, Circle c2, Circle c3);
+};

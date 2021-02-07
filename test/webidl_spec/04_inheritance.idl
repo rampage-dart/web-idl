@@ -1,0 +1,14 @@
+// Exaple 4
+// Consider the following two interfaces.
+
+[Exposed=Window]
+interface A {
+  undefined f();
+  undefined g();
+};
+
+[Exposed=Window]
+interface B : A {
+  undefined f();
+  undefined g(DOMString x);
+};

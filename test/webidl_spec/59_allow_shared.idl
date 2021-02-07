@@ -1,0 +1,9 @@
+// Example 59
+// In the following IDL fragment, one operation’s argument uses the
+// [AllowShared] extended attribute, while the other does not:
+
+[Exposed=Window]
+interface RenderingContext {
+  undefined readPixels(long width, long height, BufferSource pixels);
+  undefined readPixelsShared(long width, long height, [AllowShared] BufferSource pixels);
+};

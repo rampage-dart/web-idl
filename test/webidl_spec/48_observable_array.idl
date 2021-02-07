@@ -1,0 +1,8 @@
+// Example 48
+// The following IDL fragment defines an interface with an observable array
+// attribute:
+
+[Exposed=Window]
+interface Building {
+  attribute ObservableArray<Employee> employees;
+};

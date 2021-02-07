@@ -1,0 +1,19 @@
+// Example 16
+// The following IDL defines two interfaces. The second has constructor
+// operations, while the first does not.
+
+[Exposed=Window]
+interface NodeList {
+  Node item(unsigned long index);
+  readonly attribute unsigned long length;
+};
+
+[Exposed=Window]
+interface Circle {
+  constructor();
+  constructor(double radius);
+  attribute double r;
+  attribute double cx;
+  attribute double cy;
+  readonly attribute double circumference;
+};
