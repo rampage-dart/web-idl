@@ -26,7 +26,8 @@ steps:
   - name: cache
     path: /root/.pub-cache
   commands:
-  - dart format --set-exit-if-changed .
+  # Using `dartfmt` is deprecated but this step using `dart format` does not set exit code
+  - dartfmt --set-exit-if-changed .
 
 - name: lint
   image: google/dart:beta
