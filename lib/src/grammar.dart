@@ -812,18 +812,42 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Integer` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-integer).
-  Parser integer() => ref(digit).plus();
+  Parser integer() {
+    final numberTypes =
+        hexidecimalInteger() | octalInteger() | decimalInteger();
+
+    return char('-').optional() & numberTypes;
+  }
+
+  Parser decimalInteger() => digit().plus();
+
+  Parser hexidecimalInteger() =>
+      string('0x') & ref(_hexidecimalDigit).plus() |
+      string('0X') & ref(_hexidecimalDigit).plus();
+
+  Parser _hexidecimalDigit() => pattern('0-9a-fA-F');
+
+  Parser octalInteger() => char('0') & pattern('0-7').star();
 
   /// A `Decimal` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-decimal).
-  Parser decimal() =>
-      char('-').optional() &
-      char('0').or(digit().plus()) &
-      char('.').seq(digit().plus()).optional() &
-      pattern('eE')
-          .seq(pattern('-+').optional())
-          .seq(digit().plus())
-          .optional();
+  Parser decimal() {
+    // [0-9]+\.[0-9]*|[0-9]*\.[0-9]+
+    final group0 = (digit().plus() & char('.') & digit().star()) |
+        (digit().star() & char('.') & digit().plus());
+
+    // [Ee][+-]?[0-9]+
+    final group1 = pattern('Ee') & pattern('+-').optional() & digit().plus();
+
+    // [0-9]+[Ee][+-]?[0-9]+
+    final group2 = digit().plus() &
+        pattern('Ee') &
+        pattern('+-').optional() &
+        digit().plus();
+
+    // -?((group0)(group1)?|group2)
+    return char('-').optional() & group0 & group1.optional() | group2;
+  }
 
   // -----------------------------------------------------------------
   // Whitespace and comments.
