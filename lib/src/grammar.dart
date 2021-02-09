@@ -303,7 +303,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref(constantValue) |
       ref(stringLiteral) |
       (ref(token, '[') & ref(token, ']')) |
-      (ref(token, '{') & ref(token, '}') | ref(token, 'null'));
+      (ref(token, '{') & ref(token, '}')) |
+      ref(token, 'null');
 
   /// An `Operation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Operation).

@@ -134,6 +134,32 @@ void main() {
       expect('const float? aFloat = -1.0;', reject(parser));
     });
   });
+  group('ConstValue', () {
+    final parser = grammar.build<Object?>(start: grammar.constantValue).end();
+    test('accept', () {
+      acceptAll(parser, _constantValues);
+    });
+    test('reject', () {
+      // Default value
+      rejectAll(parser, _stringLiterals);
+      expect('[ ]', reject(parser));
+      expect('{ }', reject(parser));
+      expect('null', reject(parser));
+    });
+  });
+  group('DefaultValue', () {
+    final parser = grammar.build<Object?>(start: grammar.defaultValue).end();
+    test('accept', () {
+      acceptAll(parser, _constantValues);
+      acceptAll(parser, _stringLiterals);
+      expect('[ ]', accept(parser));
+      expect('{ }', accept(parser));
+      expect('null', accept(parser));
+    });
+    test('reject', () {
+      rejectAll(parser, _validIdentifiers);
+    });
+  });
   group('ArgumentList', () {
     final parser = grammar.build<Object?>(start: grammar.argumentList).end();
     test('accept', () {
@@ -635,6 +661,31 @@ final _validIdentifiers = <String>[
 final _invalidIdentifiers = <String>[
   '0',
   '*foo',
+];
+
+//------------------------------------------------------------------
+// Constant values
+//------------------------------------------------------------------
+
+final _constantValues = <String>[
+  ..._booleanLiterals,
+  ..._floatLiterals,
+  ..._integerLiterals,
+];
+
+final _booleanLiterals = <String>['true', 'false'];
+
+final _floatLiterals = <String>['0.0'];
+
+final _integerLiterals = <String>[
+  '0',
+  '123456789',
+  '-987654321',
+];
+
+final _stringLiterals = <String>[
+  '"foo bar"',
+  '"0123456789"',
 ];
 
 //------------------------------------------------------------------
