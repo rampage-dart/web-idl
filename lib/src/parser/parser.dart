@@ -17,6 +17,11 @@ class WebIdlParser extends GrammarParser {
 ///
 /// Parser for the [WebIDL specification](https://heycam.github.io/webidl).
 class WebIdlParserDefinition extends WebIdlGrammarDefinition {
+  @override
+  Parser<bool> booleanLiteral() => super.booleanLiteral().map(_booleanLiteral);
+  static bool _booleanLiteral(Object? value) =>
+      (value! as Token).value == 'true';
+
   //------------------------------------------------------------------
   // Lexical tokens
   //------------------------------------------------------------------
