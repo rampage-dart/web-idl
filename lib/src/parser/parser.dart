@@ -22,6 +22,24 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static bool _booleanLiteral(Object? value) =>
       (value! as Token).value == 'true';
 
+  @override
+  Parser<double> floatLiteral() => super.floatLiteral().map(_floatLiteral);
+  static double _floatLiteral(Object? value) {
+    if (value is double) {
+      return value;
+    }
+
+    final identifier = value! as Token;
+    switch (identifier.value) {
+      case '-Infinity':
+        return double.negativeInfinity;
+      case 'Infinity':
+        return double.infinity;
+      default /* 'NaN' */ :
+        return double.nan;
+    }
+  }
+
   //------------------------------------------------------------------
   // Lexical tokens
   //------------------------------------------------------------------
