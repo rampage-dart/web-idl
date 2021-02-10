@@ -819,7 +819,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#prod-integer).
   Parser integer() {
     final numberTypes =
-        hexidecimalInteger() | octalInteger() | decimalInteger();
+        hexadecimalInteger() | octalInteger() | decimalInteger();
 
     return char('-').optional() & numberTypes;
   }
@@ -827,12 +827,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A decimal, base 10, `Integer`.
   Parser decimalInteger() => digit().plus();
 
-  /// A hexidecimal, base 16, `Integer`.
-  Parser hexidecimalInteger() =>
-      string('0x') & ref(_hexidecimalDigit).plus() |
-      string('0X') & ref(_hexidecimalDigit).plus();
+  /// A hexadecimal, base 16, `Integer`.
+  Parser hexadecimalInteger() =>
+      string('0x') & ref(_hexadecimalDigit).plus() |
+      string('0X') & ref(_hexadecimalDigit).plus();
 
-  Parser _hexidecimalDigit() => pattern('0-9a-fA-F');
+  Parser _hexadecimalDigit() => pattern('0-9a-fA-F');
 
   /// An octal, base 8, `Integer`.
   Parser octalInteger() => char('0') & pattern('0-7').star();

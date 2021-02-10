@@ -39,9 +39,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser<int> hexidecimalInteger() =>
-      super.hexidecimalInteger().map(_hexidecimalInteger);
-  static int _hexidecimalInteger(Object? value) {
+  Parser<int> hexadecimalInteger() =>
+      super.hexadecimalInteger().map(_hexadecimalInteger);
+  static int _hexadecimalInteger(Object? value) {
     final tokens = value! as List<Object?>;
 
     // Ignore first group its just 0x

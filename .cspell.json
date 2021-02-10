@@ -1,0 +1,13 @@
+{
+  "version":"0.1",
+  "language":"en",
+  "words":[
+    "deleter",
+    "maplike",
+    "petitparser",
+    "readonly",
+    "setlike",
+    "stringifier"
+  ],
+  "flagWords":[]
+}
