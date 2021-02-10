@@ -22,6 +22,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   //------------------------------------------------------------------
 
   @override
+  Parser<String> stringLiteral() => super.stringLiteral().map(_stringLiteral);
+  static String _stringLiteral(Object? value) {
+    // Grammar is `"<values>"`
+    final tokens = value! as List;
+
+    return (tokens[1] as List<String>).join();
+  }
+
+  @override
   Parser<int> integer() => super.integer().map(_integer);
   static int _integer(Object? value) {
     final tokens = value! as List<Object?>;
