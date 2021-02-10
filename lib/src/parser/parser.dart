@@ -18,6 +18,30 @@ class WebIdlParser extends GrammarParser {
 /// Parser for the [WebIDL specification](https://heycam.github.io/webidl).
 class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   @override
+  Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
+  static Object? _defaultValue(Object? value) {
+    // DefaultValue :: ConstValue | string | [ ] | { } | null
+    if (value is List) {
+      final tokens = value.cast<Token<Object?>>();
+      final token = tokens[0];
+
+      if (token.value == '[') {
+        // Matches [ ]
+        return const <Object?>[];
+      } else {
+        // Matches { }
+        return const <String, Object?>{};
+      }
+    } else if (value is Token) {
+      // Matches null
+      return null;
+    }
+
+    // Matches ConstValue | string
+    return value!;
+  }
+
+  @override
   Parser<bool> booleanLiteral() => super.booleanLiteral().map(_booleanLiteral);
   static bool _booleanLiteral(Object? value) =>
       (value! as Token).value == 'true';
