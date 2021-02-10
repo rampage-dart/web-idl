@@ -67,4 +67,8 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
 
     return int.parse(digits.join(), radix: 8);
   }
+
+  @override
+  Parser<double> decimal() => super.decimal().flatten().map(_decimal);
+  static double _decimal(String value) => double.parse(value);
 }
