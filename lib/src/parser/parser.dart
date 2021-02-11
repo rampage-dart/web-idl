@@ -25,13 +25,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       final tokens = value.cast<Token<Object?>>();
       final token = tokens[0];
 
-      if (token.value == '[') {
-        // Matches [ ]
-        return const <Object?>[];
-      } else {
-        // Matches { }
-        return const <String, Object?>{};
-      }
+      return token.value == '['
+          ? const <Object?>[] // Matches []
+          : const <String, Object?>{}; // Matches {}
     } else if (value is Token) {
       // Matches null
       return null;
