@@ -6,7 +6,7 @@
 import 'package:path/path.dart';
 import 'package:test/test.dart';
 
-import 'package:web_idl/web_idl.dart';
+import 'package:web_idl/src/parser/grammar.dart';
 
 import 'utilities.dart';
 

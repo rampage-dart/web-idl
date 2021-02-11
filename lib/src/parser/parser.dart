@@ -5,7 +5,7 @@
 
 import 'package:petitparser/petitparser.dart';
 
-import '../grammar.dart';
+import 'grammar.dart';
 
 /// WebIDL parser.
 class WebIdlParser extends GrammarParser {
