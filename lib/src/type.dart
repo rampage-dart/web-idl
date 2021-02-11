@@ -5,6 +5,25 @@
 
 /// Represents a type defined in the WebIDL specification.
 abstract class WebIdlType {
+  /// Annotations that control how language bindings will handle the type.
+  List<Object> get extendedAttributes;
+
   /// Whether the type is nullable.
   bool get isNullable;
+}
+
+/// A [WebIdlType] whose set of values is the union of those in two or more
+/// other [WebIdlType]s.
+abstract class UnionType implements WebIdlType {
+  /// The [WebIdlType]s that make up the [UnionType].
+  List<WebIdlType> get memberTypes;
+}
+
+/// A [WebIdlType] representing a singular type.
+abstract class SingleType implements WebIdlType {
+  /// The name of the type.
+  String get name;
+
+  /// The arguments for the type.
+  List<WebIdlType> get typeArguments;
 }
