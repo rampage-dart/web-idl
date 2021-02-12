@@ -84,10 +84,11 @@ void main() {
   final grammar = WebIdlParserDefinition();
 
   test('SingleType', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.singleType).end();
-
-    acceptAllSingleTypes(parser, _singleTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.singleType).end(),
+      _singleTypes,
+    );
+  });
   test('UnionType', () {
     acceptAllUnionTypes(
       grammar.build<UnionTypeBuilder>(start: grammar.unionType).end(),
@@ -95,61 +96,70 @@ void main() {
     );
   });
   test('DistinguishableType', () {
-    final parser = grammar
-        .build<SingleTypeBuilder>(start: grammar.distinguishableType)
-        .end();
-
-    acceptAllSingleTypes(parser, _distinguishableTypes);
+    acceptAllSingleTypes(
+      grammar
+          .build<SingleTypeBuilder>(start: grammar.distinguishableType)
+          .end(),
+      _distinguishableTypes,
+    );
   });
   test('PrimitiveType', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.primitiveType).end();
-
-    acceptAllSingleTypes(parser, _primitiveTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.primitiveType).end(),
+      _primitiveTypes,
+    );
   });
   test('UnrestrictedFloatType', () {
-    final parser = grammar
-        .build<SingleTypeBuilder>(start: grammar.unrestrictedFloatType)
-        .end();
-    acceptAllSingleTypes(parser, _unrestrictedFloatTypes);
+    acceptAllSingleTypes(
+      grammar
+          .build<SingleTypeBuilder>(start: grammar.unrestrictedFloatType)
+          .end(),
+      _unrestrictedFloatTypes,
+    );
   });
   test('FloatType', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.floatType).end();
-    acceptAllSingleTypes(parser, _floatTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.floatType).end(),
+      _floatTypes,
+    );
   });
   test('UnsignedIntegerType', () {
-    final parser = grammar
-        .build<SingleTypeBuilder>(start: grammar.unsignedIntegerType)
-        .end();
-    acceptAllSingleTypes(parser, _unsignedIntegerTypes);
+    acceptAllSingleTypes(
+      grammar
+          .build<SingleTypeBuilder>(start: grammar.unsignedIntegerType)
+          .end(),
+      _unsignedIntegerTypes,
+    );
   });
   test('IntegerType', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.integerType).end();
-    acceptAllSingleTypes(parser, _integerTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.integerType).end(),
+      _integerTypes,
+    );
   });
   test('StringType', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.stringType).end();
-    acceptAllSingleTypes(parser, _stringTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.stringType).end(),
+      _stringTypes,
+    );
   });
   test('Promise', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.promiseType).end();
-
-    acceptAllSingleTypes(parser, _promiseTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.promiseType).end(),
+      _promiseTypes,
+    );
   });
   test('RecordType', () {
-    final parser =
-        grammar.build<SingleTypeBuilder>(start: grammar.recordType).end();
-    acceptAllSingleTypes(parser, _recordTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.recordType).end(),
+      _recordTypes,
+    );
   });
   test('BufferRelatedType', () {
-    final parser = grammar
-        .build<SingleTypeBuilder>(start: grammar.bufferRelatedType)
-        .end();
-    acceptAllSingleTypes(parser, _bufferRelatedTypes);
+    acceptAllSingleTypes(
+      grammar.build<SingleTypeBuilder>(start: grammar.bufferRelatedType).end(),
+      _bufferRelatedTypes,
+    );
   });
   test('BooleanLiteral', () {
     final parser = grammar.build<bool>(start: grammar.booleanLiteral).end();
