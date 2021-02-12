@@ -94,18 +94,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser<UnionTypeBuilder> unionType() => super.unionType().map(_unionType);
   static UnionTypeBuilder _unionType(Object? value) {
     final tokens = value! as List<Object?>;
-    final tokenUnionMemberType = tokens[4];
-    final unionType = tokenUnionMemberType != null
-        ? tokenUnionMemberType as UnionTypeBuilder
-        : UnionTypeBuilder();
+    final tokenUnionMemberTypes = tokens[4]! as UnionTypeBuilder;
 
-    unionType.memberTypes = <WebIdlTypeBuilder>[
+    tokenUnionMemberTypes.memberTypes = <WebIdlTypeBuilder>[
       tokens[1]! as WebIdlTypeBuilder,
       tokens[3]! as WebIdlTypeBuilder,
-      ...unionType.memberTypes
+      ...tokenUnionMemberTypes.memberTypes
     ];
 
-    return unionType;
+    return tokenUnionMemberTypes;
   }
 
   @override
