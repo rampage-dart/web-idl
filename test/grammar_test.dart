@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 
 import 'package:web_idl/src/parser/grammar.dart';
 
-import 'strings/types.dart' as string_types;
+import 'strings/types.dart' as types;
 import 'utilities.dart';
 
 void acceptAll(Parser parser, Iterable<String> inputs) {
@@ -219,10 +219,10 @@ void main() {
   group('Type', () {
     final parser = grammar.build<Object?>(start: grammar.type).end();
     test('accept', () {
-      acceptAll(parser, string_types.singleTypes);
-      acceptAll(parser, string_types.distinguishableTypes.map(_makeNullable));
-      acceptAll(parser, string_types.unionTypes);
-      acceptAll(parser, string_types.unionTypes.map(_makeNullable));
+      acceptAll(parser, types.singleTypes);
+      acceptAll(parser, types.distinguishableTypes.map(types.nullable));
+      acceptAll(parser, types.unionTypes);
+      acceptAll(parser, types.unionTypes.map(types.nullable));
     });
     test('reject', () {
       // Can't be nullable
@@ -233,8 +233,8 @@ void main() {
   group('SingleType', () {
     final parser = grammar.build<Object?>(start: grammar.singleType).end();
     test('accept', () {
-      acceptAll(parser, string_types.singleTypes);
-      acceptAll(parser, string_types.distinguishableTypes.map(_makeNullable));
+      acceptAll(parser, types.singleTypes);
+      acceptAll(parser, types.distinguishableTypes.map(types.nullable));
     });
     test('reject', () {
       // Can't be nullable
@@ -242,13 +242,13 @@ void main() {
       expect('Promise<Foo>?', reject(parser));
 
       // Unrelated types
-      rejectAll(parser, string_types.unionTypes);
+      rejectAll(parser, types.unionTypes);
     });
   });
   group('UnionType', () {
     final parser = grammar.build<Object?>(start: grammar.unionType).end();
     test('accept', () {
-      acceptAll(parser, string_types.unionTypes);
+      acceptAll(parser, types.unionTypes);
     });
     test('reject', () {
       // Needs at least two types
@@ -265,23 +265,23 @@ void main() {
       expect('(Promise<long> or long)', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.unionTypes.map(_makeNullable));
+      rejectAll(parser, types.unionTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('DistinguishableType', () {
     final parser =
         grammar.build<Object?>(start: grammar.distinguishableType).end();
     test('accept', () {
-      acceptAll(parser, string_types.distinguishableTypes);
-      acceptAll(parser, string_types.distinguishableTypes.map(_makeNullable));
+      acceptAll(parser, types.distinguishableTypes);
+      acceptAll(parser, types.distinguishableTypes.map(types.nullable));
     });
     test('reject', () {
       // Misspellings (generics only since others will be caught as identifiers)
@@ -308,14 +308,14 @@ void main() {
       expect('ObservableArray<Foo, Bar, Baz>', reject(parser));
 
       // Unrelated types
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.promiseTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.promiseTypes);
     });
   });
   group('PrimitiveType', () {
     final parser = grammar.build<Object?>(start: grammar.primitiveType).end();
     test('accept', () {
-      acceptAll(parser, string_types.primitiveTypes);
+      acceptAll(parser, types.primitiveTypes);
     });
     test('reject', () {
       // Misspellings
@@ -324,14 +324,14 @@ void main() {
       expect('octets', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.primitiveTypes.map(_makeNullable));
+      rejectAll(parser, types.primitiveTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
 
@@ -339,7 +339,7 @@ void main() {
     final parser =
         grammar.build<Object?>(start: grammar.unrestrictedFloatType).end();
     test('accept', () {
-      acceptAll(parser, string_types.unrestrictedFloatTypes);
+      acceptAll(parser, types.unrestrictedFloatTypes);
     });
     test('reject', () {
       // Misspellings
@@ -350,21 +350,21 @@ void main() {
       expect('unrestricted unrestricted float', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.unrestrictedFloatTypes.map(_makeNullable));
+      rejectAll(parser, types.unrestrictedFloatTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('FloatType', () {
     final parser = grammar.build<Object?>(start: grammar.floatType).end();
     test('accept', () {
-      acceptAll(parser, string_types.floatTypes);
+      acceptAll(parser, types.floatTypes);
     });
     test('reject', () {
       // Misspellings
@@ -378,22 +378,22 @@ void main() {
       expect('unrestricted double', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.floatTypes.map(_makeNullable));
+      rejectAll(parser, types.floatTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('UnsignedIntegerType', () {
     final parser =
         grammar.build<Object?>(start: grammar.unsignedIntegerType).end();
     test('accept', () {
-      acceptAll(parser, string_types.unsignedIntegerTypes);
+      acceptAll(parser, types.unsignedIntegerTypes);
     });
     test('reject', () {
       // Repeating
@@ -405,21 +405,21 @@ void main() {
       expect('unsigned unsigned long long', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.unsignedIntegerTypes.map(_makeNullable));
+      rejectAll(parser, types.unsignedIntegerTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('IntegerType', () {
     final parser = grammar.build<Object?>(start: grammar.integerType).end();
     test('accept', () {
-      acceptAll(parser, string_types.integerTypes);
+      acceptAll(parser, types.integerTypes);
     });
     test('reject', () {
       // Misspellings
@@ -436,21 +436,21 @@ void main() {
       expect('unsigned long long', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.integerTypes.map(_makeNullable));
+      rejectAll(parser, types.integerTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('StringType', () {
     final parser = grammar.build<Object?>(start: grammar.stringType).end();
     test('accept', () {
-      acceptAll(parser, string_types.stringTypes);
+      acceptAll(parser, types.stringTypes);
     });
     test('reject', () {
       // Misspellings
@@ -463,21 +463,21 @@ void main() {
       expect('USVString USVString', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.stringTypes.map(_makeNullable));
+      rejectAll(parser, types.stringTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('Promise', () {
     final parser = grammar.build<Object?>(start: grammar.promiseType).end();
     test('accept', () {
-      acceptAll(parser, string_types.promiseTypes);
+      acceptAll(parser, types.promiseTypes);
     });
     test('reject', () {
       // Misspellings
@@ -490,21 +490,21 @@ void main() {
       expect('Promise<Foo, Bar, Baz>', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.promiseTypes.map(_makeNullable));
+      rejectAll(parser, types.promiseTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.recordTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.recordTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('RecordType', () {
     final parser = grammar.build<Object?>(start: grammar.recordType).end();
     test('accept', () {
-      acceptAll(parser, string_types.recordTypes);
+      acceptAll(parser, types.recordTypes);
     });
     test('reject', () {
       // Misspellings
@@ -520,15 +520,15 @@ void main() {
       expect('record<DOMString, Bar, Baz>', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.recordTypes.map(_makeNullable));
+      rejectAll(parser, types.recordTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.bufferRelatedTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.bufferRelatedTypes);
     });
   });
   group('Null', () {
@@ -546,7 +546,7 @@ void main() {
     final parser =
         grammar.build<Object?>(start: grammar.bufferRelatedType).end();
     test('accept', () {
-      acceptAll(parser, string_types.bufferRelatedTypes);
+      acceptAll(parser, types.bufferRelatedTypes);
     });
     test('reject', () {
       // Misspellings
@@ -575,15 +575,15 @@ void main() {
       expect('Float64Array Float64Array', reject(parser));
 
       // Nullable type
-      rejectAll(parser, string_types.bufferRelatedTypes.map(_makeNullable));
+      rejectAll(parser, types.bufferRelatedTypes.map(types.nullable));
       // Unrelated types
-      rejectAll(parser, string_types.userDefinedTypes);
-      rejectAll(parser, string_types.unionTypes);
-      rejectAll(parser, string_types.unrestrictedFloatTypes);
-      rejectAll(parser, string_types.unsignedIntegerTypes);
-      rejectAll(parser, string_types.stringTypes);
-      rejectAll(parser, string_types.promiseTypes);
-      rejectAll(parser, string_types.recordTypes);
+      rejectAll(parser, types.userDefinedTypes);
+      rejectAll(parser, types.unionTypes);
+      rejectAll(parser, types.unrestrictedFloatTypes);
+      rejectAll(parser, types.unsignedIntegerTypes);
+      rejectAll(parser, types.stringTypes);
+      rejectAll(parser, types.promiseTypes);
+      rejectAll(parser, types.recordTypes);
     });
   });
   group('ExtendedAttributeList', () {
@@ -689,11 +689,3 @@ final _stringLiterals = <String>[
   '"foo bar"',
   '"0123456789"',
 ];
-
-//------------------------------------------------------------------
-// Type definitions
-//
-// Used to test that types match within the Grammar.
-//------------------------------------------------------------------
-
-String _makeNullable(String str) => '$str?';

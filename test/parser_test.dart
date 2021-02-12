@@ -10,7 +10,7 @@ import 'package:web_idl/web_idl.dart';
 import 'package:web_idl/src/parser/parser.dart';
 import 'package:web_idl/src/parser/type_builder.dart';
 
-import 'strings/types.dart' as string_types;
+import 'strings/types.dart' as types;
 
 void acceptAll(Parser parser, Map<String, Object?> inputs) {
   inputs.forEach((input, expected) {
@@ -367,40 +367,40 @@ Map<String, Map<String, Object>> _unionTypesFromString(
     );
 
 final Map<String, Map<String, Object>> _singleTypes =
-    _singleTypesFromStrings(string_types.singleTypes);
+    _singleTypesFromStrings(types.singleTypes);
 
 final Map<String, Map<String, Object>> _unionTypes =
-    _unionTypesFromString(string_types.unionTypes);
+    _unionTypesFromString(types.unionTypes);
 
 final Map<String, Map<String, Object>> _nullableUnionTypes =
-    _unionTypesFromString(string_types.unionTypes.map(string_types.nullable));
+    _unionTypesFromString(types.unionTypes.map(types.nullable));
 
 final Map<String, Map<String, Object>> _distinguishableTypes =
-    _singleTypesFromStrings(string_types.distinguishableTypes);
+    _singleTypesFromStrings(types.distinguishableTypes);
 
 final Map<String, Map<String, Object>> _primitiveTypes =
-    _singleTypesFromStrings(string_types.primitiveTypes);
+    _singleTypesFromStrings(types.primitiveTypes);
 
 final Map<String, Map<String, Object>> _unrestrictedFloatTypes =
-    _singleTypesFromStrings(string_types.unrestrictedFloatTypes);
+    _singleTypesFromStrings(types.unrestrictedFloatTypes);
 
 final Map<String, Map<String, Object>> _floatTypes =
-    _singleTypesFromStrings(string_types.floatTypes);
+    _singleTypesFromStrings(types.floatTypes);
 
 final Map<String, Map<String, Object>> _unsignedIntegerTypes =
-    _singleTypesFromStrings(string_types.unsignedIntegerTypes);
+    _singleTypesFromStrings(types.unsignedIntegerTypes);
 
 final Map<String, Map<String, Object>> _integerTypes =
-    _singleTypesFromStrings(string_types.integerTypes);
+    _singleTypesFromStrings(types.integerTypes);
 
 final Map<String, Map<String, Object>> _stringTypes =
-    _singleTypesFromStrings(string_types.stringTypes);
+    _singleTypesFromStrings(types.stringTypes);
 
 final Map<String, Map<String, Object>> _promiseTypes =
-    _singleTypesFromStrings(string_types.promiseTypes);
+    _singleTypesFromStrings(types.promiseTypes);
 
 final Map<String, Map<String, Object>> _recordTypes =
-    _singleTypesFromStrings(string_types.recordTypes);
+    _singleTypesFromStrings(types.recordTypes);
 
 final Map<String, Map<String, Object>> _bufferRelatedTypes =
-    _singleTypesFromStrings(string_types.bufferRelatedTypes);
+    _singleTypesFromStrings(types.bufferRelatedTypes);
