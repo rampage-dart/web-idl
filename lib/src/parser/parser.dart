@@ -66,6 +66,17 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   //------------------------------------------------------------------
 
   @override
+  Parser<WebIdlTypeBuilder> type() => super.type().map(_type);
+  static WebIdlTypeBuilder _type(Object? value) {
+    if (value is WebIdlTypeBuilder) {
+      return value;
+    }
+
+    final tokens = value! as List<Object?>;
+    return (tokens[0]! as WebIdlTypeBuilder)..isNullable = tokens[1]! as bool;
+  }
+
+  @override
   Parser<WebIdlTypeBuilder> typeWithExtendedAttributes() =>
       super.typeWithExtendedAttributes().map(_typeWithExtendedAttributes);
   static WebIdlTypeBuilder _typeWithExtendedAttributes(Object? value) {
@@ -78,6 +89,54 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   @override
   Parser<SingleTypeBuilder> singleType() =>
       super.singleType().map(_singleTypeBuilder);
+
+  @override
+  Parser<UnionTypeBuilder> unionType() => super.unionType().map(_unionType);
+  static UnionTypeBuilder _unionType(Object? value) {
+    final tokens = value! as List<Object?>;
+    final tokenUnionMemberType = tokens[4];
+    final unionType = tokenUnionMemberType != null
+        ? tokenUnionMemberType as UnionTypeBuilder
+        : UnionTypeBuilder();
+
+    unionType.memberTypes = <WebIdlTypeBuilder>[
+      tokens[1]! as WebIdlTypeBuilder,
+      tokens[3]! as WebIdlTypeBuilder,
+      ...unionType.memberTypes
+    ];
+
+    return unionType;
+  }
+
+  @override
+  Parser<WebIdlTypeBuilder> unionMemberType() =>
+      super.unionMemberType().map(_unionMemberType);
+  static WebIdlTypeBuilder _unionMemberType(Object? value) {
+    final tokens = value! as List<Object?>;
+    final token0 = tokens[0];
+    if (token0 is UnionTypeBuilder) {
+      return token0..isNullable = tokens[1]! as bool;
+    }
+
+    return (tokens[1]! as SingleTypeBuilder)
+      ..extendedAttributes = token0! as List<Object>;
+  }
+
+  @override
+  Parser<UnionTypeBuilder> unionMemberTypes() =>
+      super.unionMemberTypes().map(_unionMemberTypes);
+  static UnionTypeBuilder _unionMemberTypes(Object? value) {
+    if (value == null) {
+      return UnionTypeBuilder();
+    }
+
+    final tokens = value as List<Object?>;
+    final tokenUnionMemberType = tokens[1]! as WebIdlTypeBuilder;
+    final tokenUnionMemberTypes = tokens[2]! as UnionTypeBuilder;
+    tokenUnionMemberTypes.memberTypes.insert(0, tokenUnionMemberType);
+
+    return tokenUnionMemberTypes;
+  }
 
   @override
   Parser<SingleTypeBuilder> distinguishableType() =>
