@@ -65,6 +65,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   //------------------------------------------------------------------
 
   @override
+  Parser<String> identifier() => super.identifier().flatten();
+
+  @override
   Parser<String> stringLiteral() => super.stringLiteral().map(_stringLiteral);
   static String _stringLiteral(Object? value) {
     // Grammar is `"<values>"`
