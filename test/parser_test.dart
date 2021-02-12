@@ -26,6 +26,11 @@ void acceptAllDoubles(Parser parser, Map<String, double> inputs) {
   });
 }
 
+void acceptType(WebIdlType actual, Map<String, Object> expected) =>
+    actual is SingleType
+        ? acceptSingleType(actual, expected)
+        : acceptUnionType(actual as UnionType, expected);
+
 void acceptSingleType(SingleType actual, Map<String, Object> expected) {
   expect(actual.name, equals(expected['name']));
   expect(actual.isNullable, equals(expected['isNullable']));
@@ -37,8 +42,7 @@ void acceptSingleType(SingleType actual, Map<String, Object> expected) {
   expect(actual.typeArguments, hasLength(expectedCount));
 
   for (var i = 0; i < expectedCount; ++i) {
-    acceptSingleType(
-        actual.typeArguments[i] as SingleType, expectedTypeArguments[i]);
+    acceptType(actual.typeArguments[i], expectedTypeArguments[i]);
   }
 }
 
@@ -52,6 +56,30 @@ void acceptAllSingleTypes(
   });
 }
 
+void acceptUnionType(UnionType actual, Map<String, Object> expected) {
+  expect(actual.isNullable, equals(expected['isNullable']));
+  expect(actual.extendedAttributes, equals(expected['extendedAttributes']));
+
+  final expectedMemberTypes =
+      expected['memberTypes']! as List<Map<String, Object>>;
+  final expectedCount = expectedMemberTypes.length;
+  expect(actual.memberTypes, hasLength(expectedCount));
+
+  for (var i = 0; i < expectedCount; ++i) {
+    acceptType(actual.memberTypes[i], expectedMemberTypes[i]);
+  }
+}
+
+void acceptAllUnionTypes(
+  Parser<UnionTypeBuilder> parser,
+  Map<String, Map<String, Object>> inputs,
+) {
+  inputs.forEach((input, expected) {
+    final actual = parser.parse(input).value.build();
+    acceptUnionType(actual, expected);
+  });
+}
+
 void main() {
   final grammar = WebIdlParserDefinition();
 
@@ -60,6 +88,11 @@ void main() {
         grammar.build<SingleTypeBuilder>(start: grammar.singleType).end();
 
     acceptAllSingleTypes(parser, _singleTypes);
+  test('UnionType', () {
+    acceptAllUnionTypes(
+      grammar.build<UnionTypeBuilder>(start: grammar.unionType).end(),
+      _unionTypes,
+    );
   });
   test('DistinguishableType', () {
     final parser = grammar
@@ -214,6 +247,14 @@ const _decimalValues = <String, double>{
 // Used to test that types match within the Grammar.
 //------------------------------------------------------------------
 
+final _singleTypeMatcher = RegExp(r'^([-_a-zA-Z0-9 ]+)(<(.*)>)?(\?)?$');
+final _unionTypeMatcher = RegExp(r'^\((.+)\)$');
+
+Map<String, Object> _typeFromString(String type) =>
+    _singleTypeMatcher.hasMatch(type)
+        ? _singleTypeFromString(type)
+        : _unionTypeFromString(type);
+
 Map<String, Object> _singleType(
   String name, {
   List<Object> extendedAttributes = const <Object>[],
@@ -227,12 +268,21 @@ Map<String, Object> _singleType(
       'typeArguments': typeArguments
     };
 
-final _typeMatcher = RegExp(r'^([-_a-zA-Z0-9 ]+)(<(.*)>)?(\?)?$');
+Map<String, Object> _unionType(
+  List<Map<String, Object>> memberTypes, {
+  List<Object> extendedAttributes = const <Object>[],
+  bool isNullable = false,
+}) =>
+    <String, Object>{
+      'memberTypes': memberTypes,
+      'extendedAttributes': extendedAttributes,
+      'isNullable': isNullable,
+    };
 
 Map<String, Object> _singleTypeFromString(String type) {
-  final match = _typeMatcher.firstMatch(type);
+  final match = _singleTypeMatcher.firstMatch(type);
   if (match == null) {
-    throw ArgumentError.value(type, 'not a valid type');
+    throw ArgumentError.value(type, 'not a valid single type');
   }
 
   final typeArgumentsGroup = match.group(3);
@@ -240,7 +290,7 @@ Map<String, Object> _singleTypeFromString(String type) {
       ? typeArgumentsGroup
           .split(',')
           .map((str) => str.trim())
-          .map(_singleTypeFromString)
+          .map(_typeFromString)
           .toList()
       : const <Map<String, Object>>[];
 
@@ -251,6 +301,22 @@ Map<String, Object> _singleTypeFromString(String type) {
   );
 }
 
+Map<String, Object> _unionTypeFromString(String type) {
+  final match = _unionTypeMatcher.firstMatch(type);
+  if (match == null) {
+    throw ArgumentError.value(type, 'not a valid union type');
+  }
+
+  final memberTypesGroup = match.group(1)!;
+  final memberTypes = memberTypesGroup
+      .split(' or ')
+      .map((str) => str.trim())
+      .map(_typeFromString)
+      .toList();
+
+  return _unionType(memberTypes);
+}
+
 Map<String, Map<String, Object>> _singleTypesFromStrings(List<String> names) =>
     Map<String, Map<String, Object>>.fromEntries(
       names.map((type) => MapEntry<String, Map<String, Object>>(
@@ -259,8 +325,19 @@ Map<String, Map<String, Object>> _singleTypesFromStrings(List<String> names) =>
           )),
     );
 
+Map<String, Map<String, Object>> _unionTypesFromString(List<String> names) =>
+    Map<String, Map<String, Object>>.fromEntries(
+      names.map((type) => MapEntry<String, Map<String, Object>>(
+            type,
+            _unionTypeFromString(type),
+          )),
+    );
+
 final Map<String, Map<String, Object>> _singleTypes =
     _singleTypesFromStrings(string_types.singleTypes);
+
+final Map<String, Map<String, Object>> _unionTypes =
+    _unionTypesFromString(string_types.unionTypes);
 
 final Map<String, Map<String, Object>> _distinguishableTypes =
     _singleTypesFromStrings(string_types.distinguishableTypes);
