@@ -47,11 +47,11 @@ void acceptSingleType(SingleType actual, Map<String, Object> expected) {
 }
 
 void acceptAllSingleTypes(
-  Parser<SingleTypeBuilder> parser,
+  Parser<WebIdlTypeBuilder> parser,
   Map<String, Map<String, Object>> inputs,
 ) {
   inputs.forEach((input, expected) {
-    final actual = parser.parse(input).value.build();
+    final actual = parser.parse(input).value.build() as SingleType;
     acceptSingleType(actual, expected);
   });
 }
@@ -71,11 +71,11 @@ void acceptUnionType(UnionType actual, Map<String, Object> expected) {
 }
 
 void acceptAllUnionTypes(
-  Parser<UnionTypeBuilder> parser,
+  Parser<WebIdlTypeBuilder> parser,
   Map<String, Map<String, Object>> inputs,
 ) {
   inputs.forEach((input, expected) {
-    final actual = parser.parse(input).value.build();
+    final actual = parser.parse(input).value.build() as UnionType;
     acceptUnionType(actual, expected);
   });
 }
@@ -83,6 +83,11 @@ void acceptAllUnionTypes(
 void main() {
   final grammar = WebIdlParserDefinition();
 
+  test('Type', () {
+    final parser = grammar.build<WebIdlTypeBuilder>(start: grammar.type).end();
+    acceptAllSingleTypes(parser, _singleTypes);
+    acceptAllUnionTypes(parser, _unionTypes);
+  });
   test('SingleType', () {
     acceptAllSingleTypes(
       grammar.build<SingleTypeBuilder>(start: grammar.singleType).end(),
