@@ -219,7 +219,8 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   //------------------------------------------------------------------
 
   @override
-  Parser<String> identifier() => super.identifier().flatten();
+  Parser<String> identifier() =>
+      super.identifier().flatten().map((str) => str.trim());
 
   @override
   Parser<String> stringLiteral() => super.stringLiteral().map(_stringLiteral);
