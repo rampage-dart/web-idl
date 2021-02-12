@@ -6,6 +6,7 @@
 import 'package:petitparser/petitparser.dart';
 
 import 'grammar.dart';
+import 'type_builder.dart';
 
 /// WebIDL parser.
 class WebIdlParser extends GrammarParser {
@@ -59,6 +60,159 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
         return double.nan;
     }
   }
+
+  //------------------------------------------------------------------
+  // Types
+  //------------------------------------------------------------------
+
+  @override
+  Parser<WebIdlTypeBuilder> typeWithExtendedAttributes() =>
+      super.typeWithExtendedAttributes().map(_typeWithExtendedAttributes);
+  static WebIdlTypeBuilder _typeWithExtendedAttributes(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return (tokens[1]! as WebIdlTypeBuilder)
+      ..extendedAttributes = tokens[0]! as List<Object>;
+  }
+
+  @override
+  Parser<SingleTypeBuilder> singleType() =>
+      super.singleType().map(_singleTypeBuilder);
+
+  @override
+  Parser<SingleTypeBuilder> distinguishableType() =>
+      super.distinguishableType().map(_distinguishableType);
+  static SingleTypeBuilder _distinguishableType(Object? value) {
+    final tokens = value! as List<Object?>;
+    final nullable = tokens.removeLast()! as bool;
+
+    return _singleTypeBuilder(tokens[0])..isNullable = nullable;
+  }
+
+  @override
+  Parser<SingleTypeBuilder> primitiveType() =>
+      super.primitiveType().map(_singleTypeBuilder);
+
+  @override
+  Parser<SingleTypeBuilder> unrestrictedFloatType() =>
+      super.unrestrictedFloatType().map(_unrestrictedFloatType);
+  static SingleTypeBuilder _unrestrictedFloatType(Object? object) {
+    final tokens = object! as List<Object?>;
+    final tokenUnrestricted = tokens[0];
+    final tokenFloatType = tokens[1]! as SingleTypeBuilder;
+
+    if (tokenUnrestricted != null) {
+      tokenFloatType.name =
+          '${(tokenUnrestricted as Token).value} ${tokenFloatType.name}';
+    }
+
+    return tokenFloatType;
+  }
+
+  @override
+  Parser<SingleTypeBuilder> floatType() =>
+      super.floatType().map(_singleTypeBuilderFromToken);
+
+  @override
+  Parser<SingleTypeBuilder> unsignedIntegerType() =>
+      super.unsignedIntegerType().map(_unsignedIntegerType);
+  static SingleTypeBuilder _unsignedIntegerType(Object? value) {
+    final tokens = value! as List<Object?>;
+    final tokenUnsigned = tokens[0];
+    final tokenIntegerType = tokens[1]! as SingleTypeBuilder;
+
+    if (tokenUnsigned != null) {
+      tokenIntegerType.name =
+          '${(tokenUnsigned as Token).value} ${tokenIntegerType.name}';
+    }
+
+    return tokenIntegerType;
+  }
+
+  @override
+  Parser<SingleTypeBuilder> integerType() =>
+      super.integerType().map(_integerType);
+  static SingleTypeBuilder _integerType(Object? object) {
+    if (object is Token) {
+      return _singleTypeBuilderFromToken(object);
+    }
+
+    final tokens = object! as List<Object?>;
+    final tokenLong = tokens[0]! as Token;
+    final tokenOptionalLong = tokens[1];
+    var name = tokenLong.value as String;
+
+    if (tokenOptionalLong != null) {
+      name += ' ${(tokenOptionalLong as Token).value}';
+    }
+
+    return SingleTypeBuilder()..name = name;
+  }
+
+  @override
+  Parser<SingleTypeBuilder> stringType() =>
+      super.stringType().map(_singleTypeBuilderFromToken);
+
+  @override
+  Parser<SingleTypeBuilder> promiseType() =>
+      super.promiseType().map(_singleTypeBuilderFromTokens);
+
+  @override
+  Parser<SingleTypeBuilder> recordType() =>
+      super.recordType().map(_singleTypeBuilderFromTokens);
+
+  @override
+  Parser<bool> nullable() => super.nullable().map(_nullable);
+  static bool _nullable(Object? value) => value != null;
+
+  @override
+  Parser<SingleTypeBuilder> bufferRelatedType() =>
+      super.bufferRelatedType().map(_singleTypeBuilderFromToken);
+
+  static SingleTypeBuilder _singleTypeBuilder(Object? value) {
+    if (value is SingleTypeBuilder) {
+      return value;
+    } else if (value is List) {
+      return _singleTypeBuilderFromTokens(value);
+    } else {
+      return _singleTypeBuilderFromToken(value);
+    }
+  }
+
+  static SingleTypeBuilder _singleTypeBuilderFromTokens(Object? value) {
+    final tokens = value! as List<Object?>;
+    final typeArguments = <WebIdlTypeBuilder>[];
+    final tokenCount = tokens.length;
+
+    for (var i = 2; i < tokenCount; i += 2) {
+      typeArguments.add(tokens[i]! as WebIdlTypeBuilder);
+    }
+
+    return _singleTypeBuilder(tokens[0]! as Token)
+      ..typeArguments = typeArguments;
+  }
+
+  static SingleTypeBuilder _singleTypeBuilderFromToken(Object? value) {
+    if (value is SingleTypeBuilder) {
+      return value;
+    }
+
+    return SingleTypeBuilder()
+      ..name = value is Token ? value.value! as String : value! as String;
+  }
+
+  //------------------------------------------------------------------
+  // Extended Attributes
+  //
+  // The WebIDL grammar supports a more general definition for
+  // extended attributes but notes that really only 5 variants are
+  // actually used. So this only matches those 5 cases.
+  //------------------------------------------------------------------
+
+  @override
+  Parser<List<Object>> extendedAttributeList() =>
+      super.extendedAttributeList().map(_extendedAttributeList);
+  static List<Object> _extendedAttributeList(Object? value) => const <Object>[];
 
   //------------------------------------------------------------------
   // Lexical tokens
