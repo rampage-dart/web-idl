@@ -5,6 +5,9 @@
 
 /// Strings containing values that parse to types.
 
+/// Makes the type nullable by appending a `?`.
+String nullable(String str) => '$str?';
+
 /// User defined types.
 const List<String> userDefinedTypes = <String>[
   'Foo',

@@ -87,6 +87,7 @@ void main() {
     final parser = grammar.build<WebIdlTypeBuilder>(start: grammar.type).end();
     acceptAllSingleTypes(parser, _singleTypes);
     acceptAllUnionTypes(parser, _unionTypes);
+    acceptAllUnionTypes(parser, _nullableUnionTypes);
   });
   test('SingleType', () {
     acceptAllSingleTypes(
@@ -95,10 +96,23 @@ void main() {
     );
   });
   test('UnionType', () {
-    acceptAllUnionTypes(
-      grammar.build<UnionTypeBuilder>(start: grammar.unionType).end(),
-      _unionTypes,
+    final parser =
+        grammar.build<UnionTypeBuilder>(start: grammar.unionType).end();
+    acceptAllUnionTypes(parser, _unionTypes);
+
+    // Create a nested union type
+    final nestedUnionType = _unionType(
+      <Map<String, Object>>[
+        _singleType('double'),
+        _unionTypeFromString('(sequence<long> or Event)'),
+        _unionTypeFromString('(Node or DOMString)?'),
+      ],
     );
+
+    acceptAllUnionTypes(parser, <String, Map<String, Object>>{
+      '(double or (sequence<long> or Event) or (Node or DOMString)?)':
+          nestedUnionType
+    });
   });
   test('DistinguishableType', () {
     acceptAllSingleTypes(
@@ -263,7 +277,7 @@ const _decimalValues = <String, double>{
 //------------------------------------------------------------------
 
 final _singleTypeMatcher = RegExp(r'^([-_a-zA-Z0-9 ]+)(<(.*)>)?(\?)?$');
-final _unionTypeMatcher = RegExp(r'^\((.+)\)$');
+final _unionTypeMatcher = RegExp(r'^\((.+)\)(\?)?$');
 
 Map<String, Object> _typeFromString(String type) =>
     _singleTypeMatcher.hasMatch(type)
@@ -329,10 +343,12 @@ Map<String, Object> _unionTypeFromString(String type) {
       .map(_typeFromString)
       .toList();
 
-  return _unionType(memberTypes);
+  return _unionType(memberTypes, isNullable: match.group(2) != null);
 }
 
-Map<String, Map<String, Object>> _singleTypesFromStrings(List<String> names) =>
+Map<String, Map<String, Object>> _singleTypesFromStrings(
+  Iterable<String> names,
+) =>
     Map<String, Map<String, Object>>.fromEntries(
       names.map((type) => MapEntry<String, Map<String, Object>>(
             type,
@@ -340,7 +356,9 @@ Map<String, Map<String, Object>> _singleTypesFromStrings(List<String> names) =>
           )),
     );
 
-Map<String, Map<String, Object>> _unionTypesFromString(List<String> names) =>
+Map<String, Map<String, Object>> _unionTypesFromString(
+  Iterable<String> names,
+) =>
     Map<String, Map<String, Object>>.fromEntries(
       names.map((type) => MapEntry<String, Map<String, Object>>(
             type,
@@ -353,6 +371,9 @@ final Map<String, Map<String, Object>> _singleTypes =
 
 final Map<String, Map<String, Object>> _unionTypes =
     _unionTypesFromString(string_types.unionTypes);
+
+final Map<String, Map<String, Object>> _nullableUnionTypes =
+    _unionTypesFromString(string_types.unionTypes.map(string_types.nullable));
 
 final Map<String, Map<String, Object>> _distinguishableTypes =
     _singleTypesFromStrings(string_types.distinguishableTypes);
