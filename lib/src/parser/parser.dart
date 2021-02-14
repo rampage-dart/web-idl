@@ -5,6 +5,7 @@
 
 import 'package:petitparser/petitparser.dart';
 
+import 'element_builder.dart';
 import 'grammar.dart';
 import 'type_builder.dart';
 
@@ -18,6 +19,24 @@ class WebIdlParser extends GrammarParser {
 ///
 /// Parser for the [WebIDL specification](https://heycam.github.io/webidl).
 class WebIdlParserDefinition extends WebIdlGrammarDefinition {
+  @override
+  Parser<List<ElementBuilder>> definitions() =>
+      super.definitions().map(_definitions);
+  static List<ElementBuilder> _definitions(Object? value) {
+    if (value == null) {
+      return const <ElementBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    final tokenDefinition = tokens[1]! as ElementBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+
+    return <ElementBuilder>[
+      tokenDefinition,
+      ...tokens[2]! as List<ElementBuilder>,
+    ];
+  }
+
   @override
   Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
   static Object? _defaultValue(Object? value) {
