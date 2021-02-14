@@ -13,6 +13,9 @@ abstract class Element {
   /// The name of this element, or the empty string if the element does not have
   /// a name.
   String get name;
+
+  /// Annotations that control how language bindings will handle the element.
+  List<Object> get extendedAttributes;
 }
 
 //------------------------------------------------------------------
