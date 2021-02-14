@@ -84,6 +84,36 @@ void acceptAllUnionTypes(
 void main() {
   final grammar = WebIdlParserDefinition();
 
+  test('Argument', () {
+    final parser =
+        grammar.build<ArgumentBuilder>(start: grammar.argument).end();
+
+    final requiredArgument = parser.parse('Foo foo').value.build();
+    expect(requiredArgument.name, equals('foo'));
+    expect(requiredArgument.type, isA<SingleType>());
+    expect((requiredArgument.type as SingleType).name, equals('Foo'));
+    expect(requiredArgument.isOptional, isFalse);
+    expect(requiredArgument.isVariadic, isFalse);
+    expect(requiredArgument.defaultTo, isNull);
+
+    final optionalArgument =
+        parser.parse('optional LookupOptions options = {}').value.build();
+    expect(optionalArgument.name, equals('options'));
+    expect(optionalArgument.type, isA<SingleType>());
+    expect((optionalArgument.type as SingleType).name, equals('LookupOptions'));
+    expect(optionalArgument.isOptional, isTrue);
+    expect(optionalArgument.isVariadic, isFalse);
+    expect(optionalArgument.defaultTo, isA<Map<String, Object?>>());
+    expect(optionalArgument.defaultTo, isEmpty);
+
+    final variadicArgument = parser.parse('long... ints').value.build();
+    expect(variadicArgument.name, equals('ints'));
+    expect(variadicArgument.type, isA<SingleType>());
+    expect((variadicArgument.type as SingleType).name, equals('long'));
+    expect(variadicArgument.isOptional, isFalse);
+    expect(variadicArgument.isVariadic, isTrue);
+    expect(variadicArgument.defaultTo, isNull);
+  });
   test('Enum', () {
     final parser = grammar.build<EnumBuilder>(start: grammar.enumeration).end();
     final enumeration = parser
