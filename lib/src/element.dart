@@ -58,4 +58,9 @@ abstract class ArgumentElement implements Element {
   /// be a constant.
   Object? get defaultTo;
 }
+
+/// Extension for checking if an [ArgumentElement] is required.
+extension RequiredArgumentElement on ArgumentElement {
+  /// Whether the argument is required.
+  bool get isRequired => !isOptional;
 }
