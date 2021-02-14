@@ -7,6 +7,7 @@ import 'package:petitparser/petitparser.dart';
 import 'package:test/test.dart';
 
 import 'package:web_idl/web_idl.dart';
+import 'package:web_idl/src/parser/element_builder.dart';
 import 'package:web_idl/src/parser/parser.dart';
 import 'package:web_idl/src/parser/type_builder.dart';
 
@@ -83,6 +84,18 @@ void acceptAllUnionTypes(
 void main() {
   final grammar = WebIdlParserDefinition();
 
+  test('Enum', () {
+    final parser = grammar.build<EnumBuilder>(start: grammar.enumeration).end();
+    final enumeration = parser
+        .parse('enum MealType { "rice", "noodles", "other" };')
+        .value
+        .build();
+    expect(enumeration.name, equals('MealType'));
+    expect(enumeration.values, hasLength(3));
+    expect(enumeration.values[0], equals('rice'));
+    expect(enumeration.values[1], equals('noodles'));
+    expect(enumeration.values[2], equals('other'));
+  });
   test('Type', () {
     final parser = grammar.build<WebIdlTypeBuilder>(start: grammar.type).end();
     acceptAllSingleTypes(parser, _singleTypes);
