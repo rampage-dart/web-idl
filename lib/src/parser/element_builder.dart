@@ -11,6 +11,9 @@ abstract class ElementBuilder<T extends Element> {
   /// The name of the [Element].
   String name = '';
 
+  /// Annotations that control how language bindings will handle the element.
+  List<Object> extendedAttributes = <Object>[];
+
   /// Returns the [Element] specified by the builder.
   ///
   /// The builder returns an immutable representation of [T].
