@@ -51,4 +51,11 @@ abstract class ArgumentElement implements Element {
 
   /// Whether the argument is variadic.
   bool get isVariadic;
+
+  /// The default value for the argument.
+  ///
+  /// If the argument [isRequired] then this will be `null`. Otherwise this may
+  /// be a constant.
+  Object? get defaultTo;
+}
 }

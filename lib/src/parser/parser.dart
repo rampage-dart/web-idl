@@ -38,6 +38,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
+  Parser<String> argumentNameKeyword() => super.argumentNameKeyword().flatten();
+
+  @override
   Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
   static Object? _defaultValue(Object? value) {
     // DefaultValue :: ConstValue | string | [ ] | { } | null
@@ -56,6 +59,41 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     // Matches ConstValue | string
     return value!;
   }
+
+  @override
+  Parser<ArgumentBuilder> argument() => super.argument().map(_argument);
+  static ArgumentBuilder _argument(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return tokens[1]! as ArgumentBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+  }
+
+  @override
+  Parser<ArgumentBuilder> argumentRest() =>
+      super.argumentRest().map(_argumentRest);
+  static ArgumentBuilder _argumentRest(Object? value) {
+    final tokens = value! as List<Object?>;
+    final argument = ArgumentBuilder();
+
+    if (tokens.length == 4) {
+      argument
+        ..isOptional = true
+        ..type = tokens[1]! as WebIdlTypeBuilder
+        ..name = tokens[2]! as String
+        ..defaultTo = tokens[3];
+    } else {
+      argument
+        ..type = tokens[0]! as WebIdlTypeBuilder
+        ..isVariadic = tokens[1]! as bool
+        ..name = tokens[2]! as String;
+    }
+
+    return argument;
+  }
+
+  @override
+  Parser<bool> ellipsis() => super.ellipsis().map(_isToken);
 
   @override
   Parser<bool> booleanLiteral() => super.booleanLiteral().map(_booleanLiteral);
@@ -78,6 +116,17 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       default /* 'NaN' */ :
         return double.nan;
     }
+  }
+
+  @override
+  Parser<Object?> defaultTo() => super.defaultTo().map(_defaultTo);
+  static Object? _defaultTo(Object? value) {
+    if (value == null) {
+      return null;
+    }
+
+    final tokens = value as List<Object?>;
+    return tokens[1];
   }
 
   @override
@@ -286,8 +335,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       super.recordType().map(_singleTypeBuilderFromTokens);
 
   @override
-  Parser<bool> nullable() => super.nullable().map(_nullable);
-  static bool _nullable(Object? value) => value != null;
+  Parser<bool> nullable() => super.nullable().map(_isToken);
 
   @override
   Parser<SingleTypeBuilder> bufferRelatedType() =>
@@ -324,6 +372,8 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     return SingleTypeBuilder()
       ..name = value is Token ? value.value! as String : value! as String;
   }
+
+  static bool _isToken(Object? value) => value != null;
 
   //------------------------------------------------------------------
   // Extended Attributes

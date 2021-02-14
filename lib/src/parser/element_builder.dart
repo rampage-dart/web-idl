@@ -92,3 +92,56 @@ class _EnumElement extends _Element implements EnumElement {
   @override
   final List<String> values;
 }
+
+//------------------------------------------------------------------
+// WebIDL member elements
+//------------------------------------------------------------------
+
+/// Builds an immutable [ArgumentElement].
+class ArgumentBuilder extends ElementBuilder<ArgumentElement> {
+  /// The type for the argument.
+  WebIdlTypeBuilder type = SingleTypeBuilder();
+
+  /// Whether the argument is optional.
+  bool isOptional = false;
+
+  /// Whether the argument is variadic.
+  bool isVariadic = false;
+
+  /// The value the argument defaults to.
+  Object? defaultTo;
+
+  @override
+  ArgumentElement build() => _ArgumentElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        type: type.build(),
+        isOptional: isOptional,
+        isVariadic: isVariadic,
+        defaultTo: defaultTo,
+      );
+}
+
+@immutable
+class _ArgumentElement extends _Element implements ArgumentElement {
+  _ArgumentElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.type,
+    required this.isOptional,
+    required this.isVariadic,
+    required this.defaultTo,
+  }) : super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final WebIdlType type;
+
+  @override
+  final bool isOptional;
+
+  @override
+  final bool isVariadic;
+
+  @override
+  final Object? defaultTo;
+}
