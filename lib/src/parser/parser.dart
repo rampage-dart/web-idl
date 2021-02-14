@@ -61,6 +61,18 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
+  Parser<List<ArgumentBuilder>> optionalArgumentList() =>
+      super.argumentList().map(_optionalArgumentList);
+  static List<ArgumentBuilder> _optionalArgumentList(Object? value) {
+    if (value == null) {
+      return const <ArgumentBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    return tokens[1]! as List<ArgumentBuilder>;
+  }
+
+  @override
   Parser<List<ArgumentBuilder>> argumentList() =>
       super.argumentList().map(_argumentList);
   static List<ArgumentBuilder> _argumentList(Object? value) {
