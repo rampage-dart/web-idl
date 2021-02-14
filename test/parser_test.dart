@@ -81,38 +81,76 @@ void acceptAllUnionTypes(
   });
 }
 
+void acceptArgument(
+  ArgumentElement actual,
+  String name,
+  String type, {
+  bool isOptional = false,
+  bool isVariadic = false,
+  Object? defaultTo,
+}) {
+  expect(actual.name, equals(name));
+  expect(actual.type, isA<SingleType>());
+  expect((actual.type as SingleType).name, equals(type));
+  expect(actual.isOptional, isOptional ? isTrue : isFalse);
+  expect(actual.isVariadic, isVariadic ? isTrue : isFalse);
+  expect(actual.defaultTo, defaultTo == null ? isNull : equals(defaultTo));
+}
+
 void main() {
   final grammar = WebIdlParserDefinition();
 
+  test('ArgumentList', () {
+    final parser =
+        grammar.build<List<ArgumentBuilder>>(start: grammar.argumentList).end();
+    final empty = parser.parse('').value;
+    expect(empty, isEmpty);
+
+    final singleArguments = parser
+        .parse('Foo foo')
+        .value
+        .map((element) => element.build())
+        .toList(growable: false);
+    expect(singleArguments, hasLength(1));
+    acceptArgument(singleArguments[0], 'foo', 'Foo');
+
+    final multipleArguments = parser
+        .parse('Foo foo, optional LookupOptions options = {}, long... ints')
+        .value
+        .map((e) => e.build())
+        .toList(growable: false);
+    expect(multipleArguments, hasLength(3));
+    acceptArgument(multipleArguments[0], 'foo', 'Foo');
+    acceptArgument(
+      multipleArguments[1],
+      'options',
+      'LookupOptions',
+      isOptional: true,
+      defaultTo: <String, Object?>{},
+    );
+    acceptArgument(multipleArguments[2], 'ints', 'long', isVariadic: true);
+  });
   test('Argument', () {
     final parser =
         grammar.build<ArgumentBuilder>(start: grammar.argument).end();
 
     final requiredArgument = parser.parse('Foo foo').value.build();
-    expect(requiredArgument.name, equals('foo'));
-    expect(requiredArgument.type, isA<SingleType>());
-    expect((requiredArgument.type as SingleType).name, equals('Foo'));
-    expect(requiredArgument.isOptional, isFalse);
-    expect(requiredArgument.isVariadic, isFalse);
-    expect(requiredArgument.defaultTo, isNull);
+    acceptArgument(requiredArgument, 'foo', 'Foo');
 
     final optionalArgument =
         parser.parse('optional LookupOptions options = {}').value.build();
-    expect(optionalArgument.name, equals('options'));
-    expect(optionalArgument.type, isA<SingleType>());
-    expect((optionalArgument.type as SingleType).name, equals('LookupOptions'));
-    expect(optionalArgument.isOptional, isTrue);
-    expect(optionalArgument.isVariadic, isFalse);
+    acceptArgument(
+      optionalArgument,
+      'options',
+      'LookupOptions',
+      isOptional: true,
+      defaultTo: <String, Object?>{},
+    );
     expect(optionalArgument.defaultTo, isA<Map<String, Object?>>());
     expect(optionalArgument.defaultTo, isEmpty);
 
     final variadicArgument = parser.parse('long... ints').value.build();
-    expect(variadicArgument.name, equals('ints'));
-    expect(variadicArgument.type, isA<SingleType>());
-    expect((variadicArgument.type as SingleType).name, equals('long'));
-    expect(variadicArgument.isOptional, isFalse);
-    expect(variadicArgument.isVariadic, isTrue);
-    expect(variadicArgument.defaultTo, isNull);
+    acceptArgument(variadicArgument, 'ints', 'long', isVariadic: true);
   });
   test('Enum', () {
     final parser = grammar.build<EnumBuilder>(start: grammar.enumeration).end();
