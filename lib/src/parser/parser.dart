@@ -80,6 +80,55 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
   }
 
+  @override
+  Parser<EnumBuilder> enumeration() => super.enumeration().map(_enumeration);
+  static EnumBuilder _enumeration(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return EnumBuilder()
+      ..name = tokens[1]! as String
+      ..values = tokens[3]! as List<String>;
+  }
+
+  @override
+  Parser<List<String>> enumerationValueList() =>
+      super.enumerationValueList().map(_enumerationValueList);
+  static List<String> _enumerationValueList(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return <String>[
+      tokens[0]! as String,
+      ...tokens[1]! as List<String>,
+    ];
+  }
+
+  @override
+  Parser<List<String>> enumerationValueListComma() =>
+      super.enumerationValueListComma().map(_enumerationValueListComma);
+  static List<String> _enumerationValueListComma(Object? value) {
+    if (value == null) {
+      return const <String>[];
+    }
+
+    final tokens = value as List<Object?>;
+    return tokens[1]! as List<String>;
+  }
+
+  @override
+  Parser<List<String>> enumerationValueListString() =>
+      super.enumerationValueListString().map(_enumerationValueListString);
+  static List<String> _enumerationValueListString(Object? value) {
+    if (value == null) {
+      return const <String>[];
+    }
+
+    final tokens = value as List<Object?>;
+    return <String>[
+      tokens[0]! as String,
+      ...tokens[1]! as List<String>,
+    ];
+  }
+
   //------------------------------------------------------------------
   // Types
   //------------------------------------------------------------------
