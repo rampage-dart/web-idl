@@ -60,7 +60,7 @@ class _FragmentElement extends _Element implements FragmentElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required Iterable<EnumElement> enumerations,
-  })   : enumerations = List.unmodifiable(enumerations),
+  })  : enumerations = List.unmodifiable(enumerations),
         super(name: name, extendedAttributes: extendedAttributes);
 
   @override
@@ -86,7 +86,7 @@ class _EnumElement extends _Element implements EnumElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required Iterable<String> values,
-  })   : values = List.unmodifiable(values),
+  })  : values = List.unmodifiable(values),
         super(name: name, extendedAttributes: extendedAttributes);
 
   @override

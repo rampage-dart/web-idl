@@ -48,7 +48,7 @@ class _UnionType extends _WebIdlType implements UnionType {
     required Iterable<Object> extendedAttributes,
     required bool isNullable,
     required Iterable<WebIdlType> memberTypes,
-  })   : memberTypes = List<WebIdlType>.unmodifiable(memberTypes),
+  })  : memberTypes = List<WebIdlType>.unmodifiable(memberTypes),
         super(
           extendedAttributes: extendedAttributes,
           isNullable: isNullable,
@@ -81,7 +81,7 @@ class _SingleType extends _WebIdlType implements SingleType {
     required bool isNullable,
     required this.name,
     required Iterable<WebIdlType> typeArguments,
-  })   : typeArguments = List<WebIdlType>.unmodifiable(typeArguments),
+  })  : typeArguments = List<WebIdlType>.unmodifiable(typeArguments),
         super(
           extendedAttributes: extendedAttributes,
           isNullable: isNullable,
