@@ -285,6 +285,7 @@ NamespaceMembers ::
 NamespaceMember ::
     RegularOperation
     readonly AttributeRest
+    Const
 
 Dictionary ::
     dictionary identifier Inheritance { DictionaryMembers } ;
