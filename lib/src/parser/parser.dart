@@ -9,12 +9,6 @@ import 'element_builder.dart';
 import 'grammar.dart';
 import 'type_builder.dart';
 
-/// WebIDL parser.
-class WebIdlParser extends GrammarParser {
-  /// Creates an instance of the [WebIdlParser] class.
-  WebIdlParser() : super(WebIdlParserDefinition());
-}
-
 /// WebIDL parser definition.
 ///
 /// Parser for the [WebIDL specification](https://heycam.github.io/webidl).

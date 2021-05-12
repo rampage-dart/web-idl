@@ -5,7 +5,7 @@ analyzer:
 
   strong-mode:
     implicit-casts: false
-    implicit-dynamic: false
+    implicit-dynamic: true
 
   plugins:
     - dart_code_metrics
