@@ -7,11 +7,13 @@ analyzer:
     implicit-casts: false
     implicit-dynamic: false
 
+  plugins:
+    - dart_code_metrics
+
   exclude:
     - example/*.dart
 
   errors:
-    avoid_as: ignore
     comment_references: ignore
     flutter_style_todos: ignore
     always_use_package_imports: ignore
@@ -21,6 +23,25 @@ analyzer:
     always_specify_types: ignore
     prefer_double_quotes: ignore
     unnecessary_final: ignore
+
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    lines-of-executable-code: 50
+    maximum-nesting-level: 5
+    number-of-parameters: 4
+    source-lines-of-code: 50
+  metrics-exclude:
+    - test/**
+  rules:
+    - no-boolean-literal-compare
+    - no-empty-block
+    - prefer-trailing-comma
+    - prefer-conditional-expressions
+    - no-equal-then-else
 
 linter:
   rules:
