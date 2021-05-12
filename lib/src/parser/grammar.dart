@@ -5,28 +5,20 @@
 
 import 'package:petitparser/petitparser.dart';
 
-/// WebIDL grammar.
-class WebIdlGrammar extends GrammarParser {
-  /// Creates an instance of the [WebIdlGrammar] class.
-  WebIdlGrammar() : super(WebIdlGrammarDefinition());
-}
-
 /// WebIDL grammar definition.
 ///
 /// Implementation of the [WebIDL grammar]
 /// (https://heycam.github.io/webidl/#idl-grammar).
 class WebIdlGrammarDefinition extends GrammarDefinition {
   @override
-  Parser start() => ref(definitions).end();
+  Parser start() => ref0(definitions).end();
 
   /// Parses the [input] token.
   Parser token(Object input) {
     if (input is Parser) {
-      return input.token().trim(ref(_hidden));
+      return input.token().trim(ref0(_hidden));
     } else if (input is String) {
       return token(input.toParser());
-    } else if (input is Function) {
-      return token(ref(input));
     }
 
     throw ArgumentError.value(input, 'invalid token parser');
@@ -37,116 +29,116 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   ///
   /// This is the root of the grammar.
   Parser definitions() =>
-      (ref(extendedAttributeList) & ref(definition) & ref(definitions))
+      (ref0(extendedAttributeList) & ref0(definition) & ref0(definitions))
           .optional();
 
   /// A `Definition` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Definition).
   Parser definition() =>
-      ref(callbackOrInterfaceOrMixin) |
-      ref(namespace) |
-      ref(partial) |
-      ref(dictionary) |
-      ref(enumeration) |
-      ref(typeDefinition) |
-      ref(includesStatement);
+      ref0(callbackOrInterfaceOrMixin) |
+      ref0(namespace) |
+      ref0(partial) |
+      ref0(dictionary) |
+      ref0(enumeration) |
+      ref0(typeDefinition) |
+      ref0(includesStatement);
 
   /// An `ArgumentNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentNameKeyword).
   Parser argumentNameKeyword() =>
-      ref(asyncKeyword) |
-      ref(attributeKeyword) |
-      ref(callbackKeyword) |
-      ref(constructorKeyword) |
-      ref(constKeyword) | // Needs to come after constructor
-      ref(deleterKeyword) |
-      ref(dictionaryKeyword) |
-      ref(enumKeyword) |
-      ref(getterKeyword) |
-      ref(includesKeyword) |
-      ref(inheritKeyword) |
-      ref(interfaceKeyword) |
-      ref(iterableKeyword) |
-      ref(maplikeKeyword) |
-      ref(mixinKeyword) |
-      ref(namespaceKeyword) |
-      ref(partialKeyword) |
-      ref(readonlyKeyword) |
-      ref(requiredKeyword) |
-      ref(setlikeKeyword) |
-      ref(setterKeyword) |
-      ref(staticKeyword) |
-      ref(stringifierKeyword) |
-      ref(typedefKeyword) |
-      ref(unrestrictedKeyword);
+      ref0(asyncKeyword) |
+      ref0(attributeKeyword) |
+      ref0(callbackKeyword) |
+      ref0(constructorKeyword) |
+      ref0(constKeyword) | // Needs to come after constructor
+      ref0(deleterKeyword) |
+      ref0(dictionaryKeyword) |
+      ref0(enumKeyword) |
+      ref0(getterKeyword) |
+      ref0(includesKeyword) |
+      ref0(inheritKeyword) |
+      ref0(interfaceKeyword) |
+      ref0(iterableKeyword) |
+      ref0(maplikeKeyword) |
+      ref0(mixinKeyword) |
+      ref0(namespaceKeyword) |
+      ref0(partialKeyword) |
+      ref0(readonlyKeyword) |
+      ref0(requiredKeyword) |
+      ref0(setlikeKeyword) |
+      ref0(setterKeyword) |
+      ref0(staticKeyword) |
+      ref0(stringifierKeyword) |
+      ref0(typedefKeyword) |
+      ref0(unrestrictedKeyword);
 
   /// A `CallbackOrInterfaceOrMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackOrInterfaceOrMixin).
   Parser callbackOrInterfaceOrMixin() =>
-      (ref(callbackKeyword) & ref(callbackRestOrInterface)) |
-      (ref(interfaceKeyword) & ref(interfaceOrMixin));
+      (ref0(callbackKeyword) & ref0(callbackRestOrInterface)) |
+      (ref0(interfaceKeyword) & ref0(interfaceOrMixin));
 
   /// An `InterfaceOrMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceOrMixin).
-  Parser interfaceOrMixin() => ref(interfaceRest) | ref(mixinRest);
+  Parser interfaceOrMixin() => ref0(interfaceRest) | ref0(mixinRest);
 
   /// An `InterfaceRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceRest).
   Parser interfaceRest() =>
-      ref(identifier) &
-      ref(inheritance) &
-      ref(token, '{') &
-      ref(interfaceMembers) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(identifier) &
+      ref0(inheritance) &
+      ref1(token, '{') &
+      ref0(interfaceMembers) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// A `Partial` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Partial).
-  Parser partial() => ref(partialKeyword) & ref(partialDefinition);
+  Parser partial() => ref0(partialKeyword) & ref0(partialDefinition);
 
   /// A `PartialDefinition` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialDefinition).
   Parser partialDefinition() {
     final interface =
-        ref(interfaceKeyword) & ref(partialInterfaceOrPartialMixin);
+        ref0(interfaceKeyword) & ref0(partialInterfaceOrPartialMixin);
 
-    return interface | ref(partialDictionary) | ref(namespace);
+    return interface | ref0(partialDictionary) | ref0(namespace);
   }
 
   /// A `PartialInterfaceOrPartialMixin` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceOrPartialMixin).
   Parser partialInterfaceOrPartialMixin() =>
-      ref(partialInterfaceRest) | ref(mixinRest);
+      ref0(partialInterfaceRest) | ref0(mixinRest);
 
   /// A `PartialInterfaceRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceRest).
   Parser partialInterfaceRest() =>
-      ref(identifier) &
-      ref(token, '{') &
-      ref(partialInterfaceMembers) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(identifier) &
+      ref1(token, '{') &
+      ref0(partialInterfaceMembers) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// An `InterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceMembers).
   Parser interfaceMembers() {
-    final members = ref(extendedAttributeList) &
-        ref(interfaceMember) &
-        ref(interfaceMembers);
+    final members = ref0(extendedAttributeList) &
+        ref0(interfaceMember) &
+        ref0(interfaceMembers);
 
     return members.optional();
   }
 
   /// An `InterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceMember).
-  Parser interfaceMember() => ref(partialInterfaceMember) | ref(constructor);
+  Parser interfaceMember() => ref0(partialInterfaceMember) | ref0(constructor);
 
   /// A `PartialInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMembers).
   Parser partialInterfaceMembers() {
-    final members = ref(extendedAttributeList) &
-        ref(partialInterfaceMember) &
-        ref(partialInterfaceMembers);
+    final members = ref0(extendedAttributeList) &
+        ref0(partialInterfaceMember) &
+        ref0(partialInterfaceMembers);
 
     return members.optional();
   }
@@ -154,334 +146,334 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `PartialInterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMember).
   Parser partialInterfaceMember() =>
-      ref(constant) |
-      ref(stringifier) |
-      ref(staticMember) |
-      ref(iterable) |
-      ref(asyncIterable) |
-      ref(readOnlyMember) |
-      ref(readWriteAttribute) |
-      ref(readWriteMaplike) |
-      ref(readWriteSetlike) |
-      ref(inheritAttribute) |
-      ref(operation);
+      ref0(constant) |
+      ref0(stringifier) |
+      ref0(staticMember) |
+      ref0(iterable) |
+      ref0(asyncIterable) |
+      ref0(readOnlyMember) |
+      ref0(readWriteAttribute) |
+      ref0(readWriteMaplike) |
+      ref0(readWriteSetlike) |
+      ref0(inheritAttribute) |
+      ref0(operation);
 
   /// An `Inheritance` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Inheritance).
-  Parser inheritance() => (ref(token, ':') & ref(identifier)).optional();
+  Parser inheritance() => (ref1(token, ':') & ref0(identifier)).optional();
 
   /// A `MixinRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MixinRest).
   Parser mixinRest() =>
-      ref(mixinKeyword) &
-      ref(identifier) &
-      ref(token, '{') &
-      ref(mixinMembers) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(mixinKeyword) &
+      ref0(identifier) &
+      ref1(token, '{') &
+      ref0(mixinMembers) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// A `MixinMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MixinMembers).
   Parser mixinMembers() =>
-      (ref(extendedAttributeList) & ref(mixinMember) & ref(mixinMembers))
+      (ref0(extendedAttributeList) & ref0(mixinMember) & ref0(mixinMembers))
           .optional();
 
   /// A `MixinMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MixinMember).
   Parser mixinMember() =>
-      ref(constant) |
-      ref(regularOperation) |
-      ref(stringifier) |
-      (ref(optionalReadOnly) & ref(attributeRest));
+      ref0(constant) |
+      ref0(regularOperation) |
+      ref0(stringifier) |
+      (ref0(optionalReadOnly) & ref0(attributeRest));
 
   /// An `IncludesStatement` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IncludesStatement).
   Parser includesStatement() =>
-      ref(identifier) &
-      ref(includesKeyword) &
-      ref(identifier) &
-      ref(token, ';');
+      ref0(identifier) &
+      ref0(includesKeyword) &
+      ref0(identifier) &
+      ref1(token, ';');
 
   /// A `CallbackRestOrInterface` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRestOrInterface).
   Parser callbackRestOrInterface() {
-    final interface = ref(interfaceKeyword) &
-        ref(identifier) &
-        ref(token, '{') &
-        ref(callbackInterfaceMembers) &
-        ref(token, '}') &
-        ref(token, ';');
+    final interface = ref0(interfaceKeyword) &
+        ref0(identifier) &
+        ref1(token, '{') &
+        ref0(callbackInterfaceMembers) &
+        ref1(token, '}') &
+        ref1(token, ';');
 
-    return ref(callbackRest) | interface;
+    return ref0(callbackRest) | interface;
   }
 
   /// A `CallbackInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackInterfaceMembers).
   Parser callbackInterfaceMembers() {
-    final members = ref(extendedAttributeList) &
-        ref(callbackInterfaceMember) &
-        ref(callbackInterfaceMembers);
+    final members = ref0(extendedAttributeList) &
+        ref0(callbackInterfaceMember) &
+        ref0(callbackInterfaceMembers);
 
     return members.optional();
   }
 
   /// A `CallbackInterfaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackInterfaceMember).
-  Parser callbackInterfaceMember() => ref(constant) | ref(regularOperation);
+  Parser callbackInterfaceMember() => ref0(constant) | ref0(regularOperation);
 
   /// A `Const` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Const).
   Parser constant() =>
-      ref(constKeyword) &
-      ref(constantType) &
-      ref(identifier) &
-      ref(token, '=') &
-      ref(constantValue) &
-      ref(token, ';');
+      ref0(constKeyword) &
+      ref0(constantType) &
+      ref0(identifier) &
+      ref1(token, '=') &
+      ref0(constantValue) &
+      ref1(token, ';');
 
   /// A `ConstValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ConstValue).
   Parser constantValue() =>
-      ref(booleanLiteral) | ref(floatLiteral) | ref(integer);
+      ref0(booleanLiteral) | ref0(floatLiteral) | ref0(integer);
 
   /// A `BooleanLiteral` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BooleanLiteral).
-  Parser booleanLiteral() => ref(token, 'true') | ref(token, 'false');
+  Parser booleanLiteral() => ref1(token, 'true') | ref1(token, 'false');
 
   /// A `FloatLiteral` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatLiteral).
   Parser floatLiteral() =>
-      ref(decimal) |
-      ref(token, '-Infinity') |
-      ref(token, 'Infinity') |
-      ref(token, 'NaN');
+      ref0(decimal) |
+      ref1(token, '-Infinity') |
+      ref1(token, 'Infinity') |
+      ref1(token, 'NaN');
 
   /// A `ConstType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ConstType).
-  Parser constantType() => ref(primitiveType) | ref(identifier);
+  Parser constantType() => ref0(primitiveType) | ref0(identifier);
 
   /// A `ReadOnlyMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadOnlyMember).
-  Parser readOnlyMember() => ref(readonlyKeyword) & ref(readOnlyMemberRest);
+  Parser readOnlyMember() => ref0(readonlyKeyword) & ref0(readOnlyMemberRest);
 
   /// A `ReadOnlyMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadOnlyMemberRest).
   Parser readOnlyMemberRest() =>
-      ref(attributeRest) | ref(maplikeRest) | ref(setlikeRest);
+      ref0(attributeRest) | ref0(maplikeRest) | ref0(setlikeRest);
 
   /// A `ReadWriteAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteAttribute).
-  Parser readWriteAttribute() => ref(attributeRest);
+  Parser readWriteAttribute() => ref0(attributeRest);
 
   /// An `InheritAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InheritAttribute)
-  Parser inheritAttribute() => ref(inheritKeyword) & ref(attributeRest);
+  Parser inheritAttribute() => ref0(inheritKeyword) & ref0(attributeRest);
 
   /// An `AttributeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeRest).
   Parser attributeRest() =>
-      ref(attributeKeyword) &
-      ref(typeWithExtendedAttributes) &
-      ref(attributeName) &
-      ref(token, ';');
+      ref0(attributeKeyword) &
+      ref0(typeWithExtendedAttributes) &
+      ref0(attributeName) &
+      ref1(token, ';');
 
   /// An `AttributeName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeName).
-  Parser attributeName() => ref(attributeNameKeyword) | ref(identifier);
+  Parser attributeName() => ref0(attributeNameKeyword) | ref0(identifier);
 
   /// An `AttributeNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AttributeNameKeyword).
-  Parser attributeNameKeyword() => ref(asyncKeyword) | ref(requiredKeyword);
+  Parser attributeNameKeyword() => ref0(asyncKeyword) | ref0(requiredKeyword);
 
   /// An `OptionalReadOnly` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalReadOnly).
-  Parser optionalReadOnly() => ref(readonlyKeyword).optional();
+  Parser optionalReadOnly() => ref0(readonlyKeyword).optional();
 
   /// A `DefaultValue` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DefaultValue).
   Parser defaultValue() =>
-      ref(constantValue) |
-      ref(stringLiteral) |
-      (ref(token, '[') & ref(token, ']')) |
-      (ref(token, '{') & ref(token, '}')) |
-      ref(token, 'null');
+      ref0(constantValue) |
+      ref0(stringLiteral) |
+      (ref1(token, '[') & ref1(token, ']')) |
+      (ref1(token, '{') & ref1(token, '}')) |
+      ref1(token, 'null');
 
   /// An `Operation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Operation).
-  Parser operation() => ref(regularOperation) | ref(specialOperation);
+  Parser operation() => ref0(regularOperation) | ref0(specialOperation);
 
   /// A `RegularOperation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RegularOperation).
-  Parser regularOperation() => ref(type) & ref(operationRest);
+  Parser regularOperation() => ref0(type) & ref0(operationRest);
 
   /// A `SpecialOperation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SpecialOperation).
-  Parser specialOperation() => ref(special) & ref(regularOperation);
+  Parser specialOperation() => ref0(special) & ref0(regularOperation);
 
   /// A `Special` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Special).
   Parser special() =>
-      ref(getterKeyword) | ref(setterKeyword) | ref(deleterKeyword);
+      ref0(getterKeyword) | ref0(setterKeyword) | ref0(deleterKeyword);
 
   /// An `OperationRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OperationRest).
   Parser operationRest() =>
-      ref(optionalOperationName) &
-      ref(token, '(') &
-      ref(argumentList) &
-      ref(token, ')') &
-      ref(token, ';');
+      ref0(optionalOperationName) &
+      ref1(token, '(') &
+      ref0(argumentList) &
+      ref1(token, ')') &
+      ref1(token, ';');
 
   /// An `OptionalOperationName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalOperationName).
-  Parser optionalOperationName() => ref(operationName).optional();
+  Parser optionalOperationName() => ref0(operationName).optional();
 
   /// An `OperationName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OperationName).
-  Parser operationName() => ref(operationNameKeyword) | ref(identifier);
+  Parser operationName() => ref0(operationNameKeyword) | ref0(identifier);
 
   /// An `OperationNameKeyword` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OperationNameKeyword).
-  Parser operationNameKeyword() => ref(includesKeyword);
+  Parser operationNameKeyword() => ref0(includesKeyword);
 
   /// An `ArgumentList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentList).
-  Parser argumentList() => (ref(argument) & ref(arguments)).optional();
+  Parser argumentList() => (ref0(argument) & ref0(arguments)).optional();
 
   /// An `Arguments` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Arguments).
   Parser arguments() =>
-      (ref(token, ',') & ref(argument) & ref(arguments)).optional();
+      (ref1(token, ',') & ref0(argument) & ref0(arguments)).optional();
 
   /// An `Argument` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Argument).
-  Parser argument() => ref(extendedAttributeList) & ref(argumentRest);
+  Parser argument() => ref0(extendedAttributeList) & ref0(argumentRest);
 
   /// An `ArgumentRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentRest).
   Parser argumentRest() {
-    final optional = ref(token, 'optional') &
-        ref(typeWithExtendedAttributes) &
-        ref(argumentName) &
-        ref(defaultTo);
-    final require = ref(type) & ref(ellipsis) & ref(argumentName);
+    final optional = ref1(token, 'optional') &
+        ref0(typeWithExtendedAttributes) &
+        ref0(argumentName) &
+        ref0(defaultTo);
+    final require = ref0(type) & ref0(ellipsis) & ref0(argumentName);
 
     return optional | require;
   }
 
   /// An `ArgumentName` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentName).
-  Parser argumentName() => ref(argumentNameKeyword) | ref(identifier);
+  Parser argumentName() => ref0(argumentNameKeyword) | ref0(identifier);
 
   /// An `Ellipsis` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Ellipsis).
-  Parser ellipsis() => ref(token, '...').optional();
+  Parser ellipsis() => ref1(token, '...').optional();
 
   /// A `Constructor` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Constructor).
   Parser constructor() =>
-      ref(constructorKeyword) &
-      ref(token, '(') &
-      ref(argumentList) &
-      ref(token, ')') &
-      ref(token, ';');
+      ref0(constructorKeyword) &
+      ref1(token, '(') &
+      ref0(argumentList) &
+      ref1(token, ')') &
+      ref1(token, ';');
 
   /// A `Stringifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Stringifier).
-  Parser stringifier() => ref(stringifierKeyword) & ref(stringifierRest);
+  Parser stringifier() => ref0(stringifierKeyword) & ref0(stringifierRest);
 
   /// A `StringifierRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringifierRest).
   Parser stringifierRest() =>
-      (ref(optionalReadOnly) & ref(attributeRest)) |
-      ref(regularOperation) |
-      ref(token, ';');
+      (ref0(optionalReadOnly) & ref0(attributeRest)) |
+      ref0(regularOperation) |
+      ref1(token, ';');
 
   /// A `StaticMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StaticMember).
-  Parser staticMember() => ref(staticKeyword) & ref(staticMemberRest);
+  Parser staticMember() => ref0(staticKeyword) & ref0(staticMemberRest);
 
   /// A `StaticMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StaticMemberRest).
   Parser staticMemberRest() =>
-      (ref(optionalReadOnly) & ref(attributeRest)) | ref(regularOperation);
+      (ref0(optionalReadOnly) & ref0(attributeRest)) | ref0(regularOperation);
 
   /// An `Iterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Iterable).
   Parser iterable() =>
-      ref(iterableKeyword) &
-      ref(token, '<') &
-      ref(typeWithExtendedAttributes) &
-      ref(optionalType) &
-      ref(token, '>') &
-      ref(token, ';');
+      ref0(iterableKeyword) &
+      ref1(token, '<') &
+      ref0(typeWithExtendedAttributes) &
+      ref0(optionalType) &
+      ref1(token, '>') &
+      ref1(token, ';');
 
   /// An `OptionalType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalType).
   Parser optionalType() =>
-      (ref(token, ',') & ref(typeWithExtendedAttributes)).optional();
+      (ref1(token, ',') & ref0(typeWithExtendedAttributes)).optional();
 
   /// An `AsyncIterable` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-AsyncIterable).
   Parser asyncIterable() =>
-      ref(asyncKeyword) &
-      ref(iterableKeyword) &
-      ref(token, '<') &
-      ref(typeWithExtendedAttributes) &
-      ref(optionalType) &
-      ref(token, '>') &
-      ref(optionalArgumentList) &
-      ref(token, ';');
+      ref0(asyncKeyword) &
+      ref0(iterableKeyword) &
+      ref1(token, '<') &
+      ref0(typeWithExtendedAttributes) &
+      ref0(optionalType) &
+      ref1(token, '>') &
+      ref0(optionalArgumentList) &
+      ref1(token, ';');
 
   /// An `OptionalArgumentList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalArgumentList).
   Parser optionalArgumentList() =>
-      (ref(token, '(') & ref(argumentList) & ref(token, ')')).optional();
+      (ref1(token, '(') & ref0(argumentList) & ref1(token, ')')).optional();
 
   /// A `ReadWriteMaplike` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteMaplike).
-  Parser readWriteMaplike() => ref(maplikeRest);
+  Parser readWriteMaplike() => ref0(maplikeRest);
 
   /// A `MaplikeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-MaplikeRest).
   Parser maplikeRest() =>
-      ref(maplikeKeyword) &
-      ref(token, '<') &
-      ref(typeWithExtendedAttributes) &
-      ref(token, ',') &
-      ref(typeWithExtendedAttributes) &
-      ref(token, '>') &
-      ref(token, ';');
+      ref0(maplikeKeyword) &
+      ref1(token, '<') &
+      ref0(typeWithExtendedAttributes) &
+      ref1(token, ',') &
+      ref0(typeWithExtendedAttributes) &
+      ref1(token, '>') &
+      ref1(token, ';');
 
   /// A `ReadWriteSetlike` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ReadWriteSetlike).
-  Parser readWriteSetlike() => ref(setlikeRest);
+  Parser readWriteSetlike() => ref0(setlikeRest);
 
   /// A `SetlikeRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SetlikeRest).
   Parser setlikeRest() =>
-      ref(setlikeKeyword) &
-      ref(token, '<') &
-      ref(typeWithExtendedAttributes) &
-      ref(token, '>') &
-      ref(token, ';');
+      ref0(setlikeKeyword) &
+      ref1(token, '<') &
+      ref0(typeWithExtendedAttributes) &
+      ref1(token, '>') &
+      ref1(token, ';');
 
   /// A `Namespace` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Namespace).
   Parser namespace() =>
-      ref(namespaceKeyword) &
-      ref(identifier) &
-      ref(token, '{') &
-      ref(namespaceMembers) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(namespaceKeyword) &
+      ref0(identifier) &
+      ref1(token, '{') &
+      ref0(namespaceMembers) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// A `NamespaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-NamespaceMembers).
   Parser namespaceMembers() {
-    final members = ref(extendedAttributeList) &
-        ref(namespaceMember) &
-        ref(namespaceMembers);
+    final members = ref0(extendedAttributeList) &
+        ref0(namespaceMember) &
+        ref0(namespaceMembers);
 
     return members.optional();
   }
@@ -489,40 +481,40 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `NamespaceMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-NamespaceMember).
   Parser namespaceMember() =>
-      ref(regularOperation) |
-      (ref(readonlyKeyword) & ref(attributeRest)) |
-      ref(constant);
+      ref0(regularOperation) |
+      (ref0(readonlyKeyword) & ref0(attributeRest)) |
+      ref0(constant);
 
   /// A `Dictionary` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Dictionary).
   Parser dictionary() =>
-      ref(dictionaryKeyword) &
-      ref(identifier) &
-      ref(inheritance) &
-      ref(token, '{') &
-      ref(dictionaryMembers) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(dictionaryKeyword) &
+      ref0(identifier) &
+      ref0(inheritance) &
+      ref1(token, '{') &
+      ref0(dictionaryMembers) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// A `DictionaryMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMembers).
   Parser dictionaryMembers() =>
-      (ref(dictionaryMember) & ref(dictionaryMembers)).optional();
+      (ref0(dictionaryMember) & ref0(dictionaryMembers)).optional();
 
   /// A `DictionaryMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMember).
   Parser dictionaryMember() =>
-      ref(extendedAttributeList) & ref(dictionaryMemberRest);
+      ref0(extendedAttributeList) & ref0(dictionaryMemberRest);
 
   /// A `DictionaryMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMemberRest).
   Parser dictionaryMemberRest() {
-    final require = ref(requiredKeyword) &
-        ref(typeWithExtendedAttributes) &
-        ref(identifier) &
-        ref(token, ';');
+    final require = ref0(requiredKeyword) &
+        ref0(typeWithExtendedAttributes) &
+        ref0(identifier) &
+        ref1(token, ';');
     final member =
-        ref(type) & ref(identifier) & ref(defaultTo) & ref(token, ';');
+        ref0(type) & ref0(identifier) & ref0(defaultTo) & ref1(token, ';');
 
     return require | member;
   }
@@ -530,201 +522,202 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `PartialDictionary` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialDictionary).
   Parser partialDictionary() =>
-      ref(dictionaryKeyword) &
-      ref(identifier) &
-      ref(token, '{') &
-      ref(dictionaryMembers) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(dictionaryKeyword) &
+      ref0(identifier) &
+      ref1(token, '{') &
+      ref0(dictionaryMembers) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// A `Default` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Default).
-  Parser defaultTo() => (ref(token, '=') & ref(defaultValue)).optional();
+  Parser defaultTo() => (ref1(token, '=') & ref0(defaultValue)).optional();
 
   /// An `Enum` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Enum).
   Parser enumeration() =>
-      ref(enumKeyword) &
-      ref(identifier) &
-      ref(token, '{') &
-      ref(enumerationValueList) &
-      ref(token, '}') &
-      ref(token, ';');
+      ref0(enumKeyword) &
+      ref0(identifier) &
+      ref1(token, '{') &
+      ref0(enumerationValueList) &
+      ref1(token, '}') &
+      ref1(token, ';');
 
   /// An `EnumValueList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueList).
   Parser enumerationValueList() =>
-      ref(stringLiteral) & ref(enumerationValueListComma);
+      ref0(stringLiteral) & ref0(enumerationValueListComma);
 
   /// An `EnumValueListComma` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueListComma).
   Parser enumerationValueListComma() =>
-      (ref(token, ',') & ref(enumerationValueListString)).optional();
+      (ref1(token, ',') & ref0(enumerationValueListString)).optional();
 
   /// An `EnumValueListString` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-EnumValueListString).
   Parser enumerationValueListString() =>
-      (ref(stringLiteral) & ref(enumerationValueListComma)).optional();
+      (ref0(stringLiteral) & ref0(enumerationValueListComma)).optional();
 
   /// A `CallbackRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRest).
   Parser callbackRest() =>
-      ref(identifier) &
-      ref(token, '=') &
-      ref(type) &
-      ref(token, '(') &
-      ref(argumentList) &
-      ref(token, ')') &
-      ref(token, ';');
+      ref0(identifier) &
+      ref1(token, '=') &
+      ref0(type) &
+      ref1(token, '(') &
+      ref0(argumentList) &
+      ref1(token, ')') &
+      ref1(token, ';');
 
   /// A `Typedef` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Typedef).
   Parser typeDefinition() =>
-      ref(typedefKeyword) &
-      ref(typeWithExtendedAttributes) &
-      ref(identifier) &
-      ref(token, ';');
+      ref0(typedefKeyword) &
+      ref0(typeWithExtendedAttributes) &
+      ref0(identifier) &
+      ref1(token, ';');
 
   /// A `Type` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Type).
-  Parser type() => ref(singleType) | (ref(unionType) & ref(nullable));
+  Parser type() => ref0(singleType) | (ref0(unionType) & ref0(nullable));
 
   /// A `TypeWithExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-TypeWithExtendedAttributes).
-  Parser typeWithExtendedAttributes() => ref(extendedAttributeList) & ref(type);
+  Parser typeWithExtendedAttributes() =>
+      ref0(extendedAttributeList) & ref0(type);
 
   /// A `SingleType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SingleType).
   Parser singleType() =>
-      ref(token, 'any') | ref(promiseType) | ref(distinguishableType);
+      ref1(token, 'any') | ref0(promiseType) | ref0(distinguishableType);
 
   /// An `UnionType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionType).
   Parser unionType() =>
-      ref(token, '(') &
-      ref(unionMemberType) &
-      ref(token, 'or') &
-      ref(unionMemberType) &
-      ref(unionMemberTypes) &
-      ref(token, ')');
+      ref1(token, '(') &
+      ref0(unionMemberType) &
+      ref1(token, 'or') &
+      ref0(unionMemberType) &
+      ref0(unionMemberTypes) &
+      ref1(token, ')');
 
   /// An `UnionMemberType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionMemberType).
   Parser unionMemberType() =>
-      (ref(extendedAttributeList) & ref(distinguishableType)) |
-      (ref(unionType) & ref(nullable));
+      (ref0(extendedAttributeList) & ref0(distinguishableType)) |
+      (ref0(unionType) & ref0(nullable));
 
   /// An `UnionMemberTypes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionMemberTypes).
   Parser unionMemberTypes() =>
-      (ref(token, 'or') & ref(unionMemberType) & ref(unionMemberTypes))
+      (ref1(token, 'or') & ref0(unionMemberType) & ref0(unionMemberTypes))
           .optional();
 
   /// A `DistinguishableType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DistinguishableType).
   Parser distinguishableType() {
-    final sequenceType = ref(token, 'sequence') &
-        ref(token, '<') &
-        ref(typeWithExtendedAttributes) &
-        ref(token, '>');
-    final frozenArrayType = ref(token, 'FrozenArray') &
-        ref(token, '<') &
-        ref(typeWithExtendedAttributes) &
-        ref(token, '>');
-    final observableArrayType = ref(token, 'ObservableArray') &
-        ref(token, '<') &
-        ref(typeWithExtendedAttributes) &
-        ref(token, '>');
+    final sequenceType = ref1(token, 'sequence') &
+        ref1(token, '<') &
+        ref0(typeWithExtendedAttributes) &
+        ref1(token, '>');
+    final frozenArrayType = ref1(token, 'FrozenArray') &
+        ref1(token, '<') &
+        ref0(typeWithExtendedAttributes) &
+        ref1(token, '>');
+    final observableArrayType = ref1(token, 'ObservableArray') &
+        ref1(token, '<') &
+        ref0(typeWithExtendedAttributes) &
+        ref1(token, '>');
 
-    final types = ref(primitiveType) |
-        ref(stringType) |
+    final types = ref0(primitiveType) |
+        ref0(stringType) |
         sequenceType |
-        ref(token, 'object') |
-        ref(token, 'symbol') |
-        ref(bufferRelatedType) |
+        ref1(token, 'object') |
+        ref1(token, 'symbol') |
+        ref0(bufferRelatedType) |
         frozenArrayType |
         observableArrayType |
-        ref(recordType) |
+        ref0(recordType) |
         // This is purposefully at the bottom since its a catch all
-        ref(identifier);
+        ref0(identifier);
 
-    return types & ref(nullable);
+    return types & ref0(nullable);
   }
 
   /// A `PrimitiveType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PrimitiveType).
   Parser primitiveType() =>
-      ref(unsignedIntegerType) |
-      ref(unrestrictedFloatType) |
-      ref(token, 'undefined') |
-      ref(token, 'boolean') |
-      ref(token, 'byte') |
-      ref(token, 'octet') |
-      ref(token, 'bigint');
+      ref0(unsignedIntegerType) |
+      ref0(unrestrictedFloatType) |
+      ref1(token, 'undefined') |
+      ref1(token, 'boolean') |
+      ref1(token, 'byte') |
+      ref1(token, 'octet') |
+      ref1(token, 'bigint');
 
   /// An `UnrestrictedFloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnrestrictedFloatType).
   Parser unrestrictedFloatType() =>
-      ref(token, 'unrestricted').optional() & ref(floatType);
+      ref1(token, 'unrestricted').optional() & ref0(floatType);
 
   /// A `FloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatType).
-  Parser floatType() => ref(token, 'float') | ref(token, 'double');
+  Parser floatType() => ref1(token, 'float') | ref1(token, 'double');
 
   /// An `UnsignedIntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnsignedIntegerType).
   Parser unsignedIntegerType() =>
-      ref(token, 'unsigned').optional() & ref(integerType);
+      ref1(token, 'unsigned').optional() & ref0(integerType);
 
   /// An `IntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IntegerType).
   Parser integerType() =>
-      ref(token, 'short') | (ref(token, 'long') & ref(optionalLong));
+      ref1(token, 'short') | (ref1(token, 'long') & ref0(optionalLong));
 
   /// A `OptionalLong` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalLong).
-  Parser optionalLong() => ref(token, 'long').optional();
+  Parser optionalLong() => ref1(token, 'long').optional();
 
   /// A `StringType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringType).
   Parser stringType() =>
-      ref(token, 'ByteString') |
-      ref(token, 'DOMString') |
-      ref(token, 'USVString');
+      ref1(token, 'ByteString') |
+      ref1(token, 'DOMString') |
+      ref1(token, 'USVString');
 
   /// A `PromiseType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PromiseType).
   Parser promiseType() =>
-      ref(token, 'Promise') & ref(token, '<') & ref(type) & ref(token, '>');
+      ref1(token, 'Promise') & ref1(token, '<') & ref0(type) & ref1(token, '>');
 
   /// A `RecordType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RecordType).
   Parser recordType() =>
-      ref(token, 'record') &
-      ref(token, '<') &
-      ref(stringType) &
-      ref(token, ',') &
-      ref(typeWithExtendedAttributes) &
-      ref(token, '>');
+      ref1(token, 'record') &
+      ref1(token, '<') &
+      ref0(stringType) &
+      ref1(token, ',') &
+      ref0(typeWithExtendedAttributes) &
+      ref1(token, '>');
 
   /// A `Null` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Null).
-  Parser nullable() => ref(token, '?').optional();
+  Parser nullable() => ref1(token, '?').optional();
 
   /// A `BufferRelatedType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BufferRelatedType).
   Parser bufferRelatedType() =>
-      ref(token, 'ArrayBuffer') |
-      ref(token, 'DataView') |
-      ref(token, 'Int8Array') |
-      ref(token, 'Int16Array') |
-      ref(token, 'Int32Array') |
-      ref(token, 'Uint8Array') |
-      ref(token, 'Uint16Array') |
-      ref(token, 'Uint32Array') |
-      ref(token, 'Uint8ClampedArray') |
-      ref(token, 'Float32Array') |
-      ref(token, 'Float64Array');
+      ref1(token, 'ArrayBuffer') |
+      ref1(token, 'DataView') |
+      ref1(token, 'Int8Array') |
+      ref1(token, 'Int16Array') |
+      ref1(token, 'Int32Array') |
+      ref1(token, 'Uint8Array') |
+      ref1(token, 'Uint16Array') |
+      ref1(token, 'Uint32Array') |
+      ref1(token, 'Uint8ClampedArray') |
+      ref1(token, 'Float32Array') |
+      ref1(token, 'Float64Array');
 
   //------------------------------------------------------------------
   // Extended Attributes
@@ -737,10 +730,10 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
   Parser extendedAttributeList() {
-    final attributes = ref(token, '[') &
-        ref(extendedAttribute) &
-        ref(extendedAttributes) &
-        ref(token, ']');
+    final attributes = ref1(token, '[') &
+        ref0(extendedAttribute) &
+        ref0(extendedAttributes) &
+        ref1(token, ']');
 
     return attributes.optional();
   }
@@ -748,58 +741,61 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `ExtendedAttributes` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributes).
   Parser extendedAttributes() =>
-      (ref(token, ',') & ref(extendedAttribute) & ref(extendedAttributes))
+      (ref1(token, ',') & ref0(extendedAttribute) & ref0(extendedAttributes))
           .optional();
 
   /// An `ExtendedAttribute` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttribute).
   Parser extendedAttribute() =>
-      ref(extendedAttributeArgList) |
-      ref(extendedAttributeIdent) |
-      ref(extendedAttributeIdentList) |
-      ref(extendedAttributeNamedArgList) |
-      ref(extendedAttributeNoArgs);
+      ref0(extendedAttributeArgList) |
+      ref0(extendedAttributeIdent) |
+      ref0(extendedAttributeIdentList) |
+      ref0(extendedAttributeNamedArgList) |
+      ref0(extendedAttributeNoArgs);
 
   /// An `IdentifierList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IdentifierList).
-  Parser identifierList() => ref(identifier) & ref(identifiers);
+  Parser identifierList() => ref0(identifier) & ref0(identifiers);
 
   /// An `Identifiers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Identifiers).
   Parser identifiers() =>
-      (ref(token, ',') & ref(identifier) & ref(identifiers)).optional();
+      (ref1(token, ',') & ref0(identifier) & ref0(identifiers)).optional();
 
   /// An `ExtendedAttributeNoArgs` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeNoArgs).
-  Parser extendedAttributeNoArgs() => ref(identifier);
+  Parser extendedAttributeNoArgs() => ref0(identifier);
 
   /// An `ExtendedAttributeArgList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeArgList).
   Parser extendedAttributeArgList() =>
-      ref(identifier) & ref(token, '(') & ref(argumentList) & ref(token, ')');
+      ref0(identifier) &
+      ref1(token, '(') &
+      ref0(argumentList) &
+      ref1(token, ')');
 
   /// An `ExtendedAttributeIdent` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeIdent).
   Parser extendedAttributeIdent() =>
-      ref(identifier) & ref(token, '=') & ref(identifier);
+      ref0(identifier) & ref1(token, '=') & ref0(identifier);
 
   /// An `ExtendedAttributeIdentList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeIdentList).
   Parser extendedAttributeIdentList() =>
-      ref(identifier) &
-      ref(token, '=') &
-      ref(token, '(') &
-      ref(identifierList) &
-      ref(token, ')');
+      ref0(identifier) &
+      ref1(token, '=') &
+      ref1(token, '(') &
+      ref0(identifierList) &
+      ref1(token, ')');
 
   /// An `ExtendedAttributeNamedArgList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeNamedArgList).
   Parser extendedAttributeNamedArgList() =>
-      ref(identifier) &
-      ref(token, '=') &
-      ref(token, '(') &
-      ref(argumentList) &
-      ref(token, ')');
+      ref0(identifier) &
+      ref1(token, '=') &
+      ref1(token, '(') &
+      ref0(argumentList) &
+      ref1(token, ')');
 
   //------------------------------------------------------------------
   // Lexical tokens
@@ -807,7 +803,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Identifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-identifier).
-  Parser identifier() => ref(token, _identifier);
+  Parser identifier() => ref1(token, ref0(_identifier));
   Parser _identifier() =>
       pattern('_-').optional() &
       pattern('a-zA-Z') &
@@ -831,8 +827,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// A hexadecimal, base 16, `Integer`.
   Parser hexadecimalInteger() =>
-      string('0x') & ref(_hexadecimalDigit).plus() |
-      string('0X') & ref(_hexadecimalDigit).plus();
+      string('0x') & ref0(_hexadecimalDigit).plus() |
+      string('0X') & ref0(_hexadecimalDigit).plus();
 
   Parser _hexadecimalDigit() => pattern('0-9a-fA-F');
 
@@ -863,17 +859,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   // Whitespace and comments.
   // -----------------------------------------------------------------
 
-  Parser _hidden() => ref(_hiddenStuff).plus();
+  Parser _hidden() => ref0(_hiddenStuff).plus();
 
   Parser _hiddenStuff() =>
-      whitespace() | ref(_singleLineComment) | ref(_multiLineComment);
+      whitespace() | ref0(_singleLineComment) | ref0(_multiLineComment);
 
   Parser _singleLineComment() =>
-      string('//') & ref(_newLine).neg().star() & ref(_newLine).optional();
+      string('//') & ref0(_newLine).neg().star() & ref0(_newLine).optional();
 
   Parser _multiLineComment() =>
       string('/*') &
-      (ref(_multiLineComment) | string('*/').neg()).star() &
+      (ref0(_multiLineComment) | string('*/').neg()).star() &
       string('*/');
 
   Parser _newLine() => pattern('\n\r');
@@ -883,77 +879,77 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   //------------------------------------------------------------------
 
   /// The `async` keyword.
-  Parser asyncKeyword() => ref(token, 'async');
+  Parser asyncKeyword() => ref1(token, 'async');
 
   /// The `attribute` keyword.
-  Parser attributeKeyword() => ref(token, 'attribute');
+  Parser attributeKeyword() => ref1(token, 'attribute');
 
   /// The `callback` keyword.
-  Parser callbackKeyword() => ref(token, 'callback');
+  Parser callbackKeyword() => ref1(token, 'callback');
 
   /// The `const` keyword.
-  Parser constKeyword() => ref(token, 'const');
+  Parser constKeyword() => ref1(token, 'const');
 
   /// The `constructor` keyword.
-  Parser constructorKeyword() => ref(token, 'constructor');
+  Parser constructorKeyword() => ref1(token, 'constructor');
 
   /// The `deleter` keyword.
-  Parser deleterKeyword() => ref(token, 'deleter');
+  Parser deleterKeyword() => ref1(token, 'deleter');
 
   /// The `dictionary` keyword.
-  Parser dictionaryKeyword() => ref(token, 'dictionary');
+  Parser dictionaryKeyword() => ref1(token, 'dictionary');
 
   /// The `enum` keyword.
-  Parser enumKeyword() => ref(token, 'enum');
+  Parser enumKeyword() => ref1(token, 'enum');
 
   /// The `getter` keyword.
-  Parser getterKeyword() => ref(token, 'getter');
+  Parser getterKeyword() => ref1(token, 'getter');
 
   /// The `includes` keyword.
-  Parser includesKeyword() => ref(token, 'includes');
+  Parser includesKeyword() => ref1(token, 'includes');
 
   /// The `inherit` keyword.
-  Parser inheritKeyword() => ref(token, 'inherit');
+  Parser inheritKeyword() => ref1(token, 'inherit');
 
   /// The `interface` keyword.
-  Parser interfaceKeyword() => ref(token, 'interface');
+  Parser interfaceKeyword() => ref1(token, 'interface');
 
   /// The `iterable` keyword.
-  Parser iterableKeyword() => ref(token, 'iterable');
+  Parser iterableKeyword() => ref1(token, 'iterable');
 
   /// The `maplike` keyword.
-  Parser maplikeKeyword() => ref(token, 'maplike');
+  Parser maplikeKeyword() => ref1(token, 'maplike');
 
   /// The `mixin` keyword.
-  Parser mixinKeyword() => ref(token, 'mixin');
+  Parser mixinKeyword() => ref1(token, 'mixin');
 
   /// The `namespace` keyword.
-  Parser namespaceKeyword() => ref(token, 'namespace');
+  Parser namespaceKeyword() => ref1(token, 'namespace');
 
   /// The `partial` keyword.
-  Parser partialKeyword() => ref(token, 'partial');
+  Parser partialKeyword() => ref1(token, 'partial');
 
   /// The `readonly` keyword.
-  Parser readonlyKeyword() => ref(token, 'readonly');
+  Parser readonlyKeyword() => ref1(token, 'readonly');
 
   /// The `required` keyword.
-  Parser requiredKeyword() => ref(token, 'required');
+  Parser requiredKeyword() => ref1(token, 'required');
 
   /// The `setlike` keyword.
-  Parser setlikeKeyword() => ref(token, 'setlike');
+  Parser setlikeKeyword() => ref1(token, 'setlike');
 
   /// The `setter` keyword.
-  Parser setterKeyword() => ref(token, 'setter');
+  Parser setterKeyword() => ref1(token, 'setter');
 
   /// The `static` keyword.
-  Parser staticKeyword() => ref(token, 'static');
+  Parser staticKeyword() => ref1(token, 'static');
 
   /// The `stringifier` keyword.
-  Parser stringifierKeyword() => ref(token, 'stringifier');
+  Parser stringifierKeyword() => ref1(token, 'stringifier');
 
   /// The `typedef` keyword.
-  Parser typedefKeyword() => ref(token, 'typedef');
+  Parser typedefKeyword() => ref1(token, 'typedef');
 
   /// The `unrestricted` keyword.
-  Parser unrestrictedKeyword() => ref(token, 'unrestricted');
+  Parser unrestrictedKeyword() => ref1(token, 'unrestricted');
 }

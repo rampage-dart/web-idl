@@ -15,7 +15,7 @@ Future<void> main() async {
   final webIdlSpecs = await findTests('test/web_idl_spec').toList();
 
   group('Web API IDLs', () {
-    final parser = WebIdlGrammar();
+    final parser = WebIdlGrammarDefinition().build();
 
     for (final file in webApiSpecs) {
       test(basenameWithoutExtension(file.path), () async {
@@ -26,7 +26,7 @@ Future<void> main() async {
   });
 
   group('spec idls', () {
-    final parser = WebIdlGrammar();
+    final parser = WebIdlGrammarDefinition().build();
 
     for (final file in webIdlSpecs) {
       test(basenameWithoutExtension(file.path), () async {
