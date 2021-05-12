@@ -6,10 +6,10 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:test/test.dart';
 
-import 'package:web_idl/web_idl.dart';
 import 'package:web_idl/src/parser/element_builder.dart';
 import 'package:web_idl/src/parser/parser.dart';
 import 'package:web_idl/src/parser/type_builder.dart';
+import 'package:web_idl/web_idl.dart';
 
 import 'strings/types.dart' as types;
 
@@ -192,7 +192,7 @@ void main() {
 
     acceptAllUnionTypes(parser, <String, Map<String, Object>>{
       '(double or (sequence<long> or Event) or (Node or DOMString)?)':
-          nestedUnionType
+          nestedUnionType,
     });
   });
   test('DistinguishableType', () {
@@ -375,7 +375,7 @@ Map<String, Object> _singleType(
       'name': name,
       'extendedAttributes': extendedAttributes,
       'isNullable': isNullable,
-      'typeArguments': typeArguments
+      'typeArguments': typeArguments,
     };
 
 Map<String, Object> _unionType(
@@ -431,20 +431,24 @@ Map<String, Map<String, Object>> _singleTypesFromStrings(
   Iterable<String> names,
 ) =>
     Map<String, Map<String, Object>>.fromEntries(
-      names.map((type) => MapEntry<String, Map<String, Object>>(
-            type,
-            _singleTypeFromString(type),
-          )),
+      names.map(
+        (type) => MapEntry<String, Map<String, Object>>(
+          type,
+          _singleTypeFromString(type),
+        ),
+      ),
     );
 
 Map<String, Map<String, Object>> _unionTypesFromString(
   Iterable<String> names,
 ) =>
     Map<String, Map<String, Object>>.fromEntries(
-      names.map((type) => MapEntry<String, Map<String, Object>>(
-            type,
-            _unionTypeFromString(type),
-          )),
+      names.map(
+        (type) => MapEntry<String, Map<String, Object>>(
+          type,
+          _unionTypeFromString(type),
+        ),
+      ),
     );
 
 final Map<String, Map<String, Object>> _singleTypes =

@@ -258,7 +258,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     tokenUnionMemberTypes.memberTypes = <WebIdlTypeBuilder>[
       tokens[1]! as WebIdlTypeBuilder,
       tokens[3]! as WebIdlTypeBuilder,
-      ...tokenUnionMemberTypes.memberTypes
+      ...tokenUnionMemberTypes.memberTypes,
     ];
 
     return tokenUnionMemberTypes;

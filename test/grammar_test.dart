@@ -117,7 +117,8 @@ void main() {
         accept(parser),
       );
       expect(
-        'MutationCallback = void (sequence<MutationRecord> mutations, MutationObserver observer);',
+        'MutationCallback = void '
+        '(sequence<MutationRecord> mutations, MutationObserver observer);',
         accept(parser),
       );
     });
