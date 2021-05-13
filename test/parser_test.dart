@@ -100,6 +100,18 @@ void acceptArgument(
 void main() {
   final grammar = WebIdlParserDefinition();
 
+  test('RegularOperation', () {
+    final parser =
+        grammar.build<OperationBuilder>(start: grammar.regularOperation).end();
+
+    final emptyArgumentList = parser.parse('undefined f();').value.build();
+    acceptType(
+      emptyArgumentList.returnType,
+      _singleTypeFromString('undefined'),
+    );
+    expect(emptyArgumentList.name, equals('f'));
+    expect(emptyArgumentList.arguments, isEmpty);
+  });
   test('ArgumentList', () {
     final parser =
         grammar.build<List<ArgumentBuilder>>(start: grammar.argumentList).end();

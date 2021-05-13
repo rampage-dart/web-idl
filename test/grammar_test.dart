@@ -177,6 +177,13 @@ void main() {
       rejectAll(parser, _validIdentifiers);
     });
   });
+  group('RegularOperation', () {
+    final parser =
+        grammar.build<Object?>(start: grammar.regularOperation).end();
+    test('accept', () {
+      acceptAll(parser, _regularOperations);
+    });
+  });
   group('ArgumentList', () {
     final parser = grammar.build<Object?>(start: grammar.argumentList).end();
     test('accept', () {
@@ -626,6 +633,13 @@ final _partial = <String>[
   'partial interface mixin Foo {};',
   'partial namespace Foo {};',
   'partial dictionary Foo {};',
+];
+
+final _regularOperations = <String>[
+  'undefined f();',
+  'Point triangulate(Circle c1, Circle c2, Circle c3);',
+  'undefined f(Node a, DOMString b, double... c);',
+  'object createColor(double v1, double v2, double v3, optional double alpha);',
 ];
 
 final _argumentNameKeywords = <String>[
