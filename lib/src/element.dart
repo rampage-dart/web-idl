@@ -37,6 +37,15 @@ abstract class EnumElement implements Element {
   List<String> get values;
 }
 
+/// A definition used to declare a new name for a type.
+///
+/// This new name is not exposed by language bindings; it is purely used as a
+/// shorthand for referencing the type in the IDL.
+abstract class TypeAliasElement implements Element {
+  /// The type being aliased.
+  WebIdlType get type;
+}
+
 //------------------------------------------------------------------
 // WebIDL member elements
 //------------------------------------------------------------------

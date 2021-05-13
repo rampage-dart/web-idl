@@ -214,6 +214,17 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     ];
   }
 
+  @override
+  Parser<TypeAliasBuilder> typeDefinition() =>
+      super.typeDefinition().map(_typeDefinition);
+  static TypeAliasBuilder _typeDefinition(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return TypeAliasBuilder()
+      ..type = tokens[1]! as WebIdlTypeBuilder
+      ..name = tokens[2]! as String;
+  }
+
   //------------------------------------------------------------------
   // Types
   //------------------------------------------------------------------

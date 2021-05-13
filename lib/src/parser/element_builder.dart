@@ -93,6 +93,31 @@ class _EnumElement extends _Element implements EnumElement {
   final List<String> values;
 }
 
+/// Builds an immutable [TypeAliasElement].
+class TypeAliasBuilder extends ElementBuilder<TypeAliasElement> {
+  /// The type being aliased.
+  WebIdlTypeBuilder type = SingleTypeBuilder();
+
+  @override
+  TypeAliasElement build() => _TypeAliasElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        type: type.build(),
+      );
+}
+
+@immutable
+class _TypeAliasElement extends _Element implements TypeAliasElement {
+  _TypeAliasElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.type,
+  }) : super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final WebIdlType type;
+}
+
 //------------------------------------------------------------------
 // WebIDL member elements
 //------------------------------------------------------------------
