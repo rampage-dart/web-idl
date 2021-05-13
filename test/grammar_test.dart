@@ -109,6 +109,20 @@ void main() {
       expect('namespace Foo { };', reject(parser));
     });
   });
+  group('Typedef', () {
+    final parser = grammar.build<Object?>(start: grammar.typeDefinition).end();
+    test('accept', () {
+      // Single type
+      expect('typedef unsigned long long DOMTimeStamp;', accept(parser));
+      // Union type
+      expect(
+        'typedef (Int8Array or Int16Array or Int32Array or '
+        'Uint8Array or Uint16Array or Uint32Array or Uint8ClampedArray or '
+        'Float32Array or Float64Array or DataView) ArrayBufferView;',
+        accept(parser),
+      );
+    });
+  });
   group('CallbackRest', () {
     final parser = grammar.build<Object?>(start: grammar.callbackRest).end();
     test('accept', () {

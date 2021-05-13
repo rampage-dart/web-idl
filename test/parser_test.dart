@@ -164,6 +164,24 @@ void main() {
     expect(enumeration.values[1], equals('noodles'));
     expect(enumeration.values[2], equals('other'));
   });
+  test('Typedef', () {
+    final parser =
+        grammar.build<TypeAliasBuilder>(start: grammar.typeDefinition).end();
+
+    const singleTypeString = 'unsigned long long';
+    final singleTypeAlias =
+        parser.parse('typedef $singleTypeString DOMTimeStamp;').value.build();
+    expect(singleTypeAlias.name, equals('DOMTimeStamp'));
+    acceptType(singleTypeAlias.type, _singleTypeFromString(singleTypeString));
+
+    const unionTypeString = '(Int8Array or Int16Array or Int32Array or '
+        'Uint8Array or Uint16Array or Uint32Array or Uint8ClampedArray or '
+        'Float32Array or Float64Array or DataView)';
+    final unionTypeAlias =
+        parser.parse('typedef $unionTypeString ArrayBufferView;').value.build();
+    expect(unionTypeAlias.name, equals('ArrayBufferView'));
+    acceptType(unionTypeAlias.type, _unionTypeFromString(unionTypeString));
+  });
   test('Type', () {
     final parser = grammar.build<WebIdlTypeBuilder>(start: grammar.type).end();
     acceptAllSingleTypes(parser, _singleTypes);
