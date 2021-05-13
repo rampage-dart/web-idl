@@ -575,6 +575,8 @@ void main() {
       expect('Float32Array Float32Array', reject(parser));
       expect('Float64Array Float64Array', reject(parser));
 
+      // Similarly named
+      expect('ArrayBufferView', reject(parser));
       // Nullable type
       rejectAll(parser, types.bufferRelatedTypes.map(types.nullable));
       // Unrelated types
@@ -659,6 +661,7 @@ final _validIdentifiers = <String>[
   // DOM names
   'Element',
   'MutationObserver',
+  'ArrayBufferView',
 ];
 
 final _invalidIdentifiers = <String>[

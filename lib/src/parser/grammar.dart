@@ -14,15 +14,30 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser start() => ref0(definitions).end();
 
   /// Parses the [input] token.
-  Parser token(Object input) {
-    if (input is Parser) {
-      return input.token().trim(ref0(_hidden));
-    } else if (input is String) {
-      return token(input.toParser());
+  Parser token(Object source, [String? message]) {
+    if (source is String) {
+      return source
+          .toParser(message: 'expected ${message ?? source}')
+          .token()
+          .trim(ref0(_hidden));
+    } else if (source is Parser) {
+      ArgumentError.checkNotNull(message, 'message');
+      return source.flatten('expected $message').token().trim(ref0(_hidden));
     }
 
-    throw ArgumentError.value(input, 'invalid token parser');
+    throw ArgumentError('unknown token type: $source');
   }
+
+  /// Reference to a production [callback] that takes a [builtin] type name.
+  ///
+  /// Ensures that the whole word is matched to allow type identifiers that
+  /// start with the same characters as a builtin type. As an example
+  /// `ArrayBufferView` shouldn't match with `ArrayBuffer`.
+  Parser refBuiltinType(
+    Parser Function(Object, String?) callback,
+    String builtin,
+  ) =>
+      ref2(token, builtin.toParser() & word().not(), builtin);
 
   /// The `Definitions` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Definitions).
@@ -589,7 +604,9 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `SingleType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SingleType).
   Parser singleType() =>
-      ref1(token, 'any') | ref0(promiseType) | ref0(distinguishableType);
+      refBuiltinType(token, 'any') |
+      ref0(promiseType) |
+      ref0(distinguishableType);
 
   /// An `UnionType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnionType).
@@ -681,9 +698,9 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `StringType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringType).
   Parser stringType() =>
-      ref1(token, 'ByteString') |
-      ref1(token, 'DOMString') |
-      ref1(token, 'USVString');
+      refBuiltinType(token, 'ByteString') |
+      refBuiltinType(token, 'DOMString') |
+      refBuiltinType(token, 'USVString');
 
   /// A `PromiseType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PromiseType).
@@ -707,17 +724,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `BufferRelatedType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BufferRelatedType).
   Parser bufferRelatedType() =>
-      ref1(token, 'ArrayBuffer') |
-      ref1(token, 'DataView') |
-      ref1(token, 'Int8Array') |
-      ref1(token, 'Int16Array') |
-      ref1(token, 'Int32Array') |
-      ref1(token, 'Uint8Array') |
-      ref1(token, 'Uint16Array') |
-      ref1(token, 'Uint32Array') |
-      ref1(token, 'Uint8ClampedArray') |
-      ref1(token, 'Float32Array') |
-      ref1(token, 'Float64Array');
+      refBuiltinType(token, 'ArrayBuffer') |
+      refBuiltinType(token, 'DataView') |
+      refBuiltinType(token, 'Int8Array') |
+      refBuiltinType(token, 'Int16Array') |
+      refBuiltinType(token, 'Int32Array') |
+      refBuiltinType(token, 'Uint8Array') |
+      refBuiltinType(token, 'Uint16Array') |
+      refBuiltinType(token, 'Uint32Array') |
+      refBuiltinType(token, 'Uint8ClampedArray') |
+      refBuiltinType(token, 'Float32Array') |
+      refBuiltinType(token, 'Float64Array');
 
   //------------------------------------------------------------------
   // Extended Attributes
@@ -803,7 +820,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
 
   /// An `Identifier` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#prod-identifier).
-  Parser identifier() => ref1(token, ref0(_identifier));
+  Parser identifier() => ref2(token, ref0(_identifier), 'identifier');
   Parser _identifier() =>
       pattern('_-').optional() &
       pattern('a-zA-Z') &
