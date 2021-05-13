@@ -170,3 +170,45 @@ class _ArgumentElement extends _Element implements ArgumentElement {
   @override
   final Object? defaultTo;
 }
+
+/// Builds an immutable [OperationElement].
+class OperationBuilder extends ElementBuilder<OperationElement> {
+  /// The return type for the operation.
+  WebIdlTypeBuilder returnType = SingleTypeBuilder();
+
+  /// The [SpecialOperation] type; if applicable.
+  SpecialOperation? operationType;
+
+  /// The arguments for the operation.
+  List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
+
+  @override
+  OperationElement build() => _OperationElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        returnType: returnType.build(),
+        operationType: operationType,
+        arguments: arguments.map((b) => b.build()),
+      );
+}
+
+@immutable
+class _OperationElement extends _Element implements OperationElement {
+  _OperationElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.returnType,
+    required this.operationType,
+    required Iterable<ArgumentElement> arguments,
+  })  : arguments = List.unmodifiable(arguments),
+        super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final WebIdlType returnType;
+
+  @override
+  final SpecialOperation? operationType;
+
+  @override
+  final List<ArgumentElement> arguments;
+}

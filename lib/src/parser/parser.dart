@@ -5,6 +5,7 @@
 
 import 'package:petitparser/petitparser.dart';
 
+import '../element.dart';
 import 'element_builder.dart';
 import 'grammar.dart';
 import 'type_builder.dart';
@@ -52,6 +53,56 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
 
     // Matches ConstValue | string
     return value!;
+  }
+
+  @override
+  Parser<OperationBuilder> operation() =>
+      super.operation().cast<OperationBuilder>();
+
+  @override
+  Parser<OperationBuilder> regularOperation() =>
+      super.regularOperation().map(_regularOperation);
+  static OperationBuilder _regularOperation(Object? value) {
+    final tokens = value! as List<Object?>;
+    final builder = tokens[1]! as OperationBuilder;
+
+    return builder..returnType = tokens[0]! as WebIdlTypeBuilder;
+  }
+
+  @override
+  Parser<OperationBuilder> specialOperation() =>
+      super.specialOperation().map(_specialOperation);
+  static OperationBuilder _specialOperation(Object? value) {
+    final tokens = value! as List<Object?>;
+    final builder = tokens[1]! as OperationBuilder;
+
+    return builder..operationType = tokens[0]! as SpecialOperation;
+  }
+
+  @override
+  Parser<SpecialOperation> special() => super.special().map(_special);
+  static SpecialOperation _special(Object? value) {
+    final token = value! as Token;
+
+    switch (token.value as String) {
+      case 'getter':
+        return SpecialOperation.getter;
+      case 'setter':
+        return SpecialOperation.setter;
+      default:
+        return SpecialOperation.deleter;
+    }
+  }
+
+  @override
+  Parser<OperationBuilder> operationRest() =>
+      super.operationRest().map(_operationRest);
+  static OperationBuilder _operationRest(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return OperationBuilder()
+      ..name = tokens[0]! as String
+      ..arguments = tokens[2]! as List<ArgumentBuilder>;
   }
 
   @override

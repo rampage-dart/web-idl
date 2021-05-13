@@ -73,3 +73,46 @@ extension RequiredArgumentElement on ArgumentElement {
   /// Whether the argument is required.
   bool get isRequired => !isOptional;
 }
+
+/// Defines a behavior that can be invoked on objects implementing the
+/// interface.
+abstract class OperationElement implements Element {
+  /// The type returned by the operation.
+  WebIdlType get returnType;
+
+  /// The [SpecialOperation] type; if applicable.
+  SpecialOperation? get operationType;
+
+  /// The arguments for the operation.
+  List<ArgumentElement> get arguments;
+}
+
+/// Extension for checking if an [OperationElement] is regular.
+extension OperationElementType on OperationElement {
+  /// Whether the operation is regular.
+  ///
+  /// Returns `true` if [operationType] is `null`; `false` otherwise.
+  bool get isRegular => operationType == null;
+
+  /// Whether the operation is special.
+  ///
+  /// Returns `true` if [operationType] is not `null`; `false` otherwise.
+  bool get isSpecial => operationType != null;
+}
+
+/// A declaration of a certain kind of special behavior on objects implementing
+/// the interface on which the special operation declarations appear.
+enum SpecialOperation {
+  /// Defines behavior for when an object is indexed for property retrieval.
+  getter,
+
+  /// Defines behavior for when an object is indexed for property assignment or
+  /// creation.
+  setter,
+
+  /// Defines behavior for when an object is indexed for property deletion.
+  deleter,
+
+  /// Defines how an object is converted into a DOMString.
+  stringifier,
+}
