@@ -33,7 +33,12 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser<String> argumentNameKeyword() => super.argumentNameKeyword().flatten();
+  Parser<ElementBuilder> definition() =>
+      super.definition().cast<ElementBuilder>();
+
+  @override
+  Parser<ElementBuilder> partialDefinition() =>
+      super.partialDefinition().cast<ElementBuilder>();
 
   @override
   Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
