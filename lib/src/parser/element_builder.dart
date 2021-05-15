@@ -204,6 +204,44 @@ class _AttributeElement extends _Element implements AttributeElement {
   final bool readOnly;
 }
 
+/// Builds an immutable [ConstantElement].
+class ConstantBuilder extends ElementBuilder<ConstantElement> {
+  /// The type for the constant.
+  ///
+  /// The type is limited primitive types (boolean, floating point or integer),
+  /// and their type aliases.
+  SingleTypeBuilder type = SingleTypeBuilder();
+
+  /// The constant's value.
+  ///
+  /// The value will be a boolean, a floating point number or an integer.
+  Object value = 0;
+
+  @override
+  ConstantElement build() => _ConstantElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        type: type.build(),
+        value: value,
+      );
+}
+
+@immutable
+class _ConstantElement extends _Element implements ConstantElement {
+  _ConstantElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.type,
+    required this.value,
+  }) : super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final SingleType type;
+
+  @override
+  final Object value;
+}
+
 /// Builds an immutable [OperationElement].
 class OperationBuilder extends ElementBuilder<OperationElement> {
   /// The return type for the operation.

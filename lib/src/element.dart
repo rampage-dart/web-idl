@@ -90,6 +90,20 @@ extension ReadWriteAttributeElement on AttributeElement {
   bool get readWrite => !readOnly;
 }
 
+/// A declaration used to bind a constant value to a name.
+abstract class ConstantElement implements Element {
+  /// The type for the constant.
+  ///
+  /// The type is limited primitive types (boolean, floating point or integer),
+  /// and their type aliases.
+  SingleType get type;
+
+  /// The constant's value.
+  ///
+  /// The value will be a boolean, a floating point number or an integer.
+  Object get value;
+}
+
 /// Defines a behavior that can be invoked on objects implementing the
 /// interface.
 abstract class OperationElement implements Element {

@@ -227,6 +227,20 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser<bool> ellipsis() => super.ellipsis().map(_isToken);
 
   @override
+  Parser<ConstantBuilder> constant() => super.constant().map(_constant);
+  static ConstantBuilder _constant(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return ConstantBuilder()
+      ..name = tokens[2]! as String
+      ..type = tokens[1]! as SingleTypeBuilder
+      ..value = tokens[4]!;
+  }
+
+  @override
+  Parser<Object> constantValue() => super.constantValue().cast<Object>();
+
+  @override
   Parser<bool> booleanLiteral() => super.booleanLiteral().map(_booleanLiteral);
   static bool _booleanLiteral(Object? value) =>
       (value! as Token).value == 'true';
