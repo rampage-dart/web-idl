@@ -3,6 +3,9 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+// \TODO Remove after WebIdlParserDefinition completely defined
+// ignore_for_file: unnecessary_overrides
+
 import 'package:petitparser/petitparser.dart';
 
 import '../element.dart';
@@ -42,8 +45,103 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       super.argumentNameKeyword().cast<keywords.Keyword>();
 
   @override
+  Parser callbackOrInterfaceOrMixin() => super.callbackOrInterfaceOrMixin();
+
+  @override
+  Parser interfaceOrMixin() => super.interfaceOrMixin();
+
+  @override
+  Parser interfaceRest() => super.interfaceRest();
+
+  @override
+  Parser partial() => super.partial();
+
+  @override
   Parser<ElementBuilder> partialDefinition() =>
       super.partialDefinition().cast<ElementBuilder>();
+
+  @override
+  Parser partialInterfaceOrPartialMixin() =>
+      super.partialInterfaceOrPartialMixin();
+
+  @override
+  Parser partialInterfaceRest() => super.partialInterfaceRest();
+
+  @override
+  Parser interfaceMembers() => super.interfaceMembers();
+
+  @override
+  Parser interfaceMember() => super.interfaceMembers();
+
+  @override
+  Parser partialInterfaceMembers() => super.partialInterfaceMembers();
+
+  @override
+  Parser partialInterfaceMember() => super.partialInterfaceMember();
+
+  @override
+  Parser inheritance() => super.inheritance();
+
+  @override
+  Parser mixinRest() => super.mixinRest();
+
+  @override
+  Parser mixinMembers() => super.mixinMembers();
+
+  @override
+  Parser mixinMember() => super.mixinMember();
+
+  @override
+  Parser includesStatement() => super.includesStatement();
+
+  @override
+  Parser callbackRestOrInterface() => super.callbackRestOrInterface();
+
+  @override
+  Parser callbackInterfaceMembers() => super.callbackInterfaceMembers();
+
+  @override
+  Parser callbackInterfaceMember() => super.callbackInterfaceMember();
+
+  @override
+  Parser<ConstantBuilder> constant() => super.constant().map(_constant);
+  static ConstantBuilder _constant(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return ConstantBuilder()
+      ..name = tokens[2]! as String
+      ..type = tokens[1]! as SingleTypeBuilder
+      ..value = tokens[4]!;
+  }
+
+  @override
+  Parser<Object> constantValue() => super.constantValue().cast<Object>();
+
+  @override
+  Parser<bool> booleanLiteral() => super.booleanLiteral().map(_booleanLiteral);
+  static bool _booleanLiteral(Object? value) =>
+      (value! as Token).value == 'true';
+
+  @override
+  Parser<double> floatLiteral() => super.floatLiteral().map(_floatLiteral);
+  static double _floatLiteral(Object? value) {
+    if (value is double) {
+      return value;
+    }
+
+    final identifier = value! as Token;
+    switch (identifier.value) {
+      case '-Infinity':
+        return double.negativeInfinity;
+      case 'Infinity':
+        return double.infinity;
+      default /* 'NaN' */ :
+        return double.nan;
+    }
+  }
+
+  @override
+  Parser constantType() => super.constantType();
 
   @override
   Parser<AttributeBuilder> readOnlyMember() =>
@@ -54,6 +152,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
 
     return builder..readOnly = true;
   }
+
+  @override
+  Parser readOnlyMemberRest() => super.readOnlyMemberRest();
 
   @override
   Parser<AttributeBuilder> readWriteAttribute() =>
@@ -78,6 +179,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       ..name = tokens[2]! as String
       ..type = tokens[1]! as WebIdlTypeBuilder;
   }
+
+  @override
+  Parser attributeName() => super.attributeName();
+
+  @override
+  Parser attributeNameKeyword() => super.attributeKeyword();
+
+  @override
+  Parser optionalReadOnly() => super.optionalReadOnly();
 
   @override
   Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
@@ -150,16 +260,13 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser<List<ArgumentBuilder>> optionalArgumentList() =>
-      super.argumentList().map(_optionalArgumentList);
-  static List<ArgumentBuilder> _optionalArgumentList(Object? value) {
-    if (value == null) {
-      return const <ArgumentBuilder>[];
-    }
+  Parser optionalOperationName() => super.optionalOperationName();
 
-    final tokens = value as List<Object?>;
-    return tokens[1]! as List<ArgumentBuilder>;
-  }
+  @override
+  Parser operationName() => super.operationName();
+
+  @override
+  Parser operationNameKeyword() => super.operationNameKeyword();
 
   @override
   Parser<List<ArgumentBuilder>> argumentList() =>
@@ -224,44 +331,58 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
+  Parser argumentName() => super.argumentName();
+
+  @override
   Parser<bool> ellipsis() => super.ellipsis().map(_isToken);
 
   @override
-  Parser<ConstantBuilder> constant() => super.constant().map(_constant);
-  static ConstantBuilder _constant(Object? value) {
-    final tokens = value! as List<Object?>;
+  Parser constructor() => super.constructor();
 
-    return ConstantBuilder()
-      ..name = tokens[2]! as String
-      ..type = tokens[1]! as SingleTypeBuilder
-      ..value = tokens[4]!;
+  @override
+  Parser stringifier() => super.stringifier();
+
+  @override
+  Parser stringifierRest() => super.stringifierRest();
+
+  @override
+  Parser staticMember() => super.staticMember();
+
+  @override
+  Parser staticMemberRest() => super.staticMemberRest();
+
+  @override
+  Parser iterable() => super.iterable();
+
+  @override
+  Parser optionalType() => super.optionalType();
+
+  @override
+  Parser asyncIterable() => super.asyncIterable();
+
+  @override
+  Parser<List<ArgumentBuilder>> optionalArgumentList() =>
+      super.argumentList().map(_optionalArgumentList);
+  static List<ArgumentBuilder> _optionalArgumentList(Object? value) {
+    if (value == null) {
+      return const <ArgumentBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    return tokens[1]! as List<ArgumentBuilder>;
   }
 
   @override
-  Parser<Object> constantValue() => super.constantValue().cast<Object>();
+  Parser readWriteMaplike() => super.readWriteMaplike();
 
   @override
-  Parser<bool> booleanLiteral() => super.booleanLiteral().map(_booleanLiteral);
-  static bool _booleanLiteral(Object? value) =>
-      (value! as Token).value == 'true';
+  Parser maplikeRest() => super.maplikeRest();
 
   @override
-  Parser<double> floatLiteral() => super.floatLiteral().map(_floatLiteral);
-  static double _floatLiteral(Object? value) {
-    if (value is double) {
-      return value;
-    }
+  Parser readWriteSetlike() => super.readWriteSetlike();
 
-    final identifier = value! as Token;
-    switch (identifier.value) {
-      case '-Infinity':
-        return double.negativeInfinity;
-      case 'Infinity':
-        return double.infinity;
-      default /* 'NaN' */ :
-        return double.nan;
-    }
-  }
+  @override
+  Parser setlikeRest() => super.setlikeRest();
 
   @override
   Parser<NamespaceBuilder> namespace() => super.namespace().map(_namespace);
@@ -312,6 +433,21 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     final tokens = value! as List<Object?>;
     return tokens[1]! as ElementBuilder;
   }
+
+  @override
+  Parser dictionary() => super.dictionary();
+
+  @override
+  Parser dictionaryMembers() => super.dictionaryMembers();
+
+  @override
+  Parser dictionaryMember() => super.dictionaryMember();
+
+  @override
+  Parser dictionaryMemberRest() => super.dictionaryMemberRest();
+
+  @override
+  Parser partialDictionary() => super.partialDictionary();
 
   @override
   Parser<Object?> defaultTo() => super.defaultTo().map(_defaultTo);
@@ -372,6 +508,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       ...tokens[1]! as List<String>,
     ];
   }
+
+  @override
+  Parser callbackRest() => super.callbackRest();
 
   @override
   Parser<TypeAliasBuilder> typeDefinition() =>
