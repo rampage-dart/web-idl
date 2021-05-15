@@ -93,6 +93,49 @@ class _EnumElement extends _Element implements EnumElement {
   final List<String> values;
 }
 
+/// Builds an immutable [NamespaceElement].
+class NamespaceBuilder extends ElementBuilder<NamespaceElement> {
+  /// The attributes contained in the namespace.
+  List<AttributeBuilder> attributes = <AttributeBuilder>[];
+
+  /// The operations contained in the namespace.
+  List<OperationBuilder> operations = <OperationBuilder>[];
+
+  /// The constants defined in the namespace.
+  List<ConstantBuilder> constants = <ConstantBuilder>[];
+
+  @override
+  NamespaceElement build() => _NamespaceElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        attributes: attributes.map((b) => b.build()),
+        operations: operations.map((b) => b.build()),
+        constants: constants.map((b) => b.build()),
+      );
+}
+
+class _NamespaceElement extends _Element implements NamespaceElement {
+  _NamespaceElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required Iterable<AttributeElement> attributes,
+    required Iterable<OperationElement> operations,
+    required Iterable<ConstantElement> constants,
+  })  : attributes = List.unmodifiable(attributes),
+        operations = List.unmodifiable(operations),
+        constants = List.unmodifiable(constants),
+        super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final List<AttributeElement> attributes;
+
+  @override
+  final List<OperationElement> operations;
+
+  @override
+  final List<ConstantElement> constants;
+}
+
 /// Builds an immutable [TypeAliasElement].
 class TypeAliasBuilder extends ElementBuilder<TypeAliasElement> {
   /// The type being aliased.

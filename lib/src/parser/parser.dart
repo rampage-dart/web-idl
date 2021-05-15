@@ -264,6 +264,56 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
+  Parser<NamespaceBuilder> namespace() => super.namespace().map(_namespace);
+  static NamespaceBuilder _namespace(Object? value) {
+    final tokens = value! as List<Object?>;
+    final builder = NamespaceBuilder()..name = tokens[1]! as String;
+
+    final members = tokens[3]! as List<ElementBuilder>;
+    for (final member in members) {
+      if (member is AttributeBuilder) {
+        builder.attributes.add(member);
+      } else if (member is OperationBuilder) {
+        builder.operations.add(member);
+      }
+    }
+
+    return builder;
+  }
+
+  @override
+  Parser<List<ElementBuilder>> namespaceMembers() =>
+      super.namespaceMembers().map(_namespaceMembers);
+  static List<ElementBuilder> _namespaceMembers(Object? value) {
+    if (value == null) {
+      return const <ElementBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    final builder = tokens[1]! as ElementBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+
+    return <ElementBuilder>[
+      builder,
+      ...tokens[2]! as List<ElementBuilder>,
+    ];
+  }
+
+  @override
+  Parser<ElementBuilder> namespaceMember() =>
+      super.namespaceMember().map(_namespaceMember);
+  static ElementBuilder _namespaceMember(Object? value) {
+    // RegularOperation | Const
+    if (value is ElementBuilder) {
+      return value;
+    }
+
+    // readonly AttributeRest
+    final tokens = value! as List<Object?>;
+    return tokens[1]! as ElementBuilder;
+  }
+
+  @override
   Parser<Object?> defaultTo() => super.defaultTo().map(_defaultTo);
   static Object? _defaultTo(Object? value) {
     if (value == null) {

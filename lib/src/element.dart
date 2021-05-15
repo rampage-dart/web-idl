@@ -37,6 +37,18 @@ abstract class EnumElement implements Element {
   List<String> get values;
 }
 
+/// A definition that declares a global singleton with associated behaviors.
+abstract class NamespaceElement implements Element {
+  /// The attributes contained in the namespace.
+  List<AttributeElement> get attributes;
+
+  /// The operations contained in the namespace.
+  List<OperationElement> get operations;
+
+  /// The constants defined in the namespace.
+  List<ConstantElement> get constants;
+}
+
 /// A definition used to declare a new name for a type.
 ///
 /// This new name is not exposed by language bindings; it is purely used as a
