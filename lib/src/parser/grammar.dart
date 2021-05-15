@@ -5,6 +5,8 @@
 
 import 'package:petitparser/petitparser.dart';
 
+import 'keywords.dart' as keywords;
+
 /// WebIDL grammar definition.
 ///
 /// Implementation of the [WebIDL grammar]
@@ -37,7 +39,28 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
     Parser Function(Object, String?) callback,
     String builtin,
   ) =>
-      ref2(token, builtin.toParser() & word().not(), builtin);
+      _refWholeWord(callback, builtin);
+
+  /// Reference to a production [callback] that takes a [keyword].
+  ///
+  /// Ensures that the whole keyword is matched.
+  Parser refKeyword(
+    Parser Function(Object, String?) callback,
+    keywords.Keyword keyword,
+  ) =>
+      _refWholeWord(callback, keyword.token);
+
+  Parser _refWholeWord(
+    Parser Function(Object, String?) callback,
+    String value,
+  ) =>
+      ref2(callback, value.toParser() & word().not(), value);
+
+  //------------------------------------------------------------------
+  // Grammar definition
+  //
+  // Implementation of the definition in grammar.txt.
+  //------------------------------------------------------------------
 
   /// The `Definitions` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Definitions).
@@ -896,77 +919,77 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   //------------------------------------------------------------------
 
   /// The `async` keyword.
-  Parser asyncKeyword() => ref1(token, 'async');
+  Parser asyncKeyword() => refKeyword(token, keywords.async);
 
   /// The `attribute` keyword.
-  Parser attributeKeyword() => ref1(token, 'attribute');
+  Parser attributeKeyword() => refKeyword(token, keywords.attribute);
 
   /// The `callback` keyword.
-  Parser callbackKeyword() => ref1(token, 'callback');
+  Parser callbackKeyword() => refKeyword(token, keywords.callback);
 
   /// The `const` keyword.
-  Parser constKeyword() => ref1(token, 'const');
+  Parser constKeyword() => refKeyword(token, keywords.constant);
 
   /// The `constructor` keyword.
-  Parser constructorKeyword() => ref1(token, 'constructor');
+  Parser constructorKeyword() => refKeyword(token, keywords.constructor);
 
   /// The `deleter` keyword.
-  Parser deleterKeyword() => ref1(token, 'deleter');
+  Parser deleterKeyword() => refKeyword(token, keywords.deleter);
 
   /// The `dictionary` keyword.
-  Parser dictionaryKeyword() => ref1(token, 'dictionary');
+  Parser dictionaryKeyword() => refKeyword(token, keywords.dictionary);
 
   /// The `enum` keyword.
-  Parser enumKeyword() => ref1(token, 'enum');
+  Parser enumKeyword() => refKeyword(token, keywords.enumeration);
 
   /// The `getter` keyword.
-  Parser getterKeyword() => ref1(token, 'getter');
+  Parser getterKeyword() => refKeyword(token, keywords.getter);
 
   /// The `includes` keyword.
-  Parser includesKeyword() => ref1(token, 'includes');
+  Parser includesKeyword() => refKeyword(token, keywords.includes);
 
   /// The `inherit` keyword.
-  Parser inheritKeyword() => ref1(token, 'inherit');
+  Parser inheritKeyword() => refKeyword(token, keywords.inherit);
 
   /// The `interface` keyword.
-  Parser interfaceKeyword() => ref1(token, 'interface');
+  Parser interfaceKeyword() => refKeyword(token, keywords.interface);
 
   /// The `iterable` keyword.
-  Parser iterableKeyword() => ref1(token, 'iterable');
+  Parser iterableKeyword() => refKeyword(token, keywords.iterable);
 
   /// The `maplike` keyword.
-  Parser maplikeKeyword() => ref1(token, 'maplike');
+  Parser maplikeKeyword() => refKeyword(token, keywords.maplike);
 
   /// The `mixin` keyword.
-  Parser mixinKeyword() => ref1(token, 'mixin');
+  Parser mixinKeyword() => refKeyword(token, keywords.mixin);
 
   /// The `namespace` keyword.
-  Parser namespaceKeyword() => ref1(token, 'namespace');
+  Parser namespaceKeyword() => refKeyword(token, keywords.namespace);
 
   /// The `partial` keyword.
-  Parser partialKeyword() => ref1(token, 'partial');
+  Parser partialKeyword() => refKeyword(token, keywords.partial);
 
   /// The `readonly` keyword.
-  Parser readonlyKeyword() => ref1(token, 'readonly');
+  Parser readonlyKeyword() => refKeyword(token, keywords.readonly);
 
   /// The `required` keyword.
-  Parser requiredKeyword() => ref1(token, 'required');
+  Parser requiredKeyword() => refKeyword(token, keywords.required);
 
   /// The `setlike` keyword.
-  Parser setlikeKeyword() => ref1(token, 'setlike');
+  Parser setlikeKeyword() => refKeyword(token, keywords.setlike);
 
   /// The `setter` keyword.
-  Parser setterKeyword() => ref1(token, 'setter');
+  Parser setterKeyword() => refKeyword(token, keywords.setter);
 
   /// The `static` keyword.
-  Parser staticKeyword() => ref1(token, 'static');
+  Parser staticKeyword() => refKeyword(token, keywords.static);
 
   /// The `stringifier` keyword.
-  Parser stringifierKeyword() => ref1(token, 'stringifier');
+  Parser stringifierKeyword() => refKeyword(token, keywords.stringifier);
 
   /// The `typedef` keyword.
-  Parser typedefKeyword() => ref1(token, 'typedef');
+  Parser typedefKeyword() => refKeyword(token, keywords.typedef);
 
   /// The `unrestricted` keyword.
-  Parser unrestrictedKeyword() => ref1(token, 'unrestricted');
+  Parser unrestrictedKeyword() => refKeyword(token, keywords.unrestricted);
 }

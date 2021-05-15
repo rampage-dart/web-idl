@@ -8,6 +8,7 @@ import 'package:petitparser/petitparser.dart';
 import '../element.dart';
 import 'element_builder.dart';
 import 'grammar.dart';
+import 'keywords.dart' as keywords;
 import 'type_builder.dart';
 
 /// WebIDL parser definition.
@@ -35,6 +36,10 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   @override
   Parser<ElementBuilder> definition() =>
       super.definition().cast<ElementBuilder>();
+
+  @override
+  Parser<keywords.Keyword> argumentNameKeyword() =>
+      super.argumentNameKeyword().cast<keywords.Keyword>();
 
   @override
   Parser<ElementBuilder> partialDefinition() =>
@@ -89,10 +94,10 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static SpecialOperation _special(Object? value) {
     final token = value! as Token;
 
-    switch (token.value as String) {
-      case 'getter':
+    switch (token.value as keywords.Keyword) {
+      case keywords.getter:
         return SpecialOperation.getter;
-      case 'setter':
+      case keywords.setter:
         return SpecialOperation.setter;
       default:
         return SpecialOperation.deleter;
@@ -558,4 +563,108 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   @override
   Parser<double> decimal() => super.decimal().flatten().map(_decimal);
   static double _decimal(String value) => double.parse(value);
+
+  //------------------------------------------------------------------
+  // Keyword definitions.
+  //------------------------------------------------------------------
+
+  @override
+  Parser<keywords.Keyword> asyncKeyword() =>
+      super.asyncKeyword().map((_) => keywords.async);
+
+  @override
+  Parser<keywords.Keyword> attributeKeyword() =>
+      super.attributeKeyword().map((_) => keywords.attribute);
+
+  @override
+  Parser<keywords.Keyword> callbackKeyword() =>
+      super.callbackKeyword().map((_) => keywords.callback);
+
+  @override
+  Parser<keywords.Keyword> constKeyword() =>
+      super.constKeyword().map((_) => keywords.constant);
+
+  @override
+  Parser<keywords.Keyword> constructorKeyword() =>
+      super.constructorKeyword().map((_) => keywords.constructor);
+
+  @override
+  Parser<keywords.Keyword> deleterKeyword() =>
+      super.deleterKeyword().map((_) => keywords.deleter);
+
+  @override
+  Parser<keywords.Keyword> dictionaryKeyword() =>
+      super.dictionaryKeyword().map((_) => keywords.dictionary);
+
+  @override
+  Parser<keywords.Keyword> enumKeyword() =>
+      super.enumKeyword().map((_) => keywords.enumeration);
+
+  @override
+  Parser<keywords.Keyword> getterKeyword() =>
+      super.getterKeyword().map((_) => keywords.getter);
+
+  @override
+  Parser<keywords.Keyword> includesKeyword() =>
+      super.includesKeyword().map((_) => keywords.includes);
+
+  @override
+  Parser<keywords.Keyword> inheritKeyword() =>
+      super.inheritKeyword().map((_) => keywords.inherit);
+
+  @override
+  Parser<keywords.Keyword> interfaceKeyword() =>
+      super.interfaceKeyword().map((_) => keywords.interface);
+
+  @override
+  Parser<keywords.Keyword> iterableKeyword() =>
+      super.iterableKeyword().map((_) => keywords.iterable);
+
+  @override
+  Parser<keywords.Keyword> maplikeKeyword() =>
+      super.maplikeKeyword().map((_) => keywords.maplike);
+
+  @override
+  Parser<keywords.Keyword> mixinKeyword() =>
+      super.mixinKeyword().map((_) => keywords.mixin);
+
+  @override
+  Parser<keywords.Keyword> namespaceKeyword() =>
+      super.namespaceKeyword().map((_) => keywords.namespace);
+
+  @override
+  Parser<keywords.Keyword> partialKeyword() =>
+      super.partialKeyword().map((_) => keywords.partial);
+
+  @override
+  Parser<keywords.Keyword> readonlyKeyword() =>
+      super.readonlyKeyword().map((_) => keywords.readonly);
+
+  @override
+  Parser<keywords.Keyword> requiredKeyword() =>
+      super.requiredKeyword().map((_) => keywords.required);
+
+  @override
+  Parser<keywords.Keyword> setlikeKeyword() =>
+      super.setlikeKeyword().map((_) => keywords.setlike);
+
+  @override
+  Parser<keywords.Keyword> setterKeyword() =>
+      super.setterKeyword().map((_) => keywords.setter);
+
+  @override
+  Parser<keywords.Keyword> staticKeyword() =>
+      super.staticKeyword().map((_) => keywords.static);
+
+  @override
+  Parser<keywords.Keyword> stringifierKeyword() =>
+      super.stringifierKeyword().map((_) => keywords.stringifier);
+
+  @override
+  Parser<keywords.Keyword> typedefKeyword() =>
+      super.typedefKeyword().map((_) => keywords.typedef);
+
+  @override
+  Parser<keywords.Keyword> unrestrictedKeyword() =>
+      super.unrestrictedKeyword().map((_) => keywords.unrestricted);
 }
