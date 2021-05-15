@@ -396,6 +396,8 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
         builder.attributes.add(member);
       } else if (member is OperationBuilder) {
         builder.operations.add(member);
+      } else if (member is ConstantBuilder) {
+        builder.constants.add(member);
       }
     }
 
