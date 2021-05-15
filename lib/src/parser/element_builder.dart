@@ -171,6 +171,39 @@ class _ArgumentElement extends _Element implements ArgumentElement {
   final Object? defaultTo;
 }
 
+/// Builds an immutable [AttributeElement].
+class AttributeBuilder extends ElementBuilder<AttributeElement> {
+  /// The type for the attribute.
+  WebIdlTypeBuilder type = SingleTypeBuilder();
+
+  /// Whether the attribute is read only.
+  bool readOnly = false;
+
+  @override
+  AttributeElement build() => _AttributeElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        type: type.build(),
+        readOnly: readOnly,
+      );
+}
+
+@immutable
+class _AttributeElement extends _Element implements AttributeElement {
+  _AttributeElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.type,
+    required this.readOnly,
+  }) : super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final WebIdlType type;
+
+  @override
+  final bool readOnly;
+}
+
 /// Builds an immutable [OperationElement].
 class OperationBuilder extends ElementBuilder<OperationElement> {
   /// The return type for the operation.

@@ -46,6 +46,40 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       super.partialDefinition().cast<ElementBuilder>();
 
   @override
+  Parser<AttributeBuilder> readOnlyMember() =>
+      super.readOnlyMember().map(_readOnlyMember);
+  static AttributeBuilder _readOnlyMember(Object? value) {
+    final tokens = value! as List;
+    final builder = tokens[1] as AttributeBuilder;
+
+    return builder..readOnly = true;
+  }
+
+  @override
+  Parser<AttributeBuilder> readWriteAttribute() =>
+      super.readWriteAttribute().cast<AttributeBuilder>();
+
+  @override
+  Parser<AttributeBuilder> inheritAttribute() =>
+      super.inheritAttribute().map(_inheritAttribute);
+  static AttributeBuilder _inheritAttribute(Object? value) {
+    final tokens = value! as List;
+
+    return tokens[1]! as AttributeBuilder;
+  }
+
+  @override
+  Parser<AttributeBuilder> attributeRest() =>
+      super.attributeRest().map(_attributeRest);
+  static AttributeBuilder _attributeRest(Object? value) {
+    final tokens = value! as List;
+
+    return AttributeBuilder()
+      ..name = tokens[2]! as String
+      ..type = tokens[1]! as WebIdlTypeBuilder;
+  }
+
+  @override
   Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
   static Object? _defaultValue(Object? value) {
     // DefaultValue :: ConstValue | string | [ ] | { } | null

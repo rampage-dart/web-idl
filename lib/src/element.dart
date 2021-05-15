@@ -74,6 +74,22 @@ extension RequiredArgumentElement on ArgumentElement {
   bool get isRequired => !isOptional;
 }
 
+/// A data field with a given type and identifier whose value can be retrieved
+/// and (in some cases) changed.
+abstract class AttributeElement implements Element {
+  /// The type for the attribute.
+  WebIdlType get type;
+
+  /// Whether the attribute is read only.
+  bool get readOnly;
+}
+
+/// Extension for whether an [AttributeElement] is writeable.
+extension ReadWriteAttributeElement on AttributeElement {
+  /// Whether the attribute can be read and written to.
+  bool get readWrite => !readOnly;
+}
+
 /// Defines a behavior that can be invoked on objects implementing the
 /// interface.
 abstract class OperationElement implements Element {
