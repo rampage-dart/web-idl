@@ -67,6 +67,40 @@ class _FragmentElement extends _Element implements FragmentElement {
   final List<EnumElement> enumerations;
 }
 
+/// Builds an immutable [DictionaryElement].
+class DictionaryBuilder extends ElementBuilder<DictionaryElement> {
+  /// The type of the inherited dictionary, or `null` if there is none.
+  SingleTypeBuilder? supertype;
+
+  /// The set of entries in the dictionary.
+  List<DictionaryMemberBuilder> members = <DictionaryMemberBuilder>[];
+
+  @override
+  DictionaryElement build() => _DictionaryElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        supertype: supertype?.build(),
+        members: members.map((b) => b.build()),
+      );
+}
+
+@immutable
+class _DictionaryElement extends _Element implements DictionaryElement {
+  _DictionaryElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.supertype,
+    required Iterable<DictionaryMemberElement> members,
+  })  : members = List.unmodifiable(members),
+        super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final SingleType? supertype;
+
+  @override
+  final List<DictionaryMemberElement> members;
+}
+
 /// Builds an immutable [EnumElement].
 class EnumBuilder extends ElementBuilder<EnumElement> {
   /// The set of valid strings for the [EnumElement].

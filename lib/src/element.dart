@@ -28,6 +28,17 @@ abstract class FragmentElement implements Element {
   List<EnumElement> get enumerations;
 }
 
+/// Defines an ordered map data type with a fixed, ordered set of entries,
+/// termed dictionary members, where keys are strings and values are of a
+/// particular type specified in the definition.
+abstract class DictionaryElement implements Element {
+  /// Returns the type of the inherited dictionary, or `null` if there is none.
+  SingleType? get supertype;
+
+  /// The set of entries in the dictionary.
+  List<DictionaryMemberElement> get members;
+}
+
 /// A type whose valid [values] are a set of predefined strings.
 ///
 /// Enumerations can be used to restrict the possible string values that can be

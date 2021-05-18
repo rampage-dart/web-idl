@@ -80,7 +80,16 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser partialInterfaceMember() => super.partialInterfaceMember();
 
   @override
-  Parser inheritance() => super.inheritance();
+  Parser<SingleTypeBuilder?> inheritance() =>
+      super.inheritance().map(_inheritance);
+  static SingleTypeBuilder? _inheritance(Object? value) {
+    if (value == null) {
+      return null;
+    }
+
+    final tokens = value as List<Object?>;
+    return SingleTypeBuilder()..name = tokens[1]! as String;
+  }
 
   @override
   Parser mixinRest() => super.mixinRest();
@@ -437,7 +446,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser dictionary() => super.dictionary();
+  Parser<DictionaryBuilder> dictionary() => super.dictionary().map(_dictionary);
+  static DictionaryBuilder _dictionary(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return DictionaryBuilder()
+      ..name = tokens[1]! as String
+      ..supertype = tokens[2] as SingleTypeBuilder?
+      ..members = tokens[4]! as List<DictionaryMemberBuilder>;
+  }
 
   @override
   Parser<List<DictionaryMemberBuilder>> dictionaryMembers() =>
@@ -486,7 +503,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser partialDictionary() => super.partialDictionary();
+  Parser<DictionaryBuilder> partialDictionary() =>
+      super.partialDictionary().map(_partialDictionary);
+  static DictionaryBuilder _partialDictionary(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return DictionaryBuilder()
+      ..name = tokens[1]! as String
+      ..members = tokens[3]! as List<DictionaryMemberBuilder>;
+  }
 
   @override
   Parser<Object?> defaultTo() => super.defaultTo().map(_defaultTo);
