@@ -440,13 +440,50 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser dictionary() => super.dictionary();
 
   @override
-  Parser dictionaryMembers() => super.dictionaryMembers();
+  Parser<List<DictionaryMemberBuilder>> dictionaryMembers() =>
+      super.dictionaryMembers().map(_dictionaryMembers);
+  static List<DictionaryMemberBuilder> _dictionaryMembers(Object? value) {
+    if (value == null) {
+      return const <DictionaryMemberBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    return <DictionaryMemberBuilder>[
+      tokens[0]! as DictionaryMemberBuilder,
+      ...tokens[1]! as List<DictionaryMemberBuilder>,
+    ];
+  }
 
   @override
-  Parser dictionaryMember() => super.dictionaryMember();
+  Parser<DictionaryMemberBuilder> dictionaryMember() =>
+      super.dictionaryMember().map(_dictionaryMember);
+  static DictionaryMemberBuilder _dictionaryMember(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return tokens[1]! as DictionaryMemberBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+  }
 
   @override
-  Parser dictionaryMemberRest() => super.dictionaryMemberRest();
+  Parser<DictionaryMemberBuilder> dictionaryMemberRest() =>
+      super.dictionaryMemberRest().map(_dictionaryMemberRest);
+  static DictionaryMemberBuilder _dictionaryMemberRest(Object? value) {
+    final tokens = value! as List<Object?>;
+    final builder = DictionaryMemberBuilder();
+
+    if (tokens[0]! is keywords.Keyword) {
+      builder
+        ..name = tokens[2]! as String
+        ..type = tokens[1]! as WebIdlTypeBuilder;
+    } else {
+      builder
+        ..name = tokens[1]! as String
+        ..type = tokens[0]! as WebIdlTypeBuilder
+        ..defaultTo = tokens[2];
+    }
+
+    return builder;
+  }
 
   @override
   Parser partialDictionary() => super.partialDictionary();

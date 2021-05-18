@@ -116,6 +116,27 @@ abstract class ConstantElement implements Element {
   Object get value;
 }
 
+/// An entry in a [DictionaryElement].
+abstract class DictionaryMemberElement implements Element {
+  /// The type for the field.
+  WebIdlType get type;
+
+  /// Whether setting the field is required.
+  bool get isRequired;
+
+  /// The default value for the argument.
+  ///
+  /// If the argument [isRequired] then this will be `null`. Otherwise this may
+  /// be a constant.
+  Object? get defaultTo;
+}
+
+/// Extension for checking if an [DictionaryMemberElement] is optional.
+extension OptionalDictionaryMemberElement on DictionaryMemberElement {
+  /// Whether setting the field is optional.
+  bool get isOptional => !isRequired;
+}
+
 /// Defines a behavior that can be invoked on objects implementing the
 /// interface.
 abstract class OperationElement implements Element {

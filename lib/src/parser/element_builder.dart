@@ -285,6 +285,50 @@ class _ConstantElement extends _Element implements ConstantElement {
   final Object value;
 }
 
+/// Builds an immutable [DictionaryMemberElement].
+class DictionaryMemberBuilder extends ElementBuilder<DictionaryMemberElement> {
+  /// The type for the field.
+  WebIdlTypeBuilder type = SingleTypeBuilder();
+
+  /// Whether setting the field is required.
+  bool isRequired = false;
+
+  /// The default value for the argument.
+  ///
+  /// If the argument [isRequired] then this will be `null`. Otherwise this may
+  /// be a constant.
+  Object? defaultTo;
+
+  @override
+  DictionaryMemberElement build() => _DictionaryMemberElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        type: type.build(),
+        isRequired: isRequired,
+        defaultTo: defaultTo,
+      );
+}
+
+class _DictionaryMemberElement extends _Element
+    implements DictionaryMemberElement {
+  _DictionaryMemberElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.type,
+    required this.isRequired,
+    required this.defaultTo,
+  }) : super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final WebIdlType type;
+
+  @override
+  final bool isRequired;
+
+  @override
+  final Object? defaultTo;
+}
+
 /// Builds an immutable [OperationElement].
 class OperationBuilder extends ElementBuilder<OperationElement> {
   /// The return type for the operation.
