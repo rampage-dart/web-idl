@@ -127,6 +127,42 @@ class _EnumElement extends _Element implements EnumElement {
   final List<String> values;
 }
 
+/// Builds an immutable [FunctionTypeAliasElement].
+class FunctionTypeAliasBuilder
+    extends ElementBuilder<FunctionTypeAliasElement> {
+  /// The return type for the operation.
+  WebIdlTypeBuilder returnType = SingleTypeBuilder();
+
+  /// The arguments for the operation.
+  List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
+
+  @override
+  FunctionTypeAliasElement build() => _FunctionTypeAliasElement(
+        name: name,
+        extendedAttributes: extendedAttributes,
+        returnType: returnType.build(),
+        arguments: arguments.map((b) => b.build()),
+      );
+}
+
+@immutable
+class _FunctionTypeAliasElement extends _Element
+    implements FunctionTypeAliasElement {
+  _FunctionTypeAliasElement({
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.returnType,
+    required Iterable<ArgumentElement> arguments,
+  })  : arguments = List.unmodifiable(arguments),
+        super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final WebIdlType returnType;
+
+  @override
+  final List<ArgumentElement> arguments;
+}
+
 /// Builds an immutable [NamespaceElement].
 class NamespaceBuilder extends ElementBuilder<NamespaceElement> {
   /// The attributes contained in the namespace.

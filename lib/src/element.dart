@@ -48,6 +48,15 @@ abstract class EnumElement implements Element {
   List<String> get values;
 }
 
+/// A definition used to declare a function type.
+abstract class FunctionTypeAliasElement implements Element {
+  /// The type returned by the function.
+  WebIdlType get returnType;
+
+  /// The arguments for the function.
+  List<ArgumentElement> get arguments;
+}
+
 /// A definition that declares a global singleton with associated behaviors.
 abstract class NamespaceElement implements Element {
   /// The attributes contained in the namespace.

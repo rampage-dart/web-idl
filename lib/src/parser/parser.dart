@@ -574,7 +574,16 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser callbackRest() => super.callbackRest();
+  Parser<FunctionTypeAliasBuilder> callbackRest() =>
+      super.callbackRest().map(_callbackRest);
+  static FunctionTypeAliasBuilder _callbackRest(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return FunctionTypeAliasBuilder()
+      ..name = tokens[0]! as String
+      ..returnType = tokens[2]! as WebIdlTypeBuilder
+      ..arguments = tokens[4]! as List<ArgumentBuilder>;
+  }
 
   @override
   Parser<TypeAliasBuilder> typeDefinition() =>
