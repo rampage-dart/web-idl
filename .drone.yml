@@ -4,7 +4,7 @@ name: dart-dev
 
 steps:
 - name: environment
-  image: google/dart:beta
+  image: dart:beta
   pull: always
   volumes:
   - name: cache
@@ -13,7 +13,7 @@ steps:
   - dart --version
 
 - name: dependencies
-  image: google/dart:beta
+  image: dart:beta
   volumes:
   - name: cache
     path: /root/.pub-cache
@@ -21,7 +21,7 @@ steps:
   - dart pub get
 
 - name: format
-  image: google/dart:beta
+  image: dart:beta
   volumes:
   - name: cache
     path: /root/.pub-cache
@@ -30,7 +30,7 @@ steps:
   - dartfmt --dry-run --set-exit-if-changed .
 
 - name: lint
-  image: google/dart:beta
+  image: dart:beta
   volumes:
   - name: cache
     path: /root/.pub-cache
@@ -39,7 +39,7 @@ steps:
   - dart analyze test
 
 - name: test
-  image: google/dart:beta
+  image: dart:beta
   volumes:
   - name: cache
     path: /root/.pub-cache
@@ -48,7 +48,7 @@ steps:
   - pub run test --coverage coverage
 
 - name: generate-lcov
-  image: google/dart:beta
+  image: dart:beta
   volumes:
   - name: cache
     path: /root/.pub-cache
