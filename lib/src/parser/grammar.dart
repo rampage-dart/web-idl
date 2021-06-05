@@ -5,6 +5,7 @@
 
 import 'package:petitparser/petitparser.dart';
 
+import 'builtin_types.dart' as builtin;
 import 'keywords.dart' as keywords;
 
 /// WebIDL grammar definition.
@@ -627,7 +628,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `SingleType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-SingleType).
   Parser singleType() =>
-      refBuiltinType(token, 'any') |
+      refBuiltinType(token, builtin.any) |
       ref0(promiseType) |
       ref0(distinguishableType);
 
@@ -656,15 +657,15 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `DistinguishableType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DistinguishableType).
   Parser distinguishableType() {
-    final sequenceType = ref1(token, 'sequence') &
+    final sequenceType = ref1(token, builtin.sequence) &
         ref1(token, '<') &
         ref0(typeWithExtendedAttributes) &
         ref1(token, '>');
-    final frozenArrayType = ref1(token, 'FrozenArray') &
+    final frozenArrayType = ref1(token, builtin.frozenArray) &
         ref1(token, '<') &
         ref0(typeWithExtendedAttributes) &
         ref1(token, '>');
-    final observableArrayType = ref1(token, 'ObservableArray') &
+    final observableArrayType = ref1(token, builtin.observableArray) &
         ref1(token, '<') &
         ref0(typeWithExtendedAttributes) &
         ref1(token, '>');
@@ -672,8 +673,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
     final types = ref0(primitiveType) |
         ref0(stringType) |
         sequenceType |
-        ref1(token, 'object') |
-        ref1(token, 'symbol') |
+        ref1(token, builtin.object) |
+        ref1(token, builtin.symbol) |
         ref0(bufferRelatedType) |
         frozenArrayType |
         observableArrayType |
@@ -689,51 +690,56 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser primitiveType() =>
       ref0(unsignedIntegerType) |
       ref0(unrestrictedFloatType) |
-      ref1(token, 'undefined') |
-      ref1(token, 'boolean') |
-      ref1(token, 'byte') |
-      ref1(token, 'octet') |
-      ref1(token, 'bigint');
+      ref1(token, builtin.undefined) |
+      ref1(token, builtin.boolean) |
+      ref1(token, builtin.byte) |
+      ref1(token, builtin.octet) |
+      ref1(token, builtin.bigint);
 
   /// An `UnrestrictedFloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnrestrictedFloatType).
   Parser unrestrictedFloatType() =>
-      ref1(token, 'unrestricted').optional() & ref0(floatType);
+      ref1(token, builtin.unrestricted).optional() & ref0(floatType);
 
   /// A `FloatType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-FloatType).
-  Parser floatType() => ref1(token, 'float') | ref1(token, 'double');
+  Parser floatType() =>
+      ref1(token, builtin.float) | ref1(token, builtin.double);
 
   /// An `UnsignedIntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-UnsignedIntegerType).
   Parser unsignedIntegerType() =>
-      ref1(token, 'unsigned').optional() & ref0(integerType);
+      ref1(token, builtin.unsigned).optional() & ref0(integerType);
 
   /// An `IntegerType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-IntegerType).
   Parser integerType() =>
-      ref1(token, 'short') | (ref1(token, 'long') & ref0(optionalLong));
+      ref1(token, builtin.short) |
+      (ref1(token, builtin.long) & ref0(optionalLong));
 
   /// A `OptionalLong` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-OptionalLong).
-  Parser optionalLong() => ref1(token, 'long').optional();
+  Parser optionalLong() => ref1(token, builtin.long).optional();
 
   /// A `StringType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringType).
   Parser stringType() =>
-      refBuiltinType(token, 'ByteString') |
-      refBuiltinType(token, 'DOMString') |
-      refBuiltinType(token, 'USVString');
+      refBuiltinType(token, builtin.byteString) |
+      refBuiltinType(token, builtin.domString) |
+      refBuiltinType(token, builtin.usvString);
 
   /// A `PromiseType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PromiseType).
   Parser promiseType() =>
-      ref1(token, 'Promise') & ref1(token, '<') & ref0(type) & ref1(token, '>');
+      ref1(token, builtin.promise) &
+      ref1(token, '<') &
+      ref0(type) &
+      ref1(token, '>');
 
   /// A `RecordType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-RecordType).
   Parser recordType() =>
-      ref1(token, 'record') &
+      ref1(token, builtin.record) &
       ref1(token, '<') &
       ref0(stringType) &
       ref1(token, ',') &
@@ -747,17 +753,17 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `BufferRelatedType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-BufferRelatedType).
   Parser bufferRelatedType() =>
-      refBuiltinType(token, 'ArrayBuffer') |
-      refBuiltinType(token, 'DataView') |
-      refBuiltinType(token, 'Int8Array') |
-      refBuiltinType(token, 'Int16Array') |
-      refBuiltinType(token, 'Int32Array') |
-      refBuiltinType(token, 'Uint8Array') |
-      refBuiltinType(token, 'Uint16Array') |
-      refBuiltinType(token, 'Uint32Array') |
-      refBuiltinType(token, 'Uint8ClampedArray') |
-      refBuiltinType(token, 'Float32Array') |
-      refBuiltinType(token, 'Float64Array');
+      refBuiltinType(token, builtin.arrayBuffer) |
+      refBuiltinType(token, builtin.dataView) |
+      refBuiltinType(token, builtin.int8Array) |
+      refBuiltinType(token, builtin.int16Array) |
+      refBuiltinType(token, builtin.int32Array) |
+      refBuiltinType(token, builtin.uint8Array) |
+      refBuiltinType(token, builtin.uint16Array) |
+      refBuiltinType(token, builtin.uint32Array) |
+      refBuiltinType(token, builtin.uint8ClampedArray) |
+      refBuiltinType(token, builtin.float32Array) |
+      refBuiltinType(token, builtin.float64Array);
 
   //------------------------------------------------------------------
   // Extended Attributes
