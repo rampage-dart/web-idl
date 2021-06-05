@@ -53,6 +53,7 @@ steps:
   - name: cache
     path: /root/.pub-cache
   commands:
+  - export PATH="$PATH":"$HOME/.pub-cache/bin"
   - dart pub global activate coverage
   - format_coverage --verbose --lcov --packages .packages --base-directory . --report-on lib --report-on test --in coverage --out coverage/lcov.cov
 
