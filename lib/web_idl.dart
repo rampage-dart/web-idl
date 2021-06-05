@@ -5,3 +5,4 @@
 
 export 'src/element.dart';
 export 'src/type.dart';
+export 'src/types.dart';
