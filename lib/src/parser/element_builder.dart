@@ -76,6 +76,47 @@ extension ElementBuilderList<T extends Element> on List<ElementBuilder<T>> {
   List<T> buildList() => List.unmodifiable(build());
 }
 
+mixin _TypeDefiningElement on _Element implements TypeDefiningElement {
+  @override
+  late final SingleType thisType = instantiate();
+
+  SingleType instantiate({
+    Iterable<Object> extendedAttributes = const Iterable.empty(),
+    bool isNullable = false,
+    Iterable<WebIdlType> typeArguments = const Iterable.empty(),
+  }) =>
+      _SingleType(
+        element: this,
+        extendedAttributes: extendedAttributes,
+        isNullable: isNullable,
+        typeArguments: typeArguments,
+      );
+}
+
+class _SingleType implements SingleType {
+  _SingleType({
+    required this.element,
+    required Iterable<Object> extendedAttributes,
+    required this.isNullable,
+    required Iterable<WebIdlType> typeArguments,
+  })  : typeArguments = List<WebIdlType>.unmodifiable(typeArguments),
+        extendedAttributes = List<Object>.unmodifiable(extendedAttributes);
+
+  @override
+  final List<Object> extendedAttributes;
+
+  @override
+  final bool isNullable;
+
+  @override
+  String get name => element.name;
+
+  @override
+  final List<WebIdlType> typeArguments;
+
+  final Element element;
+}
+
 //------------------------------------------------------------------
 // WebIDL definition elements
 //------------------------------------------------------------------
@@ -127,7 +168,9 @@ class DictionaryBuilder extends ElementBuilder<DictionaryElement>
 }
 
 @immutable
-class _DictionaryElement extends _Element implements DictionaryElement {
+class _DictionaryElement extends _Element
+    with _TypeDefiningElement
+    implements DictionaryElement {
   _DictionaryElement({
     required String name,
     required Iterable<Object> extendedAttributes,
@@ -172,7 +215,9 @@ class EnumBuilder extends ElementBuilder<EnumElement> {
 }
 
 @immutable
-class _EnumElement extends _Element implements EnumElement {
+class _EnumElement extends _Element
+    with _TypeDefiningElement
+    implements EnumElement {
   _EnumElement({
     required String name,
     required Iterable<Object> extendedAttributes,
@@ -289,7 +334,9 @@ class TypeAliasBuilder extends ElementBuilder<TypeAliasElement> {
 }
 
 @immutable
-class _TypeAliasElement extends _Element implements TypeAliasElement {
+class _TypeAliasElement extends _Element
+    with _TypeDefiningElement
+    implements TypeAliasElement {
   _TypeAliasElement({
     required String name,
     required Iterable<Object> extendedAttributes,

@@ -39,6 +39,12 @@ abstract class PartiallyDefinedElement<T extends Element> implements Element {
   T get definition;
 }
 
+/// An [Element] that defines a type.
+abstract class TypeDefiningElement implements Element {
+  /// Return the type of this [Element].
+  SingleType get thisType;
+}
+
 /// An [Element] whose type is a function.
 abstract class FunctionTypedElement implements Element {
   /// The type returned by the function.
@@ -62,7 +68,10 @@ abstract class FragmentElement implements Element {
 /// termed dictionary members, where keys are strings and values are of a
 /// particular type specified in the definition.
 abstract class DictionaryElement
-    implements Element, PartiallyDefinedElement<DictionaryElement> {
+    implements
+        Element,
+        PartiallyDefinedElement<DictionaryElement>,
+        TypeDefiningElement {
   /// Returns the type of the inherited dictionary, or `null` if there is none.
   SingleType? get supertype;
 
@@ -74,7 +83,7 @@ abstract class DictionaryElement
 ///
 /// Enumerations can be used to restrict the possible string values that can be
 /// assigned to an attribute or passed to an operation.
-abstract class EnumElement implements Element {
+abstract class EnumElement implements Element, TypeDefiningElement {
   /// The set of valid strings for the enumeration.
   List<String> get values;
 }
@@ -100,7 +109,7 @@ abstract class NamespaceElement
 ///
 /// This new name is not exposed by language bindings; it is purely used as a
 /// shorthand for referencing the type in the IDL.
-abstract class TypeAliasElement implements Element {
+abstract class TypeAliasElement implements Element, TypeDefiningElement {
   /// The type being aliased.
   WebIdlType get type;
 }
