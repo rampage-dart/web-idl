@@ -99,7 +99,7 @@ class _FragmentElement extends _Element implements FragmentElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.enumerations,
-  })  : super(name: name, extendedAttributes: extendedAttributes) {
+  }) : super(name: name, extendedAttributes: extendedAttributes) {
     encloseAll(enumerations);
   }
 
@@ -134,7 +134,7 @@ class _DictionaryElement extends _Element implements DictionaryElement {
     required this.isPartial,
     required this.supertype,
     required this.members,
-  })  : super(name: name, extendedAttributes: extendedAttributes) {
+  }) : super(name: name, extendedAttributes: extendedAttributes) {
     encloseAll(members);
   }
 
@@ -204,7 +204,7 @@ class _FunctionTypeAliasElement extends _Element
     required Iterable<Object> extendedAttributes,
     required this.returnType,
     required this.arguments,
-  })  : super(name: name, extendedAttributes: extendedAttributes) {
+  }) : super(name: name, extendedAttributes: extendedAttributes) {
     encloseAll(arguments);
   }
 
@@ -246,7 +246,7 @@ class _NamespaceElement extends _Element implements NamespaceElement {
     required this.attributes,
     required this.operations,
     required this.constants,
-  })  : super(name: name, extendedAttributes: extendedAttributes) {
+  }) : super(name: name, extendedAttributes: extendedAttributes) {
     encloseAll(attributes);
     encloseAll(operations);
     encloseAll(constants);
@@ -492,7 +492,7 @@ class _OperationElement extends _Element implements OperationElement {
     required this.returnType,
     required this.operationType,
     required this.arguments,
-  })  : super(name: name, extendedAttributes: extendedAttributes) {
+  }) : super(name: name, extendedAttributes: extendedAttributes) {
     encloseAll(arguments);
   }
 
