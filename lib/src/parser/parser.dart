@@ -9,6 +9,7 @@
 import 'package:petitparser/petitparser.dart';
 
 import '../element.dart';
+import 'context.dart';
 import 'element_builder.dart';
 import 'grammar.dart';
 import 'keywords.dart' as keywords;
@@ -18,6 +19,8 @@ import 'type_builder.dart';
 ///
 /// Parser for the [WebIDL specification](https://heycam.github.io/webidl).
 class WebIdlParserDefinition extends WebIdlGrammarDefinition {
+  static final WebIdlContext _context = WebIdlContext();
+
   @override
   Parser<List<ElementBuilder>> definitions() =>
       super.definitions().map(_definitions);
@@ -117,7 +120,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static ConstantBuilder _constant(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return ConstantBuilder()
+    return ConstantBuilder(_context)
       ..name = tokens[2]! as String
       ..type = tokens[1]! as SingleTypeBuilder
       ..value = tokens[4]!;
@@ -184,7 +187,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static AttributeBuilder _attributeRest(Object? value) {
     final tokens = value! as List;
 
-    return AttributeBuilder()
+    return AttributeBuilder(_context)
       ..name = tokens[2]! as String
       ..type = tokens[1]! as WebIdlTypeBuilder;
   }
@@ -263,7 +266,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static OperationBuilder _operationRest(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return OperationBuilder()
+    return OperationBuilder(_context)
       ..name = tokens[0]! as String
       ..arguments = tokens[2]! as List<ArgumentBuilder>;
   }
@@ -321,7 +324,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       super.argumentRest().map(_argumentRest);
   static ArgumentBuilder _argumentRest(Object? value) {
     final tokens = value! as List<Object?>;
-    final argument = ArgumentBuilder();
+    final argument = ArgumentBuilder(_context);
 
     if (tokens.length == 4) {
       argument
@@ -397,7 +400,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser<NamespaceBuilder> namespace() => super.namespace().map(_namespace);
   static NamespaceBuilder _namespace(Object? value) {
     final tokens = value! as List<Object?>;
-    final builder = NamespaceBuilder()..name = tokens[1]! as String;
+    final builder = NamespaceBuilder(_context)..name = tokens[1]! as String;
 
     final members = tokens[3]! as List<ElementBuilder>;
     for (final member in members) {
@@ -450,7 +453,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static DictionaryBuilder _dictionary(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return DictionaryBuilder()
+    return DictionaryBuilder(_context)
       ..name = tokens[1]! as String
       ..supertype = tokens[2] as SingleTypeBuilder?
       ..members = tokens[4]! as List<DictionaryMemberBuilder>;
@@ -486,7 +489,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       super.dictionaryMemberRest().map(_dictionaryMemberRest);
   static DictionaryMemberBuilder _dictionaryMemberRest(Object? value) {
     final tokens = value! as List<Object?>;
-    final builder = DictionaryMemberBuilder();
+    final builder = DictionaryMemberBuilder(_context);
 
     if (tokens[0]! is keywords.Keyword) {
       builder
@@ -508,7 +511,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static DictionaryBuilder _partialDictionary(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return DictionaryBuilder()
+    return DictionaryBuilder(_context)
       ..name = tokens[1]! as String
       ..members = tokens[3]! as List<DictionaryMemberBuilder>;
   }
@@ -529,7 +532,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static EnumBuilder _enumeration(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return EnumBuilder()
+    return EnumBuilder(_context)
       ..name = tokens[1]! as String
       ..values = tokens[3]! as List<String>;
   }
@@ -579,7 +582,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static FunctionTypeAliasBuilder _callbackRest(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return FunctionTypeAliasBuilder()
+    return FunctionTypeAliasBuilder(_context)
       ..name = tokens[0]! as String
       ..returnType = tokens[2]! as WebIdlTypeBuilder
       ..arguments = tokens[4]! as List<ArgumentBuilder>;
@@ -591,7 +594,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static TypeAliasBuilder _typeDefinition(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return TypeAliasBuilder()
+    return TypeAliasBuilder(_context)
       ..type = tokens[1]! as WebIdlTypeBuilder
       ..name = tokens[2]! as String;
   }
