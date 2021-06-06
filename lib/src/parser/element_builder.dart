@@ -54,6 +54,15 @@ mixin FunctionTypedElementBuilder<T extends Element>
   List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
 }
 
+/// Helpers for [List]s of [ElementBuilder]s.
+extension ElementBuilderList<T extends Element> on List<ElementBuilder<T>> {
+  /// Iterates through the [List] calling [ElementBuilder.build] on each item.
+  Iterable<T> build() => map((b) => b.build());
+
+  /// Builds an unmodifiable [List] from the built [Element]s.
+  List<T> buildList() => List.unmodifiable(build());
+}
+
 //------------------------------------------------------------------
 // WebIDL definition elements
 //------------------------------------------------------------------
@@ -67,7 +76,7 @@ class FragmentBuilder extends ElementBuilder<FragmentElement> {
   FragmentElement build() => _FragmentElement(
         name: name,
         extendedAttributes: extendedAttributes,
-        enumerations: enumerations.map((b) => b.build()),
+        enumerations: enumerations.buildList(),
       );
 }
 
@@ -76,9 +85,8 @@ class _FragmentElement extends _Element implements FragmentElement {
   _FragmentElement({
     required String name,
     required Iterable<Object> extendedAttributes,
-    required Iterable<EnumElement> enumerations,
-  })  : enumerations = List.unmodifiable(enumerations),
-        super(name: name, extendedAttributes: extendedAttributes);
+    required this.enumerations,
+  })  : super(name: name, extendedAttributes: extendedAttributes);
 
   @override
   final List<EnumElement> enumerations;
@@ -99,7 +107,7 @@ class DictionaryBuilder extends ElementBuilder<DictionaryElement>
         extendedAttributes: extendedAttributes,
         isPartial: isPartial,
         supertype: supertype?.build(),
-        members: members.map((b) => b.build()),
+        members: members.buildList(),
       );
 }
 
@@ -110,9 +118,8 @@ class _DictionaryElement extends _Element implements DictionaryElement {
     required Iterable<Object> extendedAttributes,
     required this.isPartial,
     required this.supertype,
-    required Iterable<DictionaryMemberElement> members,
-  })  : members = List.unmodifiable(members),
-        super(name: name, extendedAttributes: extendedAttributes);
+    required this.members,
+  })  : super(name: name, extendedAttributes: extendedAttributes);
 
   @override
   final bool isPartial;
@@ -168,7 +175,7 @@ class FunctionTypeAliasBuilder extends ElementBuilder<FunctionTypeAliasElement>
         name: name,
         extendedAttributes: extendedAttributes,
         returnType: returnType.build(),
-        arguments: arguments.map((b) => b.build()),
+        arguments: arguments.buildList(),
       );
 }
 
@@ -179,9 +186,8 @@ class _FunctionTypeAliasElement extends _Element
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.returnType,
-    required Iterable<ArgumentElement> arguments,
-  })  : arguments = List.unmodifiable(arguments),
-        super(name: name, extendedAttributes: extendedAttributes);
+    required this.arguments,
+  })  : super(name: name, extendedAttributes: extendedAttributes);
 
   @override
   final WebIdlType returnType;
@@ -207,9 +213,9 @@ class NamespaceBuilder extends ElementBuilder<NamespaceElement>
         name: name,
         extendedAttributes: extendedAttributes,
         isPartial: isPartial,
-        attributes: attributes.map((b) => b.build()),
-        operations: operations.map((b) => b.build()),
-        constants: constants.map((b) => b.build()),
+        attributes: attributes.buildList(),
+        operations: operations.buildList(),
+        constants: constants.buildList(),
       );
 }
 
@@ -218,13 +224,10 @@ class _NamespaceElement extends _Element implements NamespaceElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.isPartial,
-    required Iterable<AttributeElement> attributes,
-    required Iterable<OperationElement> operations,
-    required Iterable<ConstantElement> constants,
-  })  : attributes = List.unmodifiable(attributes),
-        operations = List.unmodifiable(operations),
-        constants = List.unmodifiable(constants),
-        super(name: name, extendedAttributes: extendedAttributes);
+    required this.attributes,
+    required this.operations,
+    required this.constants,
+  })  : super(name: name, extendedAttributes: extendedAttributes);
 
   @override
   final bool isPartial;
@@ -454,7 +457,7 @@ class OperationBuilder extends ElementBuilder<OperationElement>
         extendedAttributes: extendedAttributes,
         returnType: returnType.build(),
         operationType: operationType,
-        arguments: arguments.map((b) => b.build()),
+        arguments: arguments.buildList(),
       );
 }
 
@@ -465,9 +468,8 @@ class _OperationElement extends _Element implements OperationElement {
     required Iterable<Object> extendedAttributes,
     required this.returnType,
     required this.operationType,
-    required Iterable<ArgumentElement> arguments,
-  })  : arguments = List.unmodifiable(arguments),
-        super(name: name, extendedAttributes: extendedAttributes);
+    required this.arguments,
+  })  : super(name: name, extendedAttributes: extendedAttributes);
 
   @override
   final WebIdlType returnType;
