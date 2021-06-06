@@ -16,6 +16,12 @@ abstract class Element {
 
   /// Annotations that control how language bindings will handle the element.
   List<Object> get extendedAttributes;
+
+  /// Return the [Element] the logically encloses this [Element].
+  ///
+  /// This will be `null` if the [Element] is a [FragmentElement] because
+  /// fragments are the top-level elements in the model.
+  Element? enclosingElement;
 }
 
 /// An [Element] that is partially defined.

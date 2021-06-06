@@ -35,6 +35,19 @@ class _Element implements Element {
 
   @override
   final List<Object> extendedAttributes;
+
+  @override
+  late final Element? enclosingElement;
+
+  @protected
+  void enclose(Element element) {
+    (element as _Element).enclosingElement = this;
+  }
+
+  @protected
+  void encloseAll(Iterable<Element> elements) {
+    elements.forEach(enclose);
+  }
 }
 
 /// Builds a [PartiallyDefinedElement].
@@ -86,7 +99,9 @@ class _FragmentElement extends _Element implements FragmentElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.enumerations,
-  })  : super(name: name, extendedAttributes: extendedAttributes);
+  })  : super(name: name, extendedAttributes: extendedAttributes) {
+    encloseAll(enumerations);
+  }
 
   @override
   final List<EnumElement> enumerations;
@@ -119,7 +134,9 @@ class _DictionaryElement extends _Element implements DictionaryElement {
     required this.isPartial,
     required this.supertype,
     required this.members,
-  })  : super(name: name, extendedAttributes: extendedAttributes);
+  })  : super(name: name, extendedAttributes: extendedAttributes) {
+    encloseAll(members);
+  }
 
   @override
   final bool isPartial;
@@ -187,7 +204,9 @@ class _FunctionTypeAliasElement extends _Element
     required Iterable<Object> extendedAttributes,
     required this.returnType,
     required this.arguments,
-  })  : super(name: name, extendedAttributes: extendedAttributes);
+  })  : super(name: name, extendedAttributes: extendedAttributes) {
+    encloseAll(arguments);
+  }
 
   @override
   final WebIdlType returnType;
@@ -227,7 +246,11 @@ class _NamespaceElement extends _Element implements NamespaceElement {
     required this.attributes,
     required this.operations,
     required this.constants,
-  })  : super(name: name, extendedAttributes: extendedAttributes);
+  })  : super(name: name, extendedAttributes: extendedAttributes) {
+    encloseAll(attributes);
+    encloseAll(operations);
+    encloseAll(constants);
+  }
 
   @override
   final bool isPartial;
@@ -469,7 +492,9 @@ class _OperationElement extends _Element implements OperationElement {
     required this.returnType,
     required this.operationType,
     required this.arguments,
-  })  : super(name: name, extendedAttributes: extendedAttributes);
+  })  : super(name: name, extendedAttributes: extendedAttributes) {
+    encloseAll(arguments);
+  }
 
   @override
   final WebIdlType returnType;
