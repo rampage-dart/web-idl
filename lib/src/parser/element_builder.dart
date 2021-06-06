@@ -44,6 +44,16 @@ mixin PartiallyDefinedElementBuilder<T extends PartiallyDefinedElement>
   bool isPartial = false;
 }
 
+/// Builds a [FunctionTypedElement].
+mixin FunctionTypedElementBuilder<T extends Element>
+    implements ElementBuilder<T> {
+  /// The return type for the operation.
+  WebIdlTypeBuilder returnType = SingleTypeBuilder();
+
+  /// The arguments for the operation.
+  List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
+}
+
 //------------------------------------------------------------------
 // WebIDL definition elements
 //------------------------------------------------------------------
@@ -151,14 +161,8 @@ class _EnumElement extends _Element implements EnumElement {
 }
 
 /// Builds an immutable [FunctionTypeAliasElement].
-class FunctionTypeAliasBuilder
-    extends ElementBuilder<FunctionTypeAliasElement> {
-  /// The return type for the operation.
-  WebIdlTypeBuilder returnType = SingleTypeBuilder();
-
-  /// The arguments for the operation.
-  List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
-
+class FunctionTypeAliasBuilder extends ElementBuilder<FunctionTypeAliasElement>
+    with FunctionTypedElementBuilder<FunctionTypeAliasElement> {
   @override
   FunctionTypeAliasElement build() => _FunctionTypeAliasElement(
         name: name,
@@ -439,15 +443,10 @@ class _DictionaryMemberElement extends _Element
 }
 
 /// Builds an immutable [OperationElement].
-class OperationBuilder extends ElementBuilder<OperationElement> {
-  /// The return type for the operation.
-  WebIdlTypeBuilder returnType = SingleTypeBuilder();
-
+class OperationBuilder extends ElementBuilder<OperationElement>
+    with FunctionTypedElementBuilder<OperationElement> {
   /// The [SpecialOperation] type; if applicable.
   SpecialOperation? operationType;
-
-  /// The arguments for the operation.
-  List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
 
   @override
   OperationElement build() => _OperationElement(

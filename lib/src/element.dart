@@ -33,6 +33,15 @@ abstract class PartiallyDefinedElement<T extends Element> implements Element {
   T get definition;
 }
 
+/// An [Element] whose type is a function.
+abstract class FunctionTypedElement implements Element {
+  /// The type returned by the function.
+  WebIdlType get returnType;
+
+  /// The arguments for the function.
+  List<ArgumentElement> get arguments;
+}
+
 //------------------------------------------------------------------
 // WebIDL definition elements
 //------------------------------------------------------------------
@@ -65,13 +74,8 @@ abstract class EnumElement implements Element {
 }
 
 /// A definition used to declare a function type.
-abstract class FunctionTypeAliasElement implements Element {
-  /// The type returned by the function.
-  WebIdlType get returnType;
-
-  /// The arguments for the function.
-  List<ArgumentElement> get arguments;
-}
+abstract class FunctionTypeAliasElement
+    implements Element, FunctionTypedElement {}
 
 /// A definition that declares a global singleton with associated behaviors.
 abstract class NamespaceElement
@@ -176,15 +180,9 @@ extension OptionalDictionaryMemberElement on DictionaryMemberElement {
 
 /// Defines a behavior that can be invoked on objects implementing the
 /// interface.
-abstract class OperationElement implements Element {
-  /// The type returned by the operation.
-  WebIdlType get returnType;
-
+abstract class OperationElement implements Element, FunctionTypedElement {
   /// The [SpecialOperation] type; if applicable.
   SpecialOperation? get operationType;
-
-  /// The arguments for the operation.
-  List<ArgumentElement> get arguments;
 }
 
 /// Extension for checking if an [OperationElement] is regular.
