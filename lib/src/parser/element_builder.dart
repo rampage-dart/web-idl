@@ -37,6 +37,13 @@ class _Element implements Element {
   final List<Object> extendedAttributes;
 }
 
+/// Builds a [PartiallyDefinedElement].
+mixin PartiallyDefinedElementBuilder<T extends PartiallyDefinedElement>
+    implements ElementBuilder<T> {
+  /// Whether the [Element] being built is a partial definition.
+  bool isPartial = false;
+}
+
 //------------------------------------------------------------------
 // WebIDL definition elements
 //------------------------------------------------------------------
@@ -68,7 +75,8 @@ class _FragmentElement extends _Element implements FragmentElement {
 }
 
 /// Builds an immutable [DictionaryElement].
-class DictionaryBuilder extends ElementBuilder<DictionaryElement> {
+class DictionaryBuilder extends ElementBuilder<DictionaryElement>
+    with PartiallyDefinedElementBuilder<DictionaryElement> {
   /// The type of the inherited dictionary, or `null` if there is none.
   SingleTypeBuilder? supertype;
 
@@ -79,6 +87,7 @@ class DictionaryBuilder extends ElementBuilder<DictionaryElement> {
   DictionaryElement build() => _DictionaryElement(
         name: name,
         extendedAttributes: extendedAttributes,
+        isPartial: isPartial,
         supertype: supertype?.build(),
         members: members.map((b) => b.build()),
       );
@@ -89,10 +98,24 @@ class _DictionaryElement extends _Element implements DictionaryElement {
   _DictionaryElement({
     required String name,
     required Iterable<Object> extendedAttributes,
+    required this.isPartial,
     required this.supertype,
     required Iterable<DictionaryMemberElement> members,
   })  : members = List.unmodifiable(members),
         super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final bool isPartial;
+
+  @override
+  DictionaryElement get definition {
+    if (isPartial) {
+      return this;
+    }
+
+    // \TODO Determine actual root definition
+    throw UnsupportedError('cannot find definition `dictionary $name`');
+  }
 
   @override
   final SingleType? supertype;
@@ -164,7 +187,8 @@ class _FunctionTypeAliasElement extends _Element
 }
 
 /// Builds an immutable [NamespaceElement].
-class NamespaceBuilder extends ElementBuilder<NamespaceElement> {
+class NamespaceBuilder extends ElementBuilder<NamespaceElement>
+    with PartiallyDefinedElementBuilder<NamespaceElement> {
   /// The attributes contained in the namespace.
   List<AttributeBuilder> attributes = <AttributeBuilder>[];
 
@@ -178,6 +202,7 @@ class NamespaceBuilder extends ElementBuilder<NamespaceElement> {
   NamespaceElement build() => _NamespaceElement(
         name: name,
         extendedAttributes: extendedAttributes,
+        isPartial: isPartial,
         attributes: attributes.map((b) => b.build()),
         operations: operations.map((b) => b.build()),
         constants: constants.map((b) => b.build()),
@@ -188,6 +213,7 @@ class _NamespaceElement extends _Element implements NamespaceElement {
   _NamespaceElement({
     required String name,
     required Iterable<Object> extendedAttributes,
+    required this.isPartial,
     required Iterable<AttributeElement> attributes,
     required Iterable<OperationElement> operations,
     required Iterable<ConstantElement> constants,
@@ -195,6 +221,19 @@ class _NamespaceElement extends _Element implements NamespaceElement {
         operations = List.unmodifiable(operations),
         constants = List.unmodifiable(constants),
         super(name: name, extendedAttributes: extendedAttributes);
+
+  @override
+  final bool isPartial;
+
+  @override
+  NamespaceElement get definition {
+    if (isPartial) {
+      return this;
+    }
+
+    // \TODO Determine actual root definition
+    throw UnsupportedError('cannot find definition `namespace $name`');
+  }
 
   @override
   final List<AttributeElement> attributes;

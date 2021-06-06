@@ -18,6 +18,21 @@ abstract class Element {
   List<Object> get extendedAttributes;
 }
 
+/// An [Element] that is partially defined.
+///
+/// WebIDL allows some [Element] definitions to be split across multiple
+/// [FragmentElement]s.
+abstract class PartiallyDefinedElement<T extends Element> implements Element {
+  /// Whether this [Element] is a partial definition.
+  bool get isPartial;
+
+  /// Returns the [Element] definition.
+  ///
+  /// If [isPartial] is `false` then `this` will be returned; otherwise the
+  /// [Element] with the root definition will be returned.
+  T get definition;
+}
+
 //------------------------------------------------------------------
 // WebIDL definition elements
 //------------------------------------------------------------------
@@ -31,7 +46,8 @@ abstract class FragmentElement implements Element {
 /// Defines an ordered map data type with a fixed, ordered set of entries,
 /// termed dictionary members, where keys are strings and values are of a
 /// particular type specified in the definition.
-abstract class DictionaryElement implements Element {
+abstract class DictionaryElement
+    implements Element, PartiallyDefinedElement<DictionaryElement> {
   /// Returns the type of the inherited dictionary, or `null` if there is none.
   SingleType? get supertype;
 
@@ -58,7 +74,8 @@ abstract class FunctionTypeAliasElement implements Element {
 }
 
 /// A definition that declares a global singleton with associated behaviors.
-abstract class NamespaceElement implements Element {
+abstract class NamespaceElement
+    implements Element, PartiallyDefinedElement<NamespaceElement> {
   /// The attributes contained in the namespace.
   List<AttributeElement> get attributes;
 
