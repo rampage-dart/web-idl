@@ -188,6 +188,15 @@ extension CompleteNamespaceElement on NamespaceElement {
       completeDefinition.expand((e) => e.constants);
 }
 
+/// A definition specifying the usage of a mixin.
+abstract class IncludesElement implements Element {
+  /// The type the mixin is applied to.
+  SingleType get on;
+
+  /// The type being mixed in.
+  SingleType get mixin;
+}
+
 /// A definition that declares some state and behavior that an object
 /// implementing that interface will expose.
 ///
