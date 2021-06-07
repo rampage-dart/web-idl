@@ -7,11 +7,33 @@ import '../element.dart';
 
 /// The context for the WebIdl parsing.
 class WebIdlContext {
+  final Map<String, _InterfaceDefinition> _interfaces =
+      <String, _InterfaceDefinition>{};
   final Map<String, _DictionaryDefinition> _dictionaries =
       <String, _DictionaryDefinition>{};
   final Map<String, _NamespaceDefinition> _namespaces =
       <String, _NamespaceDefinition>{};
   final Map<String, EnumElement> _enumerations = <String, EnumElement>{};
+
+  /// Registers the [element] with the context.
+  void registerInterface(InterfaceElement element) {
+    _registerDefinition(element, _interfaces, _createInterfaceDefinition);
+  }
+
+  /// Looks up the [InterfaceElement] with the given [name].
+  ///
+  /// Returns `null` if the interface is not found.
+  InterfaceElement? lookupInterface(String name) =>
+      _lookupDefinition(name, _interfaces);
+
+  /// Looks up all [InterfaceElement]s associated with the given [name].
+  ///
+  /// If the interface is found the first item will be the [InterfaceElement]
+  /// that is not a partial definition. Then it will retrieve all partial
+  /// definitions. There is no guarantee of ordering for the partial
+  /// definitions.
+  Iterable<InterfaceElement> lookupInterfaceDefinitions(String name) =>
+      _lookupDefinitions(name, _interfaces);
 
   /// Registers the [element] with the context.
   void registerDictionary(DictionaryElement element) {
@@ -121,6 +143,11 @@ class _PartiallyDefinedDefinition<T extends PartiallyDefinedElement> {
 
   final List<T> partialDefinitions = <T>[];
 }
+
+class _InterfaceDefinition
+    extends _PartiallyDefinedDefinition<InterfaceElement> {}
+
+_InterfaceDefinition _createInterfaceDefinition() => _InterfaceDefinition();
 
 // \TODO Use Type Aliases when Dart 2.14 is released
 class _DictionaryDefinition
