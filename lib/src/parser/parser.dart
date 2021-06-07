@@ -346,7 +346,14 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser argumentName() => super.argumentName();
+  Parser<String> argumentName() => super.argumentName().map(_argumentName);
+  static String _argumentName(Object? value) {
+    if (value is keywords.Keyword) {
+      return value.token;
+    }
+
+    return value! as String;
+  }
 
   @override
   Parser<bool> ellipsis() => super.ellipsis().map(_isToken);
