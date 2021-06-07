@@ -16,6 +16,15 @@ class WebIdlContext {
   final Map<String, EnumElement> _enumerations = <String, EnumElement>{};
 
   /// Registers the [element] with the context.
+  void registerIncludes(IncludesElement element) {
+    final name = element.on.name;
+    final definition =
+        _interfaces.putIfAbsent(name, _createInterfaceDefinition);
+
+    definition.includes.add(element);
+  }
+
+  /// Registers the [element] with the context.
   void registerInterface(InterfaceElement element) {
     _registerDefinition(element, _interfaces, _createInterfaceDefinition);
   }
@@ -145,7 +154,9 @@ class _PartiallyDefinedDefinition<T extends PartiallyDefinedElement> {
 }
 
 class _InterfaceDefinition
-    extends _PartiallyDefinedDefinition<InterfaceElement> {}
+    extends _PartiallyDefinedDefinition<InterfaceElement> {
+  final List<IncludesElement> includes = <IncludesElement>[];
+}
 
 _InterfaceDefinition _createInterfaceDefinition() => _InterfaceDefinition();
 
