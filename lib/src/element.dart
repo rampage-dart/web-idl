@@ -229,6 +229,58 @@ abstract class InterfaceElement
   List<ConstantElement> get constants;
 }
 
+/// Enumerates all members across the complete definition of a
+/// [InterfaceElement].
+extension CompleteInterfaceElement on InterfaceElement {
+  /// The full listing of constructors contained in the interface.
+  ///
+  /// Enumerates all constructors of the non-partial definition and any partial
+  /// definitions. To retrieve only constructors defined on this element use
+  /// [constructors] instead.
+  ///
+  /// The constructors on the non-partial definition will be enumerated first
+  /// but there is no guaranteed ordering for constructors retrieved from the
+  /// partial definitions.
+  Iterable<OperationElement> get allConstructors =>
+      completeDefinition.expand((e) => e.constructors);
+
+  /// The full listing of attributes contained in the interface.
+  ///
+  /// Enumerates all attributes of the non-partial definition and any partial
+  /// definitions. To retrieve only attributes defined on this element use
+  /// [attributes] instead.
+  ///
+  /// The attributes on the non-partial definition will be enumerated first but
+  /// there is no guaranteed ordering for attributes retrieved from the partial
+  /// definitions.
+  Iterable<AttributeElement> get allAttributes =>
+      completeDefinition.expand((e) => e.attributes);
+
+  /// The full listing of operations contained in the interface.
+  ///
+  /// Enumerates all operations of the non-partial definition and any partial
+  /// definitions. To retrieve only operations defined on this element use
+  /// [operations] instead.
+  ///
+  /// The operations on the non-partial definition will be enumerated first but
+  /// there is no guaranteed ordering for operations retrieved from the partial
+  /// definitions.
+  Iterable<OperationElement> get allOperations =>
+      completeDefinition.expand((e) => e.operations);
+
+  /// The full listing of constants contained in the namespace.
+  ///
+  /// Enumerates all constants of the non-partial definition and any partial
+  /// definitions. To retrieve only constants defined on this element use
+  /// [constants] instead.
+  ///
+  /// The constants on the non-partial definition will be enumerated first but
+  /// there is no guaranteed ordering for constants retrieved from the partial
+  /// definitions.
+  Iterable<ConstantElement> get allConstants =>
+      completeDefinition.expand((e) => e.constants);
+}
+
 /// A definition used to declare a new name for a type.
 ///
 /// This new name is not exposed by language bindings; it is purely used as a
