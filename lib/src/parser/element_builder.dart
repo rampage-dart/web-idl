@@ -260,7 +260,9 @@ class _EnumElement extends _Element
           context: context,
           name: name,
           extendedAttributes: extendedAttributes,
-        );
+        ) {
+    context.registerEnumeration(this);
+  }
 
   @override
   final List<String> values;

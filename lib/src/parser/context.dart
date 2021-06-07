@@ -9,6 +9,7 @@ import '../element.dart';
 class WebIdlContext {
   final Map<String, _NamespaceDefinition> _namespaces =
       <String, _NamespaceDefinition>{};
+  final Map<String, EnumElement> _enumerations = <String, EnumElement>{};
 
   /// Registers the [element] with the context.
   void registerNamespace(NamespaceElement element) {
@@ -38,6 +39,20 @@ class WebIdlContext {
   /// definitions.
   Iterable<NamespaceElement> lookupNamespaceDefinitions(String name) =>
       _lookupDefinitions(name, _namespaces);
+
+  /// Registers the [element] with the context.
+  void registerEnumeration(EnumElement element) {
+    final name = element.name;
+    if (_enumerations.containsKey(name)) {
+      throw StateError('$name is multiply defined');
+    }
+    _enumerations[name] = element;
+  }
+
+  /// Looks up the [EnumElement] with the given [name].
+  ///
+  /// Returns `null` if the namespace is not found.
+  EnumElement? lookupEnumeration(String name) => _enumerations[name];
 
   T? _lookupDefinition<T extends PartiallyDefinedElement>(
     String name,
