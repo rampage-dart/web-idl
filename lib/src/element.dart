@@ -99,16 +99,69 @@ abstract class FunctionTypeAliasElement
     implements Element, FunctionTypedElement {}
 
 /// A definition that declares a global singleton with associated behaviors.
+///
+/// A [NamespaceElement]'s definition can be split across multiple fragments.
+/// Each [NamespaceElement] only corresponds to a single definition. To access
+/// members across multiple fragments use [CompleteNamespaceElement] extensions.
 abstract class NamespaceElement
     implements Element, PartiallyDefinedElement<NamespaceElement> {
-  /// The attributes contained in the namespace.
+  /// The attributes contained in this namespace definition.
+  ///
+  /// The full namespace definition can be split across fragments. To get all
+  /// attributes across all fragments use [allAttributes].
   List<AttributeElement> get attributes;
 
-  /// The operations contained in the namespace.
+  /// The operations contained in this namespace definition.
+  ///
+  /// The full namespace definition can be split across fragments. To get all
+  /// operations across all fragments use [allOperations].
   List<OperationElement> get operations;
 
-  /// The constants defined in the namespace.
+  /// The constants defined in this namespace definition.
+  ///
+  /// The full namespace definition can be split across fragments. To get all
+  /// constants across all fragments use [allConstants].
   List<ConstantElement> get constants;
+}
+
+/// Enumerates all members across the complete definition of a
+/// [NamespaceElement].
+extension CompleteNamespaceElement on NamespaceElement {
+  /// The full listing of attributes contained in the namespace.
+  ///
+  /// Enumerates all operations of the non-partial definition and any partial
+  /// definitions. To retrieve only operations defined on this element use
+  /// [attributes] instead.
+  ///
+  /// The attributes on the non-partial definition will be enumerated first but
+  /// there is no guaranteed ordering for attributes retrieved from the partial
+  /// definitions.
+  Iterable<AttributeElement> get allAttributes =>
+      completeDefinition.expand((e) => e.attributes);
+
+  /// The full listing of operations contained in the namespace.
+  ///
+  /// Enumerates all operations of the non-partial definition and any partial
+  /// definitions. To retrieve only operations defined on this element use
+  /// [operations] instead.
+  ///
+  /// The operations on the non-partial definition will be enumerated first but
+  /// there is no guaranteed ordering for operations retrieved from the partial
+  /// definitions.
+  Iterable<OperationElement> get allOperations =>
+      completeDefinition.expand((e) => e.operations);
+
+  /// The full listing of constants contained in the namespace.
+  ///
+  /// Enumerates all constants of the non-partial definition and any partial
+  /// definitions. To retrieve only constants defined on this element use
+  /// [constants] instead.
+  ///
+  /// The constants on the non-partial definition will be enumerated first but
+  /// there is no guaranteed ordering for constants retrieved from the partial
+  /// definitions.
+  Iterable<ConstantElement> get allConstants =>
+      completeDefinition.expand((e) => e.constants);
 }
 
 /// A definition used to declare a new name for a type.
