@@ -188,6 +188,47 @@ extension CompleteNamespaceElement on NamespaceElement {
       completeDefinition.expand((e) => e.constants);
 }
 
+/// A definition that declares some state and behavior that an object
+/// implementing that interface will expose.
+///
+/// An [InterfaceElement]'s definition can be split across multiple fragments.
+/// Each [InterfaceElement] only corresponds to a single definition. To access
+/// members across multiple fragments use [CompleteInterfaceElement] extensions.
+abstract class InterfaceElement
+    implements
+        Element,
+        PartiallyDefinedElement<InterfaceElement>,
+        TypeDefiningElement {
+  /// Returns the type of the inherited interface, or `null` if there is none.
+  SingleType? get supertype;
+
+  /// Whether the interface is a mixin.
+  ///
+  /// An interface mixin declares state and behavior that can be included by one
+  /// or more interfaces, and that are exposed by objects that implement an
+  /// interface that includes the interface mixin.
+  bool get isMixin;
+
+  /// Whether the interface is a callback.
+  ///
+  /// _A callback interface is not an interface. The name and syntax are left
+  /// over from earlier versions of this standard, where these concepts had more
+  /// in common._
+  bool get isCallback;
+
+  /// The constructors for the interface.
+  List<OperationElement> get constructors;
+
+  /// The attributes exposed on the interface.
+  List<AttributeElement> get attributes;
+
+  /// The operations available for the interface.
+  List<OperationElement> get operations;
+
+  /// The constants defined on the interface.
+  List<ConstantElement> get constants;
+}
+
 /// A definition used to declare a new name for a type.
 ///
 /// This new name is not exposed by language bindings; it is purely used as a
