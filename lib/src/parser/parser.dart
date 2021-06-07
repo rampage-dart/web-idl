@@ -441,20 +441,10 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser<NamespaceBuilder> namespace() => super.namespace().map(_namespace);
   static NamespaceBuilder _namespace(Object? value) {
     final tokens = value! as List<Object?>;
-    final builder = NamespaceBuilder(_context)..name = tokens[1]! as String;
 
-    final members = tokens[3]! as List<ElementBuilder>;
-    for (final member in members) {
-      if (member is AttributeBuilder) {
-        builder.attributes.add(member);
-      } else if (member is OperationBuilder) {
-        builder.operations.add(member);
-      } else if (member is ConstantBuilder) {
-        builder.constants.add(member);
-      }
-    }
-
-    return builder;
+    return NamespaceBuilder(_context)
+      ..name = tokens[1]! as String
+      ..addMembers(tokens[3]! as List<ElementBuilder>);
   }
 
   @override

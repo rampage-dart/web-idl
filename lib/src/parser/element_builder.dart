@@ -182,6 +182,31 @@ class FragmentBuilder extends ElementBuilder<FragmentElement> {
       );
 }
 
+/// Helper for adding [ElementBuilder]s to the [FragmentBuilder].
+extension FragmentBuilderMembers on FragmentBuilder {
+  /// Adds all [members] to the list associated with their [ElementBuilder]
+  /// type.
+  void addMembers(Iterable<ElementBuilder> members) {
+    for (final member in members) {
+      if (member is InterfaceBuilder) {
+        interfaces.add(member);
+      } else if (member is DictionaryBuilder) {
+        dictionaries.add(member);
+      } else if (member is NamespaceBuilder) {
+        namespaces.add(member);
+      } else if (member is FunctionTypeAliasBuilder) {
+        functions.add(member);
+      } else if (member is EnumBuilder) {
+        enumerations.add(member);
+      } else if (member is TypeAliasBuilder) {
+        typeDefinitions.add(member);
+      } else if (member is IncludesBuilder) {
+        includes.add(member);
+      }
+    }
+  }
+}
+
 @immutable
 class _FragmentElement extends _Element implements FragmentElement {
   _FragmentElement({
@@ -453,6 +478,25 @@ class InterfaceBuilder extends ElementBuilder<InterfaceElement>
       );
 }
 
+/// Helper for adding [ElementBuilder]s to the [InterfaceBuilder].
+extension InterfaceBuilderMembers on InterfaceBuilder {
+  /// Adds all [members] to the list associated with their [ElementBuilder]
+  /// type.
+  void addMembers(Iterable<ElementBuilder> members) {
+    for (final member in members) {
+      if (member is AttributeBuilder) {
+        attributes.add(member);
+      } else if (member is OperationBuilder) {
+        operations.add(member);
+      } else if (member is ConstructorBuilder) {
+        constructors.add(member);
+      } else if (member is ConstantBuilder) {
+        constants.add(member);
+      }
+    }
+  }
+}
+
 class _InterfaceElement extends _Element
     with _TypeDefiningElement
     implements InterfaceElement {
@@ -540,6 +584,23 @@ class NamespaceBuilder extends ElementBuilder<NamespaceElement>
         operations: operations.buildList(),
         constants: constants.buildList(),
       );
+}
+
+/// Helper for adding [ElementBuilder]s to the [NamespaceBuilder].
+extension NamespaceBuilderMembers on NamespaceBuilder {
+  /// Adds all [members] to the list associated with their [ElementBuilder]
+  /// type.
+  void addMembers(Iterable<ElementBuilder> members) {
+    for (final member in members) {
+      if (member is AttributeBuilder) {
+        attributes.add(member);
+      } else if (member is OperationBuilder) {
+        operations.add(member);
+      } else if (member is ConstantBuilder) {
+        constants.add(member);
+      }
+    }
+  }
 }
 
 class _NamespaceElement extends _Element implements NamespaceElement {
