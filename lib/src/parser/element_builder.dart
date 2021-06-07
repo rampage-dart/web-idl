@@ -613,6 +613,51 @@ class _DictionaryMemberElement extends _Element
   final Object? defaultTo;
 }
 
+/// Builds an immutable [OperationElement] representing a constructor.
+///
+/// The return type of a constructor isn't known without knowing the enclosing
+/// [Element] so a special builder is used.
+class ConstructorBuilder extends ElementBuilder<OperationElement> {
+  /// Create an instance of [ConstructorBuilder] with the context.
+  ConstructorBuilder(WebIdlContext context) : super(context);
+
+  /// The arguments for the operation.
+  List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
+
+  @override
+  OperationElement build() => _ConstructorElement(
+        context: context,
+        name: name,
+        extendedAttributes: extendedAttributes,
+        arguments: arguments.buildList(),
+      );
+}
+
+@immutable
+class _ConstructorElement extends _Element implements OperationElement {
+  _ConstructorElement({
+    required WebIdlContext context,
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.arguments,
+  }) : super(
+          context: context,
+          name: name,
+          extendedAttributes: extendedAttributes,
+        ) {
+    encloseAll(arguments);
+  }
+
+  @override
+  WebIdlType get returnType => (enclosingElement! as InterfaceElement).thisType;
+
+  @override
+  SpecialOperation? get operationType => null;
+
+  @override
+  final List<ArgumentElement> arguments;
+}
+
 /// Builds an immutable [OperationElement].
 class OperationBuilder extends ElementBuilder<OperationElement>
     with FunctionTypedElementBuilder<OperationElement> {
