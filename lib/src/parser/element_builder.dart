@@ -305,6 +305,47 @@ class _FunctionTypeAliasElement extends _Element
   final List<ArgumentElement> arguments;
 }
 
+/// Builds an immutable [IncludesElement].
+class IncludesBuilder extends ElementBuilder<IncludesElement> {
+  /// Create an instance of [InterfaceBuilder] with the context.
+  IncludesBuilder(WebIdlContext context) : super(context);
+
+  /// The type the mixin is applied to.
+  SingleTypeBuilder on = SingleTypeBuilder();
+
+  /// The type being mixed in.
+  SingleTypeBuilder mixin = SingleTypeBuilder();
+
+  @override
+  IncludesElement build() => _IncludesElement(
+        context: context,
+        name: name,
+        extendedAttributes: extendedAttributes,
+        on: on.build(),
+        mixin: mixin.build(),
+      );
+}
+
+class _IncludesElement extends _Element implements IncludesElement {
+  _IncludesElement({
+    required WebIdlContext context,
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.on,
+    required this.mixin,
+  }) : super(
+          context: context,
+          name: name,
+          extendedAttributes: extendedAttributes,
+        );
+
+  @override
+  final SingleType on;
+
+  @override
+  final SingleType mixin;
+}
+
 /// Builds an immutable [InterfaceElement].
 class InterfaceBuilder extends ElementBuilder<InterfaceElement>
     with PartiallyDefinedElementBuilder<InterfaceElement> {
