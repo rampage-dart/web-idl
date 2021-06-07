@@ -73,6 +73,11 @@ abstract class FragmentElement implements Element {
 /// Defines an ordered map data type with a fixed, ordered set of entries,
 /// termed dictionary members, where keys are strings and values are of a
 /// particular type specified in the definition.
+///
+/// A [DictionaryElement]'s definition can be split across multiple fragments.
+/// Each [DictionaryElement] only corresponds to a single definition. To access
+/// members across multiple fragments use [CompleteDictionaryElement]
+/// extensions.
 abstract class DictionaryElement
     implements
         Element,
@@ -81,8 +86,27 @@ abstract class DictionaryElement
   /// Returns the type of the inherited dictionary, or `null` if there is none.
   SingleType? get supertype;
 
-  /// The set of entries in the dictionary.
+  /// The set of entries contained in this dictionary definition.
+  ///
+  /// The full dictionary definition can be split across fragments. To get all
+  /// members across all fragments use [allMembers].
   List<DictionaryMemberElement> get members;
+}
+
+/// Enumerates all members across the complete definition of a
+/// [DictionaryElement].
+extension CompleteDictionaryElement on DictionaryElement {
+  /// The full listing of dictionary members contained in the namespace.
+  ///
+  /// Enumerates all dictionary members of the non-partial definition and any
+  /// partial definitions. To retrieve only members defined on this element use
+  /// [members] instead.
+  ///
+  /// The dictionary members on the non-partial definition will be enumerated
+  /// first but there is no guaranteed ordering for members retrieved from the
+  /// partial definitions.
+  Iterable<DictionaryMemberElement> get allMembers =>
+      completeDefinition.expand((e) => e.members);
 }
 
 /// A type whose valid [values] are a set of predefined strings.
