@@ -77,6 +77,16 @@ mixin FunctionTypedElementBuilder<T extends Element>
   List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
 }
 
+/// Builds a statically defined [Element].
+///
+/// Base class for the parser to cast to for [AttributeElement]s and
+/// [OperationElement]s since they can both be declared statically but don't
+/// have a common base class.
+mixin StaticElementBuilder<T extends Element> implements ElementBuilder<T> {
+  /// Whether the element is statically defined.
+  bool isStatic = false;
+}
+
 /// Helpers for [List]s of [ElementBuilder]s.
 extension ElementBuilderList<T extends Element> on List<ElementBuilder<T>> {
   /// Iterates through the [List] calling [ElementBuilder.build] on each item.
@@ -613,7 +623,8 @@ class _ArgumentElement extends _Element implements ArgumentElement {
 }
 
 /// Builds an immutable [AttributeElement].
-class AttributeBuilder extends ElementBuilder<AttributeElement> {
+class AttributeBuilder extends ElementBuilder<AttributeElement>
+    with StaticElementBuilder<AttributeElement> {
   /// Create an instance of [AttributeBuilder] with the context.
   AttributeBuilder(WebIdlContext context) : super(context);
 
@@ -629,6 +640,7 @@ class AttributeBuilder extends ElementBuilder<AttributeElement> {
         name: name,
         extendedAttributes: extendedAttributes,
         type: type.build(),
+        isStatic: isStatic,
         readOnly: readOnly,
       );
 }
@@ -640,6 +652,7 @@ class _AttributeElement extends _Element implements AttributeElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.type,
+    required this.isStatic,
     required this.readOnly,
   }) : super(
           context: context,
@@ -649,6 +662,9 @@ class _AttributeElement extends _Element implements AttributeElement {
 
   @override
   final WebIdlType type;
+
+  @override
+  final bool isStatic;
 
   @override
   final bool readOnly;
@@ -793,15 +809,20 @@ class _ConstructorElement extends _Element implements OperationElement {
   WebIdlType get returnType => (enclosingElement! as InterfaceElement).thisType;
 
   @override
-  SpecialOperation? get operationType => null;
+  final List<ArgumentElement> arguments;
 
   @override
-  final List<ArgumentElement> arguments;
+  bool get isStatic => false;
+
+  @override
+  SpecialOperation? get operationType => null;
 }
 
 /// Builds an immutable [OperationElement].
 class OperationBuilder extends ElementBuilder<OperationElement>
-    with FunctionTypedElementBuilder<OperationElement> {
+    with
+        FunctionTypedElementBuilder<OperationElement>,
+        StaticElementBuilder<OperationElement> {
   /// Create an instance of [OperationBuilder] with the context.
   OperationBuilder(WebIdlContext context) : super(context);
 
@@ -814,8 +835,9 @@ class OperationBuilder extends ElementBuilder<OperationElement>
         name: name,
         extendedAttributes: extendedAttributes,
         returnType: returnType.build(),
-        operationType: operationType,
         arguments: arguments.buildList(),
+        isStatic: isStatic,
+        operationType: operationType,
       );
 }
 
@@ -826,8 +848,9 @@ class _OperationElement extends _Element implements OperationElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.returnType,
-    required this.operationType,
     required this.arguments,
+    required this.isStatic,
+    required this.operationType,
   }) : super(
           context: context,
           name: name,
@@ -840,8 +863,11 @@ class _OperationElement extends _Element implements OperationElement {
   final WebIdlType returnType;
 
   @override
-  final SpecialOperation? operationType;
+  final List<ArgumentElement> arguments;
 
   @override
-  final List<ArgumentElement> arguments;
+  final bool isStatic;
+
+  @override
+  final SpecialOperation? operationType;
 }

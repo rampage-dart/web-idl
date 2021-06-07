@@ -333,6 +333,9 @@ abstract class AttributeElement implements Element {
   /// The type for the attribute.
   WebIdlType get type;
 
+  /// Whether the attribute is static.
+  bool get isStatic;
+
   /// Whether the attribute is read only.
   bool get readOnly;
 }
@@ -381,6 +384,9 @@ extension OptionalDictionaryMemberElement on DictionaryMemberElement {
 /// Defines a behavior that can be invoked on objects implementing the
 /// interface.
 abstract class OperationElement implements Element, FunctionTypedElement {
+  /// Whether the operation is static.
+  bool get isStatic;
+
   /// The [SpecialOperation] type; if applicable.
   SpecialOperation? get operationType;
 }
