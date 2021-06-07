@@ -376,10 +376,25 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser stringifierRest() => super.stringifierRest();
 
   @override
-  Parser staticMember() => super.staticMember();
+  Parser<StaticElementBuilder> staticMember() =>
+      super.staticMember().map(_staticMember);
+  static StaticElementBuilder _staticMember(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return tokens[1]! as StaticElementBuilder..isStatic = true;
+  }
 
   @override
-  Parser staticMemberRest() => super.staticMemberRest();
+  Parser<StaticElementBuilder> staticMemberRest() =>
+      super.staticMemberRest().map(_staticMemberRest);
+  static StaticElementBuilder _staticMemberRest(Object? value) {
+    if (value is OperationBuilder) {
+      return value;
+    }
+
+    final tokens = value! as List<Object?>;
+    return tokens[1]! as AttributeBuilder..readOnly = tokens[0] != null;
+  }
 
   @override
   Parser iterable() => super.iterable();
