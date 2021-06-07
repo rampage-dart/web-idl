@@ -37,6 +37,12 @@ abstract class PartiallyDefinedElement<T extends Element> implements Element {
   /// If [isPartial] is `false` then `this` will be returned; otherwise the
   /// [Element] with the root definition will be returned.
   T get definition;
+
+  /// Returns the complete definition of the [Element].
+  ///
+  /// The non-partial definition will be enumerated first followed by any
+  /// partial definitions.
+  Iterable<T> get completeDefinition;
 }
 
 /// An [Element] that defines a type.

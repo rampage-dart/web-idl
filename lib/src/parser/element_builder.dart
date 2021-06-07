@@ -213,14 +213,11 @@ class _DictionaryElement extends _Element
   final bool isPartial;
 
   @override
-  DictionaryElement get definition {
-    if (isPartial) {
-      return this;
-    }
+  DictionaryElement get definition => context.lookupDictionary(name)!;
 
-    // \TODO Determine actual root definition
-    throw UnsupportedError('cannot find definition `dictionary $name`');
-  }
+  @override
+  Iterable<DictionaryElement> get completeDefinition =>
+      context.lookupDictionaryDefinitions(name);
 
   @override
   final SingleType? supertype;
@@ -360,14 +357,11 @@ class _NamespaceElement extends _Element implements NamespaceElement {
   final bool isPartial;
 
   @override
-  NamespaceElement get definition {
-    if (isPartial) {
-      return this;
-    }
+  NamespaceElement get definition => context.lookupNamespace(name)!;
 
-    // \TODO Determine actual root definition
-    throw UnsupportedError('cannot find definition `namespace $name`');
-  }
+  @override
+  Iterable<NamespaceElement> get completeDefinition =>
+      context.lookupNamespaceDefinitions(name);
 
   @override
   final List<AttributeElement> attributes;
