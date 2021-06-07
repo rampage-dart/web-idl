@@ -104,7 +104,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser mixinMember() => super.mixinMember();
 
   @override
-  Parser includesStatement() => super.includesStatement();
+  Parser<IncludesBuilder> includesStatement() =>
+      super.includesStatement().map(_includesStatement);
+  static IncludesBuilder _includesStatement(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return IncludesBuilder(_context)
+      ..on.name = tokens[0]! as String
+      ..mixin.name = tokens[2]! as String;
+  }
 
   @override
   Parser callbackRestOrInterface() => super.callbackRestOrInterface();
