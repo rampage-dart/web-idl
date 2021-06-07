@@ -305,6 +305,106 @@ class _FunctionTypeAliasElement extends _Element
   final List<ArgumentElement> arguments;
 }
 
+/// Builds an immutable [InterfaceElement].
+class InterfaceBuilder extends ElementBuilder<InterfaceElement>
+    with PartiallyDefinedElementBuilder<InterfaceElement> {
+  /// Create an instance of [InterfaceBuilder] with the context.
+  InterfaceBuilder(WebIdlContext context) : super(context);
+
+  /// The type of the inherited interface, or `null` if there is none.
+  SingleTypeBuilder? supertype;
+
+  /// Whether the interface is a mixin.
+  bool isMixin = false;
+
+  /// Whether the interface is a callback.
+  bool isCallback = false;
+
+  /// The constructors contained
+  List<ConstructorBuilder> constructors = <ConstructorBuilder>[];
+
+  /// The attributes contained in the interface.
+  List<AttributeBuilder> attributes = <AttributeBuilder>[];
+
+  /// The operations contained in the interface.
+  List<OperationBuilder> operations = <OperationBuilder>[];
+
+  /// The constants defined in the interface.
+  List<ConstantBuilder> constants = <ConstantBuilder>[];
+
+  @override
+  InterfaceElement build() => _InterfaceElement(
+        context: context,
+        name: name,
+        extendedAttributes: extendedAttributes,
+        isPartial: isPartial,
+        supertype: supertype?.build(),
+        isMixin: isMixin,
+        isCallback: isCallback,
+        constructors: constructors.build(),
+        attributes: attributes.build(),
+        operations: operations.build(),
+        constants: constants.build(),
+      );
+}
+
+class _InterfaceElement extends _Element
+    with _TypeDefiningElement
+    implements InterfaceElement {
+  _InterfaceElement({
+    required WebIdlContext context,
+    required String name,
+    required Iterable<Object> extendedAttributes,
+    required this.isPartial,
+    required this.supertype,
+    required this.isMixin,
+    required this.isCallback,
+    required Iterable<OperationElement> constructors,
+    required Iterable<AttributeElement> attributes,
+    required Iterable<OperationElement> operations,
+    required Iterable<ConstantElement> constants,
+  })  : constructors = List.unmodifiable(constructors),
+        attributes = List.unmodifiable(attributes),
+        operations = List.unmodifiable(operations),
+        constants = List.unmodifiable(constants),
+        super(
+          context: context,
+          name: name,
+          extendedAttributes: extendedAttributes,
+        );
+
+  @override
+  final bool isPartial;
+
+  @override
+  InterfaceElement get definition => context.lookupInterface(name)!;
+
+  @override
+  Iterable<InterfaceElement> get completeDefinition =>
+      context.lookupInterfaceDefinitions(name);
+
+  @override
+  final SingleType? supertype;
+
+  @override
+  final bool isMixin;
+
+  @override
+  final bool isCallback;
+
+  @override
+  final List<OperationElement> constructors;
+
+  @override
+  final List<AttributeElement> attributes;
+
+  @override
+  final List<OperationElement> operations;
+
+  @override
+  final List<ConstantElement> constants;
+}
+
 /// Builds an immutable [NamespaceElement].
 class NamespaceBuilder extends ElementBuilder<NamespaceElement>
     with PartiallyDefinedElementBuilder<NamespaceElement> {
