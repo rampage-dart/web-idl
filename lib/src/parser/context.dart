@@ -7,22 +7,35 @@ import '../element.dart';
 
 /// The context for the WebIdl parsing.
 class WebIdlContext {
+  final Map<String, _DictionaryDefinition> _dictionaries =
+      <String, _DictionaryDefinition>{};
   final Map<String, _NamespaceDefinition> _namespaces =
       <String, _NamespaceDefinition>{};
   final Map<String, EnumElement> _enumerations = <String, EnumElement>{};
 
   /// Registers the [element] with the context.
+  void registerDictionary(DictionaryElement element) {
+    _registerDefinition(element, _dictionaries, _createDictionaryDefinition);
+  }
+
+  /// Looks up the [DictionaryElement] with the given [name].
+  ///
+  /// Returns `null` if the dictionary is not found.
+  DictionaryElement? lookupDictionary(String name) =>
+      _lookupDefinition(name, _dictionaries);
+
+  /// Looks up all [DictionaryElement]s associated with the given [name].
+  ///
+  /// If the dictionary is found the first item will be the [DictionaryElement]
+  /// that is not a partial definition. Then it will retrieve all partial
+  /// definitions. There is no guarantee of ordering for the partial
+  /// definitions.
+  Iterable<DictionaryElement> lookupDictionaryDefinitions(String name) =>
+      _lookupDefinitions(name, _dictionaries);
+
+  /// Registers the [element] with the context.
   void registerNamespace(NamespaceElement element) {
-    final name = element.name;
-    final definition = _namespaces[name] ?? _NamespaceDefinition();
-
-    if (!element.isPartial) {
-      definition.definition = element;
-    } else {
-      definition.partialDefinitions.add(element);
-    }
-
-    _namespaces[name] = definition;
+    _registerDefinition(element, _namespaces, _createNamespaceDefinition);
   }
 
   /// Looks up the [NamespaceElement] with the given [name].
@@ -53,6 +66,21 @@ class WebIdlContext {
   ///
   /// Returns `null` if the namespace is not found.
   EnumElement? lookupEnumeration(String name) => _enumerations[name];
+
+  void _registerDefinition<T extends PartiallyDefinedElement>(
+    T element,
+    Map<String, _PartiallyDefinedDefinition<T>> definitions,
+    _PartiallyDefinedDefinition<T> Function() ifAbsent,
+  ) {
+    final name = element.name;
+    final definition = definitions.putIfAbsent(name, ifAbsent);
+
+    if (!element.isPartial) {
+      definition.definition = element;
+    } else {
+      definition.partialDefinitions.add(element);
+    }
+  }
 
   T? _lookupDefinition<T extends PartiallyDefinedElement>(
     String name,
@@ -94,6 +122,13 @@ class _PartiallyDefinedDefinition<T extends PartiallyDefinedElement> {
   final List<T> partialDefinitions = <T>[];
 }
 
-// \TODO Use Type Alias when Dart 2.14 is released
+// \TODO Use Type Aliases when Dart 2.14 is released
+class _DictionaryDefinition
+    extends _PartiallyDefinedDefinition<DictionaryElement> {}
+
+_DictionaryDefinition _createDictionaryDefinition() => _DictionaryDefinition();
+
 class _NamespaceDefinition
     extends _PartiallyDefinedDefinition<NamespaceElement> {}
+
+_NamespaceDefinition _createNamespaceDefinition() => _NamespaceDefinition();
