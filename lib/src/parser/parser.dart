@@ -196,10 +196,12 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser attributeName() => super.attributeName();
 
   @override
-  Parser attributeNameKeyword() => super.attributeKeyword();
+  Parser<keywords.Keyword> attributeNameKeyword() =>
+      super.attributeKeyword().cast<keywords.Keyword>();
 
   @override
-  Parser optionalReadOnly() => super.optionalReadOnly();
+  Parser<keywords.Keyword?> optionalReadOnly() =>
+      super.optionalReadOnly().cast<keywords.Keyword?>();
 
   @override
   Parser<Object?> defaultValue() => super.defaultValue().map(_defaultValue);
@@ -278,7 +280,8 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser operationName() => super.operationName();
 
   @override
-  Parser operationNameKeyword() => super.operationNameKeyword();
+  Parser<keywords.Keyword> operationNameKeyword() =>
+      super.operationNameKeyword().cast<keywords.Keyword>();
 
   @override
   Parser<List<ArgumentBuilder>> argumentList() =>
