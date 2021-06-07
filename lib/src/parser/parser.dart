@@ -352,7 +352,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   Parser<bool> ellipsis() => super.ellipsis().map(_isToken);
 
   @override
-  Parser constructor() => super.constructor();
+  Parser<ConstructorBuilder> constructor() =>
+      super.constructor().map(_constructor);
+  static ConstructorBuilder _constructor(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return ConstructorBuilder(_context)
+      ..name = (tokens[0]! as keywords.Keyword).token
+      ..arguments = tokens[2]! as List<ArgumentBuilder>;
+  }
 
   @override
   Parser stringifier() => super.stringifier();
