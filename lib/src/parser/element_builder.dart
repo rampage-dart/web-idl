@@ -200,7 +200,13 @@ class _FragmentElement extends _Element implements FragmentElement {
           name: name,
           extendedAttributes: extendedAttributes,
         ) {
+    encloseAll(dictionaries);
     encloseAll(enumerations);
+    encloseAll(functions);
+    encloseAll(includes);
+    encloseAll(interfaces);
+    encloseAll(namespaces);
+    encloseAll(typeDefinitions);
   }
 
   @override
@@ -470,7 +476,12 @@ class _InterfaceElement extends _Element
           context: context,
           name: name,
           extendedAttributes: extendedAttributes,
-        );
+        ) {
+    encloseAll(constructors);
+    encloseAll(attributes);
+    encloseAll(operations);
+    encloseAll(constants);
+  }
 
   @override
   final bool isPartial;
