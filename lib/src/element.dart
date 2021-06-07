@@ -66,8 +66,26 @@ abstract class FunctionTypedElement implements Element {
 
 /// Contains a group of [Element] definitions.
 abstract class FragmentElement implements Element {
+  /// The dictionaries defined within the WebIDL fragment.
+  List<DictionaryElement> get dictionaries;
+
   /// The enumerations defined within the WebIDL fragment.
   List<EnumElement> get enumerations;
+
+  /// The function definitions within the WebIDL fragment.
+  List<FunctionTypeAliasElement> get functions;
+
+  /// The includes defined within the WebIDL fragment.
+  List<IncludesElement> get includes;
+
+  /// The interfaces defined within the WebIDL fragment.
+  List<InterfaceElement> get interfaces;
+
+  /// The namespaces defined within the WebIDL fragment.
+  List<NamespaceElement> get namespaces;
+
+  /// The type definitions within the WebIDL fragment.
+  List<TypeAliasElement> get typeDefinitions;
 }
 
 /// Defines an ordered map data type with a fixed, ordered set of entries,

@@ -146,15 +146,39 @@ class FragmentBuilder extends ElementBuilder<FragmentElement> {
   /// Create an instance of [FragmentBuilder] with the context.
   FragmentBuilder(WebIdlContext context) : super(context);
 
-  /// The [EnumElement]s defined within the [FragmentElement].
+  /// The dictionaries defined within the WebIDL fragment.
+  List<DictionaryBuilder> dictionaries = <DictionaryBuilder>[];
+
+  /// The enumerations defined within the WebIDL fragment.
   List<EnumBuilder> enumerations = <EnumBuilder>[];
+
+  /// The function definitions within the WebIDL fragment.
+  List<FunctionTypeAliasBuilder> functions = <FunctionTypeAliasBuilder>[];
+
+  /// The includes defined within the WebIDL fragment.
+  List<IncludesBuilder> includes = <IncludesBuilder>[];
+
+  /// The interfaces defined within the WebIDL fragment.
+  List<InterfaceBuilder> interfaces = <InterfaceBuilder>[];
+
+  /// The namespaces defined within the WebIDL fragment.
+  List<NamespaceBuilder> namespaces = <NamespaceBuilder>[];
+
+  /// The type definitions within the WebIDL fragment.
+  List<TypeAliasBuilder> typeDefinitions = <TypeAliasBuilder>[];
 
   @override
   FragmentElement build() => _FragmentElement(
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
+        dictionaries: dictionaries.buildList(),
         enumerations: enumerations.buildList(),
+        functions: functions.buildList(),
+        includes: includes.buildList(),
+        interfaces: interfaces.buildList(),
+        namespaces: namespaces.buildList(),
+        typeDefinitions: typeDefinitions.buildList(),
       );
 }
 
@@ -164,7 +188,13 @@ class _FragmentElement extends _Element implements FragmentElement {
     required WebIdlContext context,
     required String name,
     required Iterable<Object> extendedAttributes,
+    required this.dictionaries,
     required this.enumerations,
+    required this.functions,
+    required this.includes,
+    required this.interfaces,
+    required this.namespaces,
+    required this.typeDefinitions,
   }) : super(
           context: context,
           name: name,
@@ -174,7 +204,25 @@ class _FragmentElement extends _Element implements FragmentElement {
   }
 
   @override
+  final List<DictionaryElement> dictionaries;
+
+  @override
   final List<EnumElement> enumerations;
+
+  @override
+  final List<FunctionTypeAliasElement> functions;
+
+  @override
+  final List<IncludesElement> includes;
+
+  @override
+  final List<InterfaceElement> interfaces;
+
+  @override
+  final List<NamespaceElement> namespaces;
+
+  @override
+  final List<TypeAliasElement> typeDefinitions;
 }
 
 /// Builds an immutable [DictionaryElement].
