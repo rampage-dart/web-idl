@@ -22,6 +22,14 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static final WebIdlContext _context = WebIdlContext();
 
   @override
+  Parser<FragmentBuilder> start() => super.start().map(_start);
+  static FragmentBuilder _start(Object? value) {
+    final definitions = value! as List<ElementBuilder>;
+
+    return FragmentBuilder(_context)..addMembers(definitions);
+  }
+
+  @override
   Parser<List<ElementBuilder>> definitions() =>
       super.definitions().map(_definitions);
   static List<ElementBuilder> _definitions(Object? value) {
@@ -48,39 +56,107 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
       super.argumentNameKeyword().cast<keywords.Keyword>();
 
   @override
-  Parser callbackOrInterfaceOrMixin() => super.callbackOrInterfaceOrMixin();
+  Parser<ElementBuilder> callbackOrInterfaceOrMixin() =>
+      super.callbackOrInterfaceOrMixin().map(_callbackOrInterfaceOrMixin);
+  static ElementBuilder _callbackOrInterfaceOrMixin(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    // First token is a keyword while second is an ElementBuilder
+    return tokens[1]! as ElementBuilder;
+  }
 
   @override
-  Parser interfaceOrMixin() => super.interfaceOrMixin();
+  Parser<InterfaceBuilder> interfaceOrMixin() =>
+      super.interfaceOrMixin().cast<InterfaceBuilder>();
 
   @override
-  Parser interfaceRest() => super.interfaceRest();
+  Parser<InterfaceBuilder> interfaceRest() =>
+      super.interfaceRest().map(_interfaceRest);
+  static InterfaceBuilder _interfaceRest(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return InterfaceBuilder(_context)
+      ..name = tokens[0]! as String
+      ..supertype = tokens[1] as SingleTypeBuilder?
+      ..addMembers(tokens[3]! as List<ElementBuilder>);
+  }
 
   @override
-  Parser partial() => super.partial();
+  Parser<ElementBuilder> partial() => super.partial().map(_partial);
+  static ElementBuilder _partial(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return tokens[1]! as PartiallyDefinedElementBuilder..isPartial = true;
+  }
 
   @override
   Parser<ElementBuilder> partialDefinition() =>
-      super.partialDefinition().cast<ElementBuilder>();
+      super.partialDefinition().map(_partialDefinition);
+  static ElementBuilder _partialDefinition(Object? value) {
+    if (value is List) {
+      return value[1]! as ElementBuilder;
+    }
+
+    return value! as ElementBuilder;
+  }
 
   @override
-  Parser partialInterfaceOrPartialMixin() =>
-      super.partialInterfaceOrPartialMixin();
+  Parser<ElementBuilder> partialInterfaceOrPartialMixin() =>
+      super.partialInterfaceOrPartialMixin().cast<ElementBuilder>();
 
   @override
-  Parser partialInterfaceRest() => super.partialInterfaceRest();
+  Parser<InterfaceBuilder> partialInterfaceRest() =>
+      super.partialInterfaceRest().map(_partialInterfaceRest);
+  static InterfaceBuilder _partialInterfaceRest(Object? value) {
+    final tokens = value! as List<Object?>;
+    return InterfaceBuilder(_context)
+      ..name = tokens[0]! as String
+      ..addMembers(tokens[2]! as List<ElementBuilder>);
+  }
 
   @override
-  Parser interfaceMembers() => super.interfaceMembers();
+  Parser<List<ElementBuilder>> interfaceMembers() =>
+      super.interfaceMembers().map(_interfaceMembers);
+  static List<ElementBuilder> _interfaceMembers(Object? value) {
+    if (value == null) {
+      return const <ElementBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    final builder = tokens[1]! as ElementBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+
+    return <ElementBuilder>[
+      builder,
+      ...tokens[2]! as List<ElementBuilder>,
+    ];
+  }
 
   @override
-  Parser interfaceMember() => super.interfaceMembers();
+  Parser<ElementBuilder> interfaceMember() =>
+      super.interfaceMember().cast<ElementBuilder>();
 
   @override
-  Parser partialInterfaceMembers() => super.partialInterfaceMembers();
+  Parser<List<ElementBuilder>> partialInterfaceMembers() =>
+      super.partialInterfaceMembers().map(_partialInterfaceMembers);
+  static List<ElementBuilder> _partialInterfaceMembers(Object? value) {
+    if (value == null) {
+      return const <ElementBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    final builder = tokens[1]! as ElementBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+
+    return <ElementBuilder>[
+      builder,
+      ...tokens[2]! as List<ElementBuilder>,
+    ];
+  }
 
   @override
-  Parser partialInterfaceMember() => super.partialInterfaceMember();
+  Parser<ElementBuilder> partialInterfaceMember() =>
+      super.partialInterfaceMember().cast<ElementBuilder>();
 
   @override
   Parser<SingleTypeBuilder?> inheritance() =>
@@ -95,13 +171,44 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser mixinRest() => super.mixinRest();
+  Parser<InterfaceBuilder> mixinRest() => super.mixinRest().map(_mixinRest);
+  static InterfaceBuilder _mixinRest(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return InterfaceBuilder(_context)
+      ..name = tokens[1]! as String
+      ..isMixin = true
+      ..addMembers(tokens[3]! as List<ElementBuilder>);
+  }
 
   @override
-  Parser mixinMembers() => super.mixinMembers();
+  Parser<List<ElementBuilder>> mixinMembers() =>
+      super.mixinMembers().map(_mixinMembers);
+  static List<ElementBuilder> _mixinMembers(Object? value) {
+    if (value == null) {
+      return const <ElementBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    final builder = tokens[1]! as ElementBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+
+    return <ElementBuilder>[
+      builder,
+      ...tokens[2]! as List<ElementBuilder>,
+    ];
+  }
 
   @override
-  Parser mixinMember() => super.mixinMember();
+  Parser<ElementBuilder> mixinMember() => super.mixinMember().map(_mixinMember);
+  static ElementBuilder _mixinMember(Object? value) {
+    if (value is ElementBuilder) {
+      return value;
+    }
+
+    final tokens = value! as List<Object?>;
+    return tokens[1]! as AttributeBuilder..readOnly = tokens[0] != null;
+  }
 
   @override
   Parser<IncludesBuilder> includesStatement() =>
@@ -115,13 +222,42 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser callbackRestOrInterface() => super.callbackRestOrInterface();
+  Parser<ElementBuilder> callbackRestOrInterface() =>
+      super.callbackRestOrInterface().map(_callbackRestOrInterface);
+  static ElementBuilder _callbackRestOrInterface(Object? value) {
+    if (value is ElementBuilder) {
+      return value;
+    }
+
+    final tokens = value! as List<Object?>;
+
+    return InterfaceBuilder(_context)
+      ..name = tokens[1]! as String
+      ..isCallback = true
+      ..addMembers(tokens[3]! as List<ElementBuilder>);
+  }
 
   @override
-  Parser callbackInterfaceMembers() => super.callbackInterfaceMembers();
+  Parser<List<ElementBuilder>> callbackInterfaceMembers() =>
+      super.callbackInterfaceMembers().map(_callbackInterfaceMembers);
+  static List<ElementBuilder> _callbackInterfaceMembers(Object? value) {
+    if (value == null) {
+      return const <ElementBuilder>[];
+    }
+
+    final tokens = value as List<Object?>;
+    final builder = tokens[1]! as ElementBuilder
+      ..extendedAttributes = tokens[0]! as List<Object>;
+
+    return <ElementBuilder>[
+      builder,
+      ...tokens[2]! as List<ElementBuilder>,
+    ];
+  }
 
   @override
-  Parser callbackInterfaceMember() => super.callbackInterfaceMember();
+  Parser<ElementBuilder> callbackInterfaceMember() =>
+      super.callbackInterfaceMember().cast<ElementBuilder>();
 
   @override
   Parser<ConstantBuilder> constant() => super.constant().map(_constant);
