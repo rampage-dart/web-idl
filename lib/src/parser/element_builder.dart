@@ -296,6 +296,8 @@ class _DictionaryElement extends _Element
           extendedAttributes: extendedAttributes,
         ) {
     encloseAll(members);
+
+    context.registerDictionary(this);
   }
 
   @override
@@ -428,7 +430,9 @@ class _IncludesElement extends _Element implements IncludesElement {
           context: context,
           name: name,
           extendedAttributes: extendedAttributes,
-        );
+        ) {
+    context.registerIncludes(this);
+  }
 
   @override
   final SingleType on;
@@ -527,6 +531,8 @@ class _InterfaceElement extends _Element
     encloseAll(attributes);
     encloseAll(operations);
     encloseAll(constants);
+
+    context.registerInterface(this);
   }
 
   @override
