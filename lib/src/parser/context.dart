@@ -19,6 +19,16 @@ class WebIdlContext {
   final Map<String, FunctionTypeAliasElement> _functions =
       <String, FunctionTypeAliasElement>{};
 
+  /// Looks up the [Element] with the given [name].
+  ///
+  /// Returns `null` if the element is not found.
+  Element? lookup(String name) =>
+      lookupInterface(name) ??
+      lookupDictionary(name) ??
+      lookupEnumeration(name) ??
+      lookupFunction(name) ??
+      lookupTypeDefinition(name);
+
   /// Registers the [element] with the context.
   void registerTypeDefinition(TypeAliasElement element) {
     _typeDefinitions[element.name] = element;

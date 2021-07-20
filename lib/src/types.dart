@@ -3,6 +3,7 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+import 'element.dart';
 import 'parser/builtin_types.dart' as builtin;
 import 'type.dart';
 
@@ -208,7 +209,7 @@ extension InterfaceType on SingleType {
   /// An identifier that identifies an interface is used to refer to a type that
   /// corresponds to the set of all possible non-null references to objects that
   /// implement that interface.
-  bool get isInterface => false; // \TODO Implement!
+  bool get isInterface => element is InterfaceElement;
 }
 
 /// Checks for whether the [SingleType] represents a dictionary.
@@ -218,7 +219,7 @@ extension DictionaryType on SingleType {
   /// An identifier that identifies a dictionary is used to refer to a type that
   /// corresponds to the set of all dictionaries that adhere to the dictionary
   /// definition.
-  bool get isDictionary => false; // \TODO Implement!
+  bool get isDictionary => element is DictionaryElement;
 }
 
 /// Checks for whether the [SingleType] represents an enumeration.
@@ -228,7 +229,7 @@ extension EnumerationType on SingleType {
   /// An identifier that identifies an enumeration is used to refer to a type
   /// whose values are the set of strings (sequences of code units, as with
   /// `DOMString`) that are the enumeration’s values.
-  bool get isEnum => false; // \TODO Implement!
+  bool get isEnum => element is EnumElement;
 }
 
 /// Checks for whether the [SingleType] represents a callback function.
@@ -238,13 +239,13 @@ extension CallbackFunctionType on SingleType {
   /// An identifier that identifies a callback function is used to refer to a
   /// type whose values are references to objects that are functions with the
   /// given signature.
-  bool get isCallbackFunction => false; // \TODO Implement!
+  bool get isCallbackFunction => element is FunctionTypeAliasElement;
 }
 
 /// Checks for whether the [SingleType] represents a type alias.
 extension AliasType on SingleType {
   /// Whether the type is a type alias.
-  bool get isTypeAlias => false; // \TODO Implement!
+  bool get isTypeAlias => element is TypeAliasElement;
 }
 
 /// Checks for whether the [SingleType] represents a `sequence`.

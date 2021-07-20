@@ -3,7 +3,9 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+import '../element.dart';
 import '../type.dart';
+import 'context.dart';
 
 /// Builds a [WebIdlType].
 abstract class WebIdlTypeBuilder<T extends WebIdlType> {
@@ -14,7 +16,7 @@ abstract class WebIdlTypeBuilder<T extends WebIdlType> {
   bool isNullable = false;
 
   /// Builds the [WebIdlType].
-  T build();
+  T build(WebIdlContext context);
 }
 
 class _WebIdlType implements WebIdlType {
@@ -36,10 +38,10 @@ class UnionTypeBuilder extends WebIdlTypeBuilder<UnionType> {
   List<WebIdlTypeBuilder> memberTypes = <WebIdlTypeBuilder>[];
 
   @override
-  UnionType build() => _UnionType(
+  UnionType build(WebIdlContext context) => _UnionType(
         extendedAttributes: extendedAttributes,
         isNullable: isNullable,
-        memberTypes: memberTypes.map((builder) => builder.build()),
+        memberTypes: memberTypes.map((builder) => builder.build(context)),
       );
 }
 
@@ -67,16 +69,18 @@ class SingleTypeBuilder extends WebIdlTypeBuilder<SingleType> {
   List<WebIdlTypeBuilder> typeArguments = <WebIdlTypeBuilder>[];
 
   @override
-  SingleType build() => _SingleType(
+  SingleType build(WebIdlContext context) => _SingleType(
+        context: context,
         extendedAttributes: extendedAttributes,
         isNullable: isNullable,
         name: name,
-        typeArguments: typeArguments.map((builder) => builder.build()),
+        typeArguments: typeArguments.map((builder) => builder.build(context)),
       );
 }
 
 class _SingleType extends _WebIdlType implements SingleType {
   _SingleType({
+    required this.context,
     required Iterable<Object> extendedAttributes,
     required bool isNullable,
     required this.name,
@@ -87,9 +91,14 @@ class _SingleType extends _WebIdlType implements SingleType {
           isNullable: isNullable,
         );
 
+  final WebIdlContext context;
+
   @override
   final String name;
 
   @override
   final List<WebIdlType> typeArguments;
+
+  @override
+  late final Element element = context.lookup(name)!;
 }

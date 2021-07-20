@@ -134,7 +134,8 @@ class _SingleType implements SingleType {
   @override
   final List<WebIdlType> typeArguments;
 
-  final Element element;
+  @override
+  final TypeDefiningElement element;
 }
 
 //------------------------------------------------------------------
@@ -274,7 +275,7 @@ class DictionaryBuilder extends ElementBuilder<DictionaryElement>
         name: name,
         extendedAttributes: extendedAttributes,
         isPartial: isPartial,
-        supertype: supertype?.build(),
+        supertype: supertype?.build(context),
         members: members.buildList(),
       );
 }
@@ -367,7 +368,7 @@ class FunctionTypeAliasBuilder extends ElementBuilder<FunctionTypeAliasElement>
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        returnType: returnType.build(),
+        returnType: returnType.build(context),
         arguments: arguments.buildList(),
       );
 }
@@ -414,8 +415,8 @@ class IncludesBuilder extends ElementBuilder<IncludesElement> {
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        on: on.build(),
-        mixin: mixin.build(),
+        on: on.build(context),
+        mixin: mixin.build(context),
       );
 }
 
@@ -474,7 +475,7 @@ class InterfaceBuilder extends ElementBuilder<InterfaceElement>
         name: name,
         extendedAttributes: extendedAttributes,
         isPartial: isPartial,
-        supertype: supertype?.build(),
+        supertype: supertype?.build(context),
         isMixin: isMixin,
         isCallback: isCallback,
         constructors: constructors.build(),
@@ -665,7 +666,7 @@ class TypeAliasBuilder extends ElementBuilder<TypeAliasElement> {
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        type: type.build(),
+        type: type.build(context),
       );
 }
 
@@ -716,7 +717,7 @@ class ArgumentBuilder extends ElementBuilder<ArgumentElement> {
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        type: type.build(),
+        type: type.build(context),
         isOptional: isOptional,
         isVariadic: isVariadic,
         defaultTo: defaultTo,
@@ -769,7 +770,7 @@ class AttributeBuilder extends ElementBuilder<AttributeElement>
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        type: type.build(),
+        type: type.build(context),
         isStatic: isStatic,
         readOnly: readOnly,
       );
@@ -821,7 +822,7 @@ class ConstantBuilder extends ElementBuilder<ConstantElement> {
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        type: type.build(),
+        type: type.build(context),
         value: value,
       );
 }
@@ -869,7 +870,7 @@ class DictionaryMemberBuilder extends ElementBuilder<DictionaryMemberElement> {
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        type: type.build(),
+        type: type.build(context),
         isRequired: isRequired,
         defaultTo: defaultTo,
       );
@@ -964,7 +965,7 @@ class OperationBuilder extends ElementBuilder<OperationElement>
         context: context,
         name: name,
         extendedAttributes: extendedAttributes,
-        returnType: returnType.build(),
+        returnType: returnType.build(context),
         arguments: arguments.buildList(),
         isStatic: isStatic,
         operationType: operationType,
