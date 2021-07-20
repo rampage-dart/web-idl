@@ -16,6 +16,8 @@ class WebIdlContext {
   final Map<String, EnumElement> _enumerations = <String, EnumElement>{};
   final Map<String, TypeAliasElement> _typeDefinitions =
       <String, TypeAliasElement>{};
+  final Map<String, FunctionTypeAliasElement> _functions =
+      <String, FunctionTypeAliasElement>{};
 
   /// Registers the [element] with the context.
   void registerTypeDefinition(TypeAliasElement element) {
@@ -26,6 +28,16 @@ class WebIdlContext {
   ///
   /// Returns `null` if the interface is not found.
   TypeAliasElement? lookupTypeDefinition(String name) => _typeDefinitions[name];
+
+  /// Registers the [element] with the context.
+  void registerFunction(FunctionTypeAliasElement element) {
+    _functions[element.name] = element;
+  }
+
+  /// Looks up the [FunctionTypeAliasElement] with the given [name].
+  ///
+  /// Returns `null` if the interface is not found.
+  FunctionTypeAliasElement? lookupFunction(String name) => _functions[name];
 
   /// Registers the [element] with the context.
   void registerIncludes(IncludesElement element) {

@@ -385,6 +385,8 @@ class _FunctionTypeAliasElement extends _Element
           extendedAttributes: extendedAttributes,
         ) {
     encloseAll(arguments);
+
+    context.registerFunction(this);
   }
 
   @override
