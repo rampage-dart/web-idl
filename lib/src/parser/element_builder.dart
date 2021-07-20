@@ -674,7 +674,9 @@ class _TypeAliasElement extends _Element
           context: context,
           name: name,
           extendedAttributes: extendedAttributes,
-        );
+        ) {
+    context.registerTypeDefinition(this);
+  }
 
   @override
   final WebIdlType type;

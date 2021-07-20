@@ -14,6 +14,18 @@ class WebIdlContext {
   final Map<String, _NamespaceDefinition> _namespaces =
       <String, _NamespaceDefinition>{};
   final Map<String, EnumElement> _enumerations = <String, EnumElement>{};
+  final Map<String, TypeAliasElement> _typeDefinitions =
+      <String, TypeAliasElement>{};
+
+  /// Registers the [element] with the context.
+  void registerTypeDefinition(TypeAliasElement element) {
+    _typeDefinitions[element.name] = element;
+  }
+
+  /// Looks up the [TypeAliasElement] with the given [name].
+  ///
+  /// Returns `null` if the interface is not found.
+  TypeAliasElement? lookupTypeDefinition(String name) => _typeDefinitions[name];
 
   /// Registers the [element] with the context.
   void registerIncludes(IncludesElement element) {
