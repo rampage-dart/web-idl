@@ -366,3 +366,19 @@ extension TypedArrayType on SingleType {
       isFloat32Array ||
       isFloat64Array;
 }
+
+/// Checks for whether the [SingleType] is built-in.
+extension BuiltinType on SingleType {
+  /// Whether the type is builtin.
+  bool get isBuiltIn =>
+      isAny ||
+      isUndefined ||
+      isPrimitive ||
+      isString ||
+      isObject ||
+      isSymbol ||
+      isSequence ||
+      isRecord ||
+      isPromise ||
+      isBufferSource;
+}
