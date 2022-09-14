@@ -26,8 +26,7 @@ steps:
   - name: cache
     path: /root/.pub-cache
   commands:
-  # Using `dartfmt` is deprecated but this step using `dart format` does not set exit code
-  - dartfmt --dry-run --set-exit-if-changed .
+  - dart format -o none --set-exit-if-changed .
 
 - name: lint
   image: dart:beta
@@ -44,8 +43,7 @@ steps:
   - name: cache
     path: /root/.pub-cache
   commands:
-  # Using `pub run test` is deprecated but this step using `dart run test` does not complete
-  - pub run test --coverage coverage
+  - dart test --coverage coverage
 
 - name: generate-lcov
   image: dart:beta
@@ -55,7 +53,7 @@ steps:
   commands:
   - export PATH="$PATH":"$HOME/.pub-cache/bin"
   - dart pub global activate coverage
-  - format_coverage --verbose --lcov --packages .packages --base-directory . --report-on lib --report-on test --in coverage --out coverage/lcov.cov
+  - dart pub global run coverage:format_coverage --packages=.dart_tool/package_config.json --report-on=lib --lcov -o ./coverage/lcov.info -i ./coverage
 
 - name: upload-coverage
   image: plugins/codecov
@@ -63,7 +61,7 @@ steps:
     token:
       from_secret: codecov_token
     files:
-    - coverage/lcov.cov
+    - coverage/lcov.info
 
 volumes:
 - name: cache
