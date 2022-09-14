@@ -6,6 +6,7 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:test/test.dart';
 
+import 'package:web_idl/src/parser/context.dart';
 import 'package:web_idl/src/parser/element_builder.dart';
 import 'package:web_idl/src/parser/parser.dart';
 import 'package:web_idl/src/parser/type_builder.dart';
@@ -51,8 +52,9 @@ void acceptAllSingleTypes(
   Parser<WebIdlTypeBuilder> parser,
   Map<String, Map<String, Object>> inputs,
 ) {
+  final context = WebIdlContext();
   inputs.forEach((input, expected) {
-    final actual = parser.parse(input).value.build() as SingleType;
+    final actual = parser.parse(input).value.build(context) as SingleType;
     acceptSingleType(actual, expected);
   });
 }
@@ -75,8 +77,9 @@ void acceptAllUnionTypes(
   Parser<WebIdlTypeBuilder> parser,
   Map<String, Map<String, Object>> inputs,
 ) {
+  final context = WebIdlContext();
   inputs.forEach((input, expected) {
-    final actual = parser.parse(input).value.build() as UnionType;
+    final actual = parser.parse(input).value.build(context) as UnionType;
     acceptUnionType(actual, expected);
   });
 }
