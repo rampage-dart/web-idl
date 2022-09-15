@@ -140,6 +140,12 @@ const String uint32Array = 'Uint32Array';
 /// The type name of the `Uint8ClampedArray` type.
 const String uint8ClampedArray = 'Uint8ClampedArray';
 
+/// The type name of the `BigInt64Array` type.
+const String bigInt64Array = 'BigInt64Array';
+
+/// The type name of the `BigUint64Array` type.
+const String bigUint64Array = 'BigUint64Array';
+
 /// The type name of the `Float32Array` type.
 const String float32Array = 'Float32Array';
 

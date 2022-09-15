@@ -342,6 +342,18 @@ extension TypedArrayType on SingleType {
   /// as an array of unsigned 8 bit integers with clamped conversions.
   bool get isUint8ClampedArray => name == builtin.uint8ClampedArray;
 
+  /// Whether the type is a `BigInt64Array`.
+  /// 
+  /// A `BigInt64Array` is a view on to an `ArrayBuffer` that exposes it as an
+  /// array of 64-bit signed integers.
+  bool get isBigInt64Array => name == builtin.bigInt64Array;
+
+  /// Whether the type is a `BigUint64Array`.
+  /// 
+  /// A `BigUint64Array` is a view on to an `ArrayBuffer` that exposes it as an
+  /// array of 64-bit unsigned integers.
+  bool get isBigUint64Array => name == builtin.bigUint64Array;
+
   /// Whether the type is a `Float32Array`.
   ///
   /// A `Float32Array` is a view on to an `ArrayBuffer` that exposes it as an
@@ -363,6 +375,8 @@ extension TypedArrayType on SingleType {
       isUint16Array ||
       isUint32Array ||
       isUint8ClampedArray ||
+      isBigInt64Array ||
+      isBigUint64Array ||
       isFloat32Array ||
       isFloat64Array;
 }
