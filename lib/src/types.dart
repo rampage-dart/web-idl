@@ -343,13 +343,13 @@ extension TypedArrayType on SingleType {
   bool get isUint8ClampedArray => name == builtin.uint8ClampedArray;
 
   /// Whether the type is a `BigInt64Array`.
-  /// 
+  ///
   /// A `BigInt64Array` is a view on to an `ArrayBuffer` that exposes it as an
   /// array of 64-bit signed integers.
   bool get isBigInt64Array => name == builtin.bigInt64Array;
 
   /// Whether the type is a `BigUint64Array`.
-  /// 
+  ///
   /// A `BigUint64Array` is a view on to an `ArrayBuffer` that exposes it as an
   /// array of 64-bit unsigned integers.
   bool get isBigUint64Array => name == builtin.bigUint64Array;

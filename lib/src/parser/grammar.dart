@@ -425,8 +425,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `StringifierRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StringifierRest).
   Parser stringifierRest() =>
-      (ref0(optionalReadOnly) & ref0(attributeRest)) |
-      ref1(token, ';');
+      (ref0(optionalReadOnly) & ref0(attributeRest)) | ref1(token, ';');
 
   /// A `StaticMember` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-StaticMember).
