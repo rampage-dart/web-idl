@@ -335,7 +335,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       ref0(stringLiteral) |
       (ref1(token, '[') & ref1(token, ']')) |
       (ref1(token, '{') & ref1(token, '}')) |
-      ref1(token, 'null');
+      ref1(token, 'null') |
+      ref1(token, 'undefined');
 
   /// An `Operation` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-Operation).
@@ -425,7 +426,6 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#index-prod-StringifierRest).
   Parser stringifierRest() =>
       (ref0(optionalReadOnly) & ref0(attributeRest)) |
-      ref0(regularOperation) |
       ref1(token, ';');
 
   /// A `StaticMember` within the [WebIDL grammar]
@@ -679,6 +679,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
         frozenArrayType |
         observableArrayType |
         ref0(recordType) |
+        ref1(token, builtin.undefined) |
         // This is purposefully at the bottom since its a catch all
         ref0(identifier);
 
@@ -690,7 +691,6 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser primitiveType() =>
       ref0(unsignedIntegerType) |
       ref0(unrestrictedFloatType) |
-      ref1(token, builtin.undefined) |
       ref1(token, builtin.boolean) |
       ref1(token, builtin.byte) |
       ref1(token, builtin.octet) |
@@ -762,6 +762,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
       refBuiltinType(token, builtin.uint16Array) |
       refBuiltinType(token, builtin.uint32Array) |
       refBuiltinType(token, builtin.uint8ClampedArray) |
+      refBuiltinType(token, builtin.bigInt64Array) |
+      refBuiltinType(token, builtin.bigUint64Array) |
       refBuiltinType(token, builtin.float32Array) |
       refBuiltinType(token, builtin.float64Array);
 

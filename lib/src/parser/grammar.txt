@@ -178,6 +178,7 @@ DefaultValue ::
     [ ]
     { }
     null
+    undefined
 
 Operation ::
     RegularOperation
@@ -239,7 +240,6 @@ Stringifier ::
 
 StringifierRest ::
     OptionalReadOnly AttributeRest
-    RegularOperation
     ;
 
 StaticMember ::
@@ -362,11 +362,11 @@ DistinguishableType ::
     FrozenArray < TypeWithExtendedAttributes > Null
     ObservableArray < TypeWithExtendedAttributes > Null
     RecordType Null
+    undefined Null
 
 PrimitiveType ::
     UnsignedIntegerType
     UnrestrictedFloatType
-    undefined
     boolean
     byte
     octet
@@ -417,6 +417,8 @@ BufferRelatedType ::
     Uint16Array
     Uint32Array
     Uint8ClampedArray
+    BigInt64Array
+    BigUint64Array
     Float32Array
     Float64Array
 
@@ -461,6 +463,7 @@ Other ::
     =
     >
     ?
+    *
     ByteString
     DOMString
     FrozenArray
@@ -511,6 +514,9 @@ ExtendedAttributeArgList ::
 
 ExtendedAttributeIdent ::
     identifier = identifier
+
+ExtendedAttributeWildcard ::
+    identifier = *
 
 ExtendedAttributeIdentList ::
     identifier = ( IdentifierList )
