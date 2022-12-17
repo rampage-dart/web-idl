@@ -478,10 +478,10 @@ class InterfaceBuilder extends ElementBuilder<InterfaceElement>
         supertype: supertype?.build(context),
         isMixin: isMixin,
         isCallback: isCallback,
-        constructors: constructors.build(),
-        attributes: attributes.build(),
-        operations: operations.build(),
-        constants: constants.build(),
+        constructors: constructors.buildList(),
+        attributes: attributes.buildList(),
+        operations: operations.buildList(),
+        constants: constants.buildList(),
       );
 }
 
@@ -515,15 +515,11 @@ class _InterfaceElement extends _Element
     required this.supertype,
     required this.isMixin,
     required this.isCallback,
-    required Iterable<OperationElement> constructors,
-    required Iterable<AttributeElement> attributes,
-    required Iterable<OperationElement> operations,
-    required Iterable<ConstantElement> constants,
-  })  : constructors = List.unmodifiable(constructors),
-        attributes = List.unmodifiable(attributes),
-        operations = List.unmodifiable(operations),
-        constants = List.unmodifiable(constants),
-        super(
+    required this.constructors,
+    required this.attributes,
+    required this.operations,
+    required this.constants,
+  }) : super(
           context: context,
           name: name,
           extendedAttributes: extendedAttributes,
