@@ -418,7 +418,10 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser optionalOperationName() => super.optionalOperationName();
+  Parser<String> optionalOperationName() =>
+      super.optionalOperationName().map(_optionalOperationName);
+  static String _optionalOperationName(Object? value) =>
+      value != null ? value as String : '';
 
   @override
   Parser operationName() => super.operationName();
