@@ -18,4 +18,4 @@ export 'src/visitor.dart';
 FragmentElement parseFragment(String value) =>
     _parser.parse(value).value.build();
 
-late final _parser = WebIdlParserDefinition().build<FragmentBuilder>();
+final _parser = WebIdlParserDefinition().build<FragmentBuilder>();
