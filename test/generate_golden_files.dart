@@ -154,8 +154,23 @@ class _GoldenFileGenerator implements ElementVisitor<Map<String, Object?>> {
         'returnType': _webIdlType(element.returnType),
         'arguments': element.arguments.map(visitArgument).toList(),
         'static': element.isStatic,
-        'operationType': element.operationType,
+        'operationType': _specialOperation(element.operationType),
       };
+
+  String? _specialOperation(SpecialOperation? operation) {
+    if (operation == null) {
+      return 'null';
+    }
+
+    switch (operation) {
+      case SpecialOperation.getter:
+        return 'getter';
+      case SpecialOperation.setter:
+        return 'setter';
+      case SpecialOperation.deleter:
+        return 'deleter';
+    }
+  }
 
   Object? _webIdlTypeNullable(WebIdlType? type) =>
       type != null ? _webIdlType(type) : null;

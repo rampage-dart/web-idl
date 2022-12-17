@@ -394,9 +394,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   @override
   Parser<SpecialOperation> special() => super.special().map(_special);
   static SpecialOperation _special(Object? value) {
-    final token = value! as Token;
+    final token = value! as keywords.Keyword;
 
-    switch (token.value as keywords.Keyword) {
+    switch (token) {
       case keywords.getter:
         return SpecialOperation.getter;
       case keywords.setter:

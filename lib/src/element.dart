@@ -434,7 +434,4 @@ enum SpecialOperation {
 
   /// Defines behavior for when an object is indexed for property deletion.
   deleter,
-
-  /// Defines how an object is converted into a DOMString.
-  stringifier,
 }
