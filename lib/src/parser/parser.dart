@@ -298,7 +298,15 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser constantType() => super.constantType();
+  Parser<SingleTypeBuilder> constantType() =>
+      super.constantType().map(_constantType);
+  static SingleTypeBuilder _constantType(Object? value) {
+    if (value is SingleTypeBuilder) {
+      return value;
+    }
+
+    return _singleTypeBuilderFromToken(value);
+  }
 
   @override
   Parser<AttributeBuilder> readOnlyMember() =>
