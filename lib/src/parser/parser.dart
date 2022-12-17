@@ -9,6 +9,7 @@
 import 'package:petitparser/petitparser.dart';
 
 import '../element.dart';
+import 'builtin_types.dart' as builtin;
 import 'context.dart';
 import 'element_builder.dart';
 import 'grammar.dart';
@@ -517,10 +518,28 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   }
 
   @override
-  Parser stringifier() => super.stringifier();
+  Parser<AttributeBuilder> stringifier() =>
+      super.stringifier().map(_stringifier);
+  static AttributeBuilder _stringifier(Object? value) {
+    final tokens = value! as List<Object?>;
+
+    return tokens[1]! as AttributeBuilder..isStringifier = true;
+  }
 
   @override
-  Parser stringifierRest() => super.stringifierRest();
+  Parser<AttributeBuilder> stringifierRest() =>
+      super.stringifierRest().map(_stringifierRest);
+  static AttributeBuilder _stringifierRest(Object? value) {
+    if (value is Token) {
+      return AttributeBuilder(_context)
+        ..name = 'stringifier'
+        ..isStringifier = true
+        ..type = _singleTypeBuilderFromToken(builtin.domString);
+    }
+
+    final tokens = value! as List<Object?>;
+    return tokens[1]! as AttributeBuilder..readOnly = tokens[0] != null;
+  }
 
   @override
   Parser<StaticElementBuilder> staticMember() =>

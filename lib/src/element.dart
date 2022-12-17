@@ -351,6 +351,9 @@ abstract class AttributeElement implements Element {
   /// The type for the attribute.
   WebIdlType get type;
 
+  /// Whether the attribute is a stringifier.
+  bool get isStringifier;
+
   /// Whether the attribute is static.
   bool get isStatic;
 

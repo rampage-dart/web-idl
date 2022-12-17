@@ -116,6 +116,7 @@ class _GoldenFileGenerator implements ElementVisitor<Map<String, Object?>> {
       <String, Object?>{
         'name': element.name,
         'type': _webIdlType(element.type),
+        'stringifier': element.isStringifier,
         'static': element.isStatic,
         'readOnly': element.readOnly,
       };

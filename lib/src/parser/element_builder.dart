@@ -758,6 +758,9 @@ class AttributeBuilder extends ElementBuilder<AttributeElement>
   /// The type for the attribute.
   WebIdlTypeBuilder type = SingleTypeBuilder();
 
+  /// Whether the attribute is a stringifier.
+  bool isStringifier = false;
+
   /// Whether the attribute is read only.
   bool readOnly = false;
 
@@ -767,6 +770,7 @@ class AttributeBuilder extends ElementBuilder<AttributeElement>
         name: name,
         extendedAttributes: extendedAttributes,
         type: type.build(context),
+        isStringifier: isStringifier,
         isStatic: isStatic,
         readOnly: readOnly,
       );
@@ -779,6 +783,7 @@ class _AttributeElement extends _Element implements AttributeElement {
     required String name,
     required Iterable<Object> extendedAttributes,
     required this.type,
+    required this.isStringifier,
     required this.isStatic,
     required this.readOnly,
   }) : super(
@@ -789,6 +794,9 @@ class _AttributeElement extends _Element implements AttributeElement {
 
   @override
   final WebIdlType type;
+
+  @override
+  final bool isStringifier;
 
   @override
   final bool isStatic;
