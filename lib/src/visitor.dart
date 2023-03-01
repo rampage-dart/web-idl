@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'package:meta/meta.dart';
-
 import 'element.dart';
 
 /// An object that can be used to visit an element structure.
@@ -101,8 +99,7 @@ class ThrowingElementVisitor<T> implements ElementVisitor<T> {
   @override
   T visitOperation(OperationElement element) => _throw(element);
 
-  @alwaysThrows
-  T _throw(Element element) {
+  Never _throw(Element element) {
     throw Exception('Missing implementation of visit${element.runtimeType}');
   }
 }
