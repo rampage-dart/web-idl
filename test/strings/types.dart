@@ -4,6 +4,7 @@
 // the LICENSE file.
 
 /// Strings containing values that parse to types.
+library;
 
 /// Makes the type nullable by appending a `?`.
 String nullable(String str) => '$str?';
