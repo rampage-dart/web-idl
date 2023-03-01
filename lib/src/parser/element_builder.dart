@@ -145,7 +145,7 @@ class _SingleType implements SingleType {
 /// Builds an immutable [FragmentElement].
 class FragmentBuilder extends ElementBuilder<FragmentElement> {
   /// Create an instance of [FragmentBuilder] with the context.
-  FragmentBuilder(WebIdlContext context) : super(context);
+  FragmentBuilder(super.context);
 
   /// The dictionaries defined within the WebIDL fragment.
   List<DictionaryBuilder> dictionaries = <DictionaryBuilder>[];
@@ -211,9 +211,9 @@ extension FragmentBuilderMembers on FragmentBuilder {
 @immutable
 class _FragmentElement extends _Element implements FragmentElement {
   _FragmentElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.dictionaries,
     required this.enumerations,
     required this.functions,
@@ -221,11 +221,7 @@ class _FragmentElement extends _Element implements FragmentElement {
     required this.interfaces,
     required this.namespaces,
     required this.typeDefinitions,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(dictionaries);
     encloseAll(enumerations);
     encloseAll(functions);
@@ -261,7 +257,7 @@ class _FragmentElement extends _Element implements FragmentElement {
 class DictionaryBuilder extends ElementBuilder<DictionaryElement>
     with PartiallyDefinedElementBuilder<DictionaryElement> {
   /// Create an instance of [DictionaryBuilder] with the context.
-  DictionaryBuilder(WebIdlContext context) : super(context);
+  DictionaryBuilder(super.context);
 
   /// The type of the inherited dictionary, or `null` if there is none.
   SingleTypeBuilder? supertype;
@@ -285,17 +281,13 @@ class _DictionaryElement extends _Element
     with _TypeDefiningElement
     implements DictionaryElement {
   _DictionaryElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.isPartial,
     required this.supertype,
     required this.members,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(members);
 
     context.registerDictionary(this);
@@ -321,7 +313,7 @@ class _DictionaryElement extends _Element
 /// Builds an immutable [EnumElement].
 class EnumBuilder extends ElementBuilder<EnumElement> {
   /// Create an instance of [EnumBuilder] with the context.
-  EnumBuilder(WebIdlContext context) : super(context);
+  EnumBuilder(super.context);
 
   /// The set of valid strings for the [EnumElement].
   List<String> values = <String>[];
@@ -340,16 +332,11 @@ class _EnumElement extends _Element
     with _TypeDefiningElement
     implements EnumElement {
   _EnumElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required Iterable<String> values,
-  })  : values = List.unmodifiable(values),
-        super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) : values = List.unmodifiable(values) {
     context.registerEnumeration(this);
   }
 
@@ -361,7 +348,7 @@ class _EnumElement extends _Element
 class FunctionTypeAliasBuilder extends ElementBuilder<FunctionTypeAliasElement>
     with FunctionTypedElementBuilder<FunctionTypeAliasElement> {
   /// Create an instance of [FunctionTypeAliasBuilder] with the context.
-  FunctionTypeAliasBuilder(WebIdlContext context) : super(context);
+  FunctionTypeAliasBuilder(super.context);
 
   @override
   FunctionTypeAliasElement build() => _FunctionTypeAliasElement(
@@ -377,16 +364,12 @@ class FunctionTypeAliasBuilder extends ElementBuilder<FunctionTypeAliasElement>
 class _FunctionTypeAliasElement extends _Element
     implements FunctionTypeAliasElement {
   _FunctionTypeAliasElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.returnType,
     required this.arguments,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(arguments);
 
     context.registerFunction(this);
@@ -402,7 +385,7 @@ class _FunctionTypeAliasElement extends _Element
 /// Builds an immutable [IncludesElement].
 class IncludesBuilder extends ElementBuilder<IncludesElement> {
   /// Create an instance of [InterfaceBuilder] with the context.
-  IncludesBuilder(WebIdlContext context) : super(context);
+  IncludesBuilder(super.context);
 
   /// The type the mixin is applied to.
   SingleTypeBuilder on = SingleTypeBuilder();
@@ -422,16 +405,12 @@ class IncludesBuilder extends ElementBuilder<IncludesElement> {
 
 class _IncludesElement extends _Element implements IncludesElement {
   _IncludesElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.on,
     required this.mixin,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     context.registerIncludes(this);
   }
 
@@ -446,7 +425,7 @@ class _IncludesElement extends _Element implements IncludesElement {
 class InterfaceBuilder extends ElementBuilder<InterfaceElement>
     with PartiallyDefinedElementBuilder<InterfaceElement> {
   /// Create an instance of [InterfaceBuilder] with the context.
-  InterfaceBuilder(WebIdlContext context) : super(context);
+  InterfaceBuilder(super.context);
 
   /// The type of the inherited interface, or `null` if there is none.
   SingleTypeBuilder? supertype;
@@ -508,9 +487,9 @@ class _InterfaceElement extends _Element
     with _TypeDefiningElement
     implements InterfaceElement {
   _InterfaceElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.isPartial,
     required this.supertype,
     required this.isMixin,
@@ -519,11 +498,7 @@ class _InterfaceElement extends _Element
     required this.attributes,
     required this.operations,
     required this.constants,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(constructors);
     encloseAll(attributes);
     encloseAll(operations);
@@ -568,7 +543,7 @@ class _InterfaceElement extends _Element
 class NamespaceBuilder extends ElementBuilder<NamespaceElement>
     with PartiallyDefinedElementBuilder<NamespaceElement> {
   /// Create an instance of [NamespaceBuilder] with the context.
-  NamespaceBuilder(WebIdlContext context) : super(context);
+  NamespaceBuilder(super.context);
 
   /// The attributes contained in the namespace.
   List<AttributeBuilder> attributes = <AttributeBuilder>[];
@@ -610,18 +585,14 @@ extension NamespaceBuilderMembers on NamespaceBuilder {
 
 class _NamespaceElement extends _Element implements NamespaceElement {
   _NamespaceElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.isPartial,
     required this.attributes,
     required this.operations,
     required this.constants,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(attributes);
     encloseAll(operations);
     encloseAll(constants);
@@ -652,7 +623,7 @@ class _NamespaceElement extends _Element implements NamespaceElement {
 /// Builds an immutable [TypeAliasElement].
 class TypeAliasBuilder extends ElementBuilder<TypeAliasElement> {
   /// Create an instance of [TypeAliasBuilder] with the context.
-  TypeAliasBuilder(WebIdlContext context) : super(context);
+  TypeAliasBuilder(super.context);
 
   /// The type being aliased.
   WebIdlTypeBuilder type = SingleTypeBuilder();
@@ -671,15 +642,11 @@ class _TypeAliasElement extends _Element
     with _TypeDefiningElement
     implements TypeAliasElement {
   _TypeAliasElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.type,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     context.registerTypeDefinition(this);
   }
 
@@ -694,7 +661,7 @@ class _TypeAliasElement extends _Element
 /// Builds an immutable [ArgumentElement].
 class ArgumentBuilder extends ElementBuilder<ArgumentElement> {
   /// Create an instance of [ArgumentBuilder] with the context.
-  ArgumentBuilder(WebIdlContext context) : super(context);
+  ArgumentBuilder(super.context);
 
   /// The type for the argument.
   WebIdlTypeBuilder type = SingleTypeBuilder();
@@ -723,18 +690,14 @@ class ArgumentBuilder extends ElementBuilder<ArgumentElement> {
 @immutable
 class _ArgumentElement extends _Element implements ArgumentElement {
   _ArgumentElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.type,
     required this.isOptional,
     required this.isVariadic,
     required this.defaultTo,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        );
+  });
 
   @override
   final WebIdlType type;
@@ -753,7 +716,7 @@ class _ArgumentElement extends _Element implements ArgumentElement {
 class AttributeBuilder extends ElementBuilder<AttributeElement>
     with StaticElementBuilder<AttributeElement> {
   /// Create an instance of [AttributeBuilder] with the context.
-  AttributeBuilder(WebIdlContext context) : super(context);
+  AttributeBuilder(super.context);
 
   /// The type for the attribute.
   WebIdlTypeBuilder type = SingleTypeBuilder();
@@ -779,18 +742,14 @@ class AttributeBuilder extends ElementBuilder<AttributeElement>
 @immutable
 class _AttributeElement extends _Element implements AttributeElement {
   _AttributeElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.type,
     required this.isStringifier,
     required this.isStatic,
     required this.readOnly,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        );
+  });
 
   @override
   final WebIdlType type;
@@ -808,7 +767,7 @@ class _AttributeElement extends _Element implements AttributeElement {
 /// Builds an immutable [ConstantElement].
 class ConstantBuilder extends ElementBuilder<ConstantElement> {
   /// Create an instance of [ConstantBuilder] with the context.
-  ConstantBuilder(WebIdlContext context) : super(context);
+  ConstantBuilder(super.context);
 
   /// The type for the constant.
   ///
@@ -834,16 +793,12 @@ class ConstantBuilder extends ElementBuilder<ConstantElement> {
 @immutable
 class _ConstantElement extends _Element implements ConstantElement {
   _ConstantElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.type,
     required this.value,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        );
+  });
 
   @override
   final SingleType type;
@@ -855,7 +810,7 @@ class _ConstantElement extends _Element implements ConstantElement {
 /// Builds an immutable [DictionaryMemberElement].
 class DictionaryMemberBuilder extends ElementBuilder<DictionaryMemberElement> {
   /// Create an instance of [DictionaryMemberBuilder] with the context.
-  DictionaryMemberBuilder(WebIdlContext context) : super(context);
+  DictionaryMemberBuilder(super.context);
 
   /// The type for the field.
   WebIdlTypeBuilder type = SingleTypeBuilder();
@@ -883,17 +838,13 @@ class DictionaryMemberBuilder extends ElementBuilder<DictionaryMemberElement> {
 class _DictionaryMemberElement extends _Element
     implements DictionaryMemberElement {
   _DictionaryMemberElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.type,
     required this.isRequired,
     required this.defaultTo,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        );
+  });
 
   @override
   final WebIdlType type;
@@ -911,7 +862,7 @@ class _DictionaryMemberElement extends _Element
 /// [Element] so a special builder is used.
 class ConstructorBuilder extends ElementBuilder<OperationElement> {
   /// Create an instance of [ConstructorBuilder] with the context.
-  ConstructorBuilder(WebIdlContext context) : super(context);
+  ConstructorBuilder(super.context);
 
   /// The arguments for the operation.
   List<ArgumentBuilder> arguments = <ArgumentBuilder>[];
@@ -928,15 +879,11 @@ class ConstructorBuilder extends ElementBuilder<OperationElement> {
 @immutable
 class _ConstructorElement extends _Element implements OperationElement {
   _ConstructorElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.arguments,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(arguments);
   }
 
@@ -959,7 +906,7 @@ class OperationBuilder extends ElementBuilder<OperationElement>
         FunctionTypedElementBuilder<OperationElement>,
         StaticElementBuilder<OperationElement> {
   /// Create an instance of [OperationBuilder] with the context.
-  OperationBuilder(WebIdlContext context) : super(context);
+  OperationBuilder(super.context);
 
   /// The [SpecialOperation] type; if applicable.
   SpecialOperation? operationType;
@@ -979,18 +926,14 @@ class OperationBuilder extends ElementBuilder<OperationElement>
 @immutable
 class _OperationElement extends _Element implements OperationElement {
   _OperationElement({
-    required WebIdlContext context,
-    required String name,
-    required Iterable<Object> extendedAttributes,
+    required super.context,
+    required super.name,
+    required super.extendedAttributes,
     required this.returnType,
     required this.arguments,
     required this.isStatic,
     required this.operationType,
-  }) : super(
-          context: context,
-          name: name,
-          extendedAttributes: extendedAttributes,
-        ) {
+  }) {
     encloseAll(arguments);
   }
 

@@ -47,14 +47,10 @@ class UnionTypeBuilder extends WebIdlTypeBuilder<UnionType> {
 
 class _UnionType extends _WebIdlType implements UnionType {
   _UnionType({
-    required Iterable<Object> extendedAttributes,
-    required bool isNullable,
+    required super.extendedAttributes,
+    required super.isNullable,
     required Iterable<WebIdlType> memberTypes,
-  })  : memberTypes = List<WebIdlType>.unmodifiable(memberTypes),
-        super(
-          extendedAttributes: extendedAttributes,
-          isNullable: isNullable,
-        );
+  }) : memberTypes = List<WebIdlType>.unmodifiable(memberTypes);
 
   @override
   final List<WebIdlType> memberTypes;
@@ -81,15 +77,11 @@ class SingleTypeBuilder extends WebIdlTypeBuilder<SingleType> {
 class _SingleType extends _WebIdlType implements SingleType {
   _SingleType({
     required this.context,
-    required Iterable<Object> extendedAttributes,
-    required bool isNullable,
+    required super.extendedAttributes,
+    required super.isNullable,
     required this.name,
     required Iterable<WebIdlType> typeArguments,
-  })  : typeArguments = List<WebIdlType>.unmodifiable(typeArguments),
-        super(
-          extendedAttributes: extendedAttributes,
-          isNullable: isNullable,
-        );
+  }) : typeArguments = List<WebIdlType>.unmodifiable(typeArguments);
 
   final WebIdlContext context;
 
