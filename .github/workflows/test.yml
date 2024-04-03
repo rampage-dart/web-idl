@@ -21,6 +21,7 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - name: Install dependencies
+        id: install
         run: dart pub get
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
@@ -41,6 +42,7 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - name: Install dependencies
+        id: install
         run: dart pub get
       - name: Run VM tests
         run: dart test --platform vm
