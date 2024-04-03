@@ -32,7 +32,7 @@ void main() {
     });
   });
   group('Definition', () {
-    final parser = grammar.build<Object?>(start: grammar.definition).end();
+    final parser = grammar.buildFrom(grammar.definition()).end();
     test('accept', () {
       acceptAll(parser, _definition);
       expect('enum MealType { "rice" };', accept(parser));
@@ -42,36 +42,34 @@ void main() {
     });
   });
   group('ArgumentNameKeyword', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.argumentNameKeyword).end();
+    final parser = grammar.buildFrom(grammar.argumentNameKeyword()).end();
     test('accept', () {
       acceptAll(parser, _argumentNameKeywords);
     });
   });
   group('AttributeRest', () {
-    final parser = grammar.build<Object?>(start: grammar.attributeRest).end();
+    final parser = grammar.buildFrom(grammar.attributeRest()).end();
     test('accept', () {
       expect('attribute double async;', accept(parser));
       expect('attribute Foo foo;', accept(parser));
     });
   });
   group('AttributeName', () {
-    final parser = grammar.build<Object?>(start: grammar.attributeName).end();
+    final parser = grammar.buildFrom(grammar.attributeName()).end();
     test('accept', () {
       expect('async', accept(parser));
       expect('required', accept(parser));
     });
   });
   group('AttributeNameKeyword', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.attributeNameKeyword).end();
+    final parser = grammar.buildFrom(grammar.attributeNameKeyword()).end();
     test('accept', () {
       expect('async', accept(parser));
       expect('required', accept(parser));
     });
   });
   group('Partial', () {
-    final parser = grammar.build<Object?>(start: grammar.partial).end();
+    final parser = grammar.buildFrom(grammar.partial()).end();
     test('accept', () {
       expect('partial interface Foo {};', accept(parser));
       expect('partial interface mixin Foo {};', accept(parser));
@@ -84,7 +82,7 @@ void main() {
     });
   });
   group('Enum', () {
-    final parser = grammar.build<Object?>(start: grammar.enumeration).end();
+    final parser = grammar.buildFrom(grammar.enumeration()).end();
     test('accept', () {
       expect('enum MealType { "rice" };', accept(parser));
       expect('enum MealType { "rice", "noodles", "other" };', accept(parser));
@@ -110,7 +108,7 @@ void main() {
     });
   });
   group('Typedef', () {
-    final parser = grammar.build<Object?>(start: grammar.typeDefinition).end();
+    final parser = grammar.buildFrom(grammar.typeDefinition()).end();
     test('accept', () {
       // Single type
       expect('typedef unsigned long long DOMTimeStamp;', accept(parser));
@@ -124,7 +122,7 @@ void main() {
     });
   });
   group('CallbackRest', () {
-    final parser = grammar.build<Object?>(start: grammar.callbackRest).end();
+    final parser = grammar.buildFrom(grammar.callbackRest()).end();
     test('accept', () {
       expect(
         'AsyncOperationCallback = void (DOMString status);',
@@ -138,7 +136,7 @@ void main() {
     });
   });
   group('Const', () {
-    final parser = grammar.build<Object?>(start: grammar.constant).end();
+    final parser = grammar.buildFrom(grammar.constant()).end();
     test('accept', () {
       expect('const boolean aBool = false;', accept(parser));
       expect('const unsigned long anInt = 4;', accept(parser));
@@ -152,7 +150,7 @@ void main() {
     });
   });
   group('ConstValue', () {
-    final parser = grammar.build<Object?>(start: grammar.constantValue).end();
+    final parser = grammar.buildFrom(grammar.constantValue()).end();
     test('accept', () {
       acceptAll(parser, _constantValues);
     });
@@ -165,7 +163,7 @@ void main() {
     });
   });
   group('DefaultValue', () {
-    final parser = grammar.build<Object?>(start: grammar.defaultValue).end();
+    final parser = grammar.buildFrom(grammar.defaultValue()).end();
     test('accept', () {
       acceptAll(parser, _constantValues);
       acceptAll(parser, _stringLiterals);
@@ -178,14 +176,13 @@ void main() {
     });
   });
   group('RegularOperation', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.regularOperation).end();
+    final parser = grammar.buildFrom(grammar.regularOperation()).end();
     test('accept', () {
       acceptAll(parser, _regularOperations);
     });
   });
   group('ArgumentList', () {
-    final parser = grammar.build<Object?>(start: grammar.argumentList).end();
+    final parser = grammar.buildFrom(grammar.argumentList()).end();
     test('accept', () {
       expect('', accept(parser));
 
@@ -201,7 +198,7 @@ void main() {
     });
   });
   group('Argument', () {
-    final parser = grammar.build<Object?>(start: grammar.argument).end();
+    final parser = grammar.buildFrom(grammar.argument()).end();
     test('accept', () {
       // Builtin types
       expect('any arg', accept(parser));
@@ -229,7 +226,7 @@ void main() {
     });
   });
   group('ArgumentName', () {
-    final parser = grammar.build<Object?>(start: grammar.argumentName).end();
+    final parser = grammar.buildFrom(grammar.argumentName()).end();
     test('accept', () {
       acceptAll(parser, _validIdentifiers);
       acceptAll(parser, _argumentNameKeywords);
@@ -239,7 +236,7 @@ void main() {
     });
   });
   group('Type', () {
-    final parser = grammar.build<Object?>(start: grammar.type).end();
+    final parser = grammar.buildFrom(grammar.type()).end();
     test('accept', () {
       acceptAll(parser, types.singleTypes);
       acceptAll(parser, types.distinguishableTypes.map(types.nullable));
@@ -253,7 +250,7 @@ void main() {
     });
   });
   group('SingleType', () {
-    final parser = grammar.build<Object?>(start: grammar.singleType).end();
+    final parser = grammar.buildFrom(grammar.singleType()).end();
     test('accept', () {
       acceptAll(parser, types.singleTypes);
       acceptAll(parser, types.distinguishableTypes.map(types.nullable));
@@ -268,7 +265,7 @@ void main() {
     });
   });
   group('UnionType', () {
-    final parser = grammar.build<Object?>(start: grammar.unionType).end();
+    final parser = grammar.buildFrom(grammar.unionType()).end();
     test('accept', () {
       acceptAll(parser, types.unionTypes);
     });
@@ -299,8 +296,7 @@ void main() {
     });
   });
   group('DistinguishableType', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.distinguishableType).end();
+    final parser = grammar.buildFrom(grammar.distinguishableType()).end();
     test('accept', () {
       acceptAll(parser, types.distinguishableTypes);
       acceptAll(parser, types.distinguishableTypes.map(types.nullable));
@@ -335,7 +331,7 @@ void main() {
     });
   });
   group('PrimitiveType', () {
-    final parser = grammar.build<Object?>(start: grammar.primitiveType).end();
+    final parser = grammar.buildFrom(grammar.primitiveType()).end();
     test('accept', () {
       acceptAll(parser, types.primitiveTypes);
     });
@@ -358,8 +354,7 @@ void main() {
   });
 
   group('UnrestrictedFloatType', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.unrestrictedFloatType).end();
+    final parser = grammar.buildFrom(grammar.unrestrictedFloatType()).end();
     test('accept', () {
       acceptAll(parser, types.unrestrictedFloatTypes);
     });
@@ -384,7 +379,7 @@ void main() {
     });
   });
   group('FloatType', () {
-    final parser = grammar.build<Object?>(start: grammar.floatType).end();
+    final parser = grammar.buildFrom(grammar.floatType()).end();
     test('accept', () {
       acceptAll(parser, types.floatTypes);
     });
@@ -412,8 +407,7 @@ void main() {
     });
   });
   group('UnsignedIntegerType', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.unsignedIntegerType).end();
+    final parser = grammar.buildFrom(grammar.unsignedIntegerType()).end();
     test('accept', () {
       acceptAll(parser, types.unsignedIntegerTypes);
     });
@@ -439,7 +433,7 @@ void main() {
     });
   });
   group('IntegerType', () {
-    final parser = grammar.build<Object?>(start: grammar.integerType).end();
+    final parser = grammar.buildFrom(grammar.integerType()).end();
     test('accept', () {
       acceptAll(parser, types.integerTypes);
     });
@@ -470,7 +464,7 @@ void main() {
     });
   });
   group('StringType', () {
-    final parser = grammar.build<Object?>(start: grammar.stringType).end();
+    final parser = grammar.buildFrom(grammar.stringType()).end();
     test('accept', () {
       acceptAll(parser, types.stringTypes);
     });
@@ -497,7 +491,7 @@ void main() {
     });
   });
   group('Promise', () {
-    final parser = grammar.build<Object?>(start: grammar.promiseType).end();
+    final parser = grammar.buildFrom(grammar.promiseType()).end();
     test('accept', () {
       acceptAll(parser, types.promiseTypes);
     });
@@ -524,7 +518,7 @@ void main() {
     });
   });
   group('RecordType', () {
-    final parser = grammar.build<Object?>(start: grammar.recordType).end();
+    final parser = grammar.buildFrom(grammar.recordType()).end();
     test('accept', () {
       acceptAll(parser, types.recordTypes);
     });
@@ -554,7 +548,7 @@ void main() {
     });
   });
   group('Null', () {
-    final parser = grammar.build<Object?>(start: grammar.nullable).end();
+    final parser = grammar.buildFrom(grammar.nullable()).end();
     test('accept', () {
       expect('?', accept(parser));
       expect('', accept(parser));
@@ -565,8 +559,7 @@ void main() {
     });
   });
   group('BufferRelatedType', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.bufferRelatedType).end();
+    final parser = grammar.buildFrom(grammar.bufferRelatedType()).end();
     test('accept', () {
       acceptAll(parser, types.bufferRelatedTypes);
     });
@@ -611,8 +604,7 @@ void main() {
     });
   });
   group('ExtendedAttributeList', () {
-    final parser =
-        grammar.build<Object?>(start: grammar.extendedAttributeList).end();
+    final parser = grammar.buildFrom(grammar.extendedAttributeList()).end();
     test('accept', () {
       expect('[Exposed=Window]', accept(parser));
       expect('[Exposed=(Window,Worker)]', accept(parser));

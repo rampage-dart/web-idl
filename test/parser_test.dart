@@ -7,7 +7,6 @@ import 'package:petitparser/petitparser.dart';
 import 'package:test/test.dart';
 
 import 'package:web_idl/src/parser/context.dart';
-import 'package:web_idl/src/parser/element_builder.dart';
 import 'package:web_idl/src/parser/parser.dart';
 import 'package:web_idl/src/parser/type_builder.dart';
 import 'package:web_idl/web_idl.dart';
@@ -104,8 +103,7 @@ void main() {
   final grammar = WebIdlParserDefinition();
 
   test('RegularOperation', () {
-    final parser =
-        grammar.build<OperationBuilder>(start: grammar.regularOperation).end();
+    final parser = grammar.buildFrom(grammar.regularOperation()).end();
 
     final emptyArgumentList = parser.parse('undefined f();').value.build();
     acceptType(
@@ -116,8 +114,7 @@ void main() {
     expect(emptyArgumentList.arguments, isEmpty);
   });
   test('ArgumentList', () {
-    final parser =
-        grammar.build<List<ArgumentBuilder>>(start: grammar.argumentList).end();
+    final parser = grammar.buildFrom(grammar.argumentList()).end();
     final empty = parser.parse('').value;
     expect(empty, isEmpty);
 
@@ -146,8 +143,7 @@ void main() {
     acceptArgument(multipleArguments[2], 'ints', 'long', isVariadic: true);
   });
   test('Argument', () {
-    final parser =
-        grammar.build<ArgumentBuilder>(start: grammar.argument).end();
+    final parser = grammar.buildFrom(grammar.argument()).end();
 
     final requiredArgument = parser.parse('Foo foo').value.build();
     acceptArgument(requiredArgument, 'foo', 'Foo');
@@ -168,7 +164,7 @@ void main() {
     acceptArgument(variadicArgument, 'ints', 'long', isVariadic: true);
   });
   test('Enum', () {
-    final parser = grammar.build<EnumBuilder>(start: grammar.enumeration).end();
+    final parser = grammar.buildFrom(grammar.enumeration()).end();
     final enumeration = parser
         .parse('enum MealType { "rice", "noodles", "other" };')
         .value
@@ -180,8 +176,7 @@ void main() {
     expect(enumeration.values[2], equals('other'));
   });
   test('Typedef', () {
-    final parser =
-        grammar.build<TypeAliasBuilder>(start: grammar.typeDefinition).end();
+    final parser = grammar.buildFrom(grammar.typeDefinition()).end();
 
     const singleTypeString = 'unsigned long long';
     final singleTypeAlias =
@@ -198,20 +193,19 @@ void main() {
     acceptType(unionTypeAlias.type, _unionTypeFromString(unionTypeString));
   });
   test('Type', () {
-    final parser = grammar.build<WebIdlTypeBuilder>(start: grammar.type).end();
+    final parser = grammar.buildFrom(grammar.type()).end();
     acceptAllSingleTypes(parser, _singleTypes);
     acceptAllUnionTypes(parser, _unionTypes);
     acceptAllUnionTypes(parser, _nullableUnionTypes);
   });
   test('SingleType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.singleType).end(),
+      grammar.buildFrom(grammar.singleType()).end(),
       _singleTypes,
     );
   });
   test('UnionType', () {
-    final parser =
-        grammar.build<UnionTypeBuilder>(start: grammar.unionType).end();
+    final parser = grammar.buildFrom(grammar.unionType()).end();
     acceptAllUnionTypes(parser, _unionTypes);
 
     // Create a nested union type
@@ -230,77 +224,71 @@ void main() {
   });
   test('DistinguishableType', () {
     acceptAllSingleTypes(
-      grammar
-          .build<SingleTypeBuilder>(start: grammar.distinguishableType)
-          .end(),
+      grammar.buildFrom(grammar.distinguishableType()).end(),
       _distinguishableTypes,
     );
   });
   test('PrimitiveType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.primitiveType).end(),
+      grammar.buildFrom(grammar.primitiveType()).end(),
       _primitiveTypes,
     );
   });
   test('UnrestrictedFloatType', () {
     acceptAllSingleTypes(
-      grammar
-          .build<SingleTypeBuilder>(start: grammar.unrestrictedFloatType)
-          .end(),
+      grammar.buildFrom(grammar.unrestrictedFloatType()).end(),
       _unrestrictedFloatTypes,
     );
   });
   test('FloatType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.floatType).end(),
+      grammar.buildFrom(grammar.floatType()).end(),
       _floatTypes,
     );
   });
   test('UnsignedIntegerType', () {
     acceptAllSingleTypes(
-      grammar
-          .build<SingleTypeBuilder>(start: grammar.unsignedIntegerType)
-          .end(),
+      grammar.buildFrom(grammar.unsignedIntegerType()).end(),
       _unsignedIntegerTypes,
     );
   });
   test('IntegerType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.integerType).end(),
+      grammar.buildFrom(grammar.integerType()).end(),
       _integerTypes,
     );
   });
   test('StringType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.stringType).end(),
+      grammar.buildFrom(grammar.stringType()).end(),
       _stringTypes,
     );
   });
   test('Promise', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.promiseType).end(),
+      grammar.buildFrom(grammar.promiseType()).end(),
       _promiseTypes,
     );
   });
   test('RecordType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.recordType).end(),
+      grammar.buildFrom(grammar.recordType()).end(),
       _recordTypes,
     );
   });
   test('BufferRelatedType', () {
     acceptAllSingleTypes(
-      grammar.build<SingleTypeBuilder>(start: grammar.bufferRelatedType).end(),
+      grammar.buildFrom(grammar.bufferRelatedType()).end(),
       _bufferRelatedTypes,
     );
   });
   test('BooleanLiteral', () {
-    final parser = grammar.build<bool>(start: grammar.booleanLiteral).end();
+    final parser = grammar.buildFrom(grammar.booleanLiteral()).end();
     expect(parser.parse('true').value, isTrue);
     expect(parser.parse('false').value, isFalse);
   });
   test('FloatLiteral', () {
-    final parser = grammar.build<double>(start: grammar.floatLiteral).end();
+    final parser = grammar.buildFrom(grammar.floatLiteral()).end();
     expect(parser.parse('-Infinity').value, equals(double.negativeInfinity));
     expect(parser.parse('Infinity').value, equals(double.infinity));
     expect(parser.parse('NaN').value, isNaN);
@@ -309,7 +297,7 @@ void main() {
     acceptAllDoubles(parser, _decimalValues);
   });
   test('DefaultValue', () {
-    final parser = grammar.build<Object?>(start: grammar.defaultValue).end();
+    final parser = grammar.buildFrom(grammar.defaultValue()).end();
 
     final aList = parser.parse('[]').value;
     expect(aList, isA<List<Object?>>());
@@ -338,11 +326,11 @@ void main() {
     acceptAllDoubles(parser, _decimalValues);
   });
   test('String', () {
-    final parser = grammar.build<String>(start: grammar.stringLiteral).end();
+    final parser = grammar.buildFrom(grammar.stringLiteral()).end();
     acceptAll(parser, _stringValues);
   });
   test('Integer', () {
-    final parser = grammar.build<int>(start: grammar.integer).end();
+    final parser = grammar.buildFrom(grammar.integer()).end();
     acceptAll(parser, _integerValues);
     final negative = _integerValues.map<String, int>(
       (input, expected) => MapEntry<String, int>('-$input', expected * -1),
@@ -350,7 +338,7 @@ void main() {
     acceptAll(parser, negative);
   });
   test('Decimal', () {
-    final parser = grammar.build<double>(start: grammar.decimal).end();
+    final parser = grammar.buildFrom(grammar.decimal()).end();
     acceptAllDoubles(parser, _decimalValues);
     final negative = _decimalValues.map<String, double>(
       (input, expected) => MapEntry<String, double>('-$input', expected * -1.0),
