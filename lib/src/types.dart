@@ -223,7 +223,7 @@ extension DictionaryType on SingleType {
 }
 
 /// Checks for whether the [SingleType] represents an enumeration.
-extension EnumerationType on SingleType {
+extension EnumType on SingleType {
   /// Whether the type is an enumeration.
   ///
   /// An identifier that identifies an enumeration is used to refer to a type
