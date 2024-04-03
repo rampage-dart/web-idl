@@ -10,10 +10,10 @@ import 'package:petitparser/petitparser.dart';
 typedef ParserTestFunction = bool Function(String input);
 
 ParserTestFunction accept(Parser<Object?> parser) =>
-    (input) => parser.parse(input).isSuccess;
+    (input) => parser.parse(input) is Success;
 
 ParserTestFunction reject(Parser<Object?> parser) =>
-    (input) => parser.parse(input).isFailure;
+    (input) => parser.parse(input) is Failure;
 
 Stream<File> findTests(
   String path, {
