@@ -16,7 +16,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   @override
   Parser start() => ref0(definitions).end();
 
-  /// Parses the [input] token.
+  /// Parses the [source] token.
   Parser token(Object source, [String? message]) {
     if (source is String) {
       return source
