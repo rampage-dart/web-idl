@@ -24,28 +24,6 @@ analyzer:
     prefer_double_quotes: ignore
     unnecessary_final: ignore
 
-dart_code_metrics:
-  anti-patterns:
-    - long-method
-    - long-parameter-list
-  metrics:
-    cyclomatic-complexity: 20
-    lines-of-executable-code: 50
-    maximum-nesting-level: 5
-    number-of-parameters: 4
-    source-lines-of-code: 50
-  metrics-exclude:
-    - test/**
-  rules:
-    - always-remove-listener
-    - avoid-unnecessary-setstate
-    - avoid-wrapping-in-padding
-    - no-boolean-literal-compare
-    - no-empty-block
-    - no-equal-then-else
-    - prefer-conditional-expressions
-    - prefer-trailing-comma
-
 linter:
   rules:
     - always_declare_return_types
