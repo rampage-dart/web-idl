@@ -39,8 +39,9 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    final tokenDefinition = tokens[1]! as ElementBuilder
-      ..extendedAttributes = tokens[0]! as List<Object>;
+    final tokenDefinition =
+        tokens[1]! as ElementBuilder
+          ..extendedAttributes = tokens[0]! as List<Object>;
 
     return <ElementBuilder>[
       tokenDefinition,
@@ -124,13 +125,11 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    final builder = tokens[1]! as ElementBuilder
-      ..extendedAttributes = tokens[0]! as List<Object>;
+    final builder =
+        tokens[1]! as ElementBuilder
+          ..extendedAttributes = tokens[0]! as List<Object>;
 
-    return <ElementBuilder>[
-      builder,
-      ...tokens[2]! as List<ElementBuilder>,
-    ];
+    return <ElementBuilder>[builder, ...tokens[2]! as List<ElementBuilder>];
   }
 
   @override
@@ -146,13 +145,11 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    final builder = tokens[1]! as ElementBuilder
-      ..extendedAttributes = tokens[0]! as List<Object>;
+    final builder =
+        tokens[1]! as ElementBuilder
+          ..extendedAttributes = tokens[0]! as List<Object>;
 
-    return <ElementBuilder>[
-      builder,
-      ...tokens[2]! as List<ElementBuilder>,
-    ];
+    return <ElementBuilder>[builder, ...tokens[2]! as List<ElementBuilder>];
   }
 
   @override
@@ -191,13 +188,11 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    final builder = tokens[1]! as ElementBuilder
-      ..extendedAttributes = tokens[0]! as List<Object>;
+    final builder =
+        tokens[1]! as ElementBuilder
+          ..extendedAttributes = tokens[0]! as List<Object>;
 
-    return <ElementBuilder>[
-      builder,
-      ...tokens[2]! as List<ElementBuilder>,
-    ];
+    return <ElementBuilder>[builder, ...tokens[2]! as List<ElementBuilder>];
   }
 
   @override
@@ -247,13 +242,11 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    final builder = tokens[1]! as ElementBuilder
-      ..extendedAttributes = tokens[0]! as List<Object>;
+    final builder =
+        tokens[1]! as ElementBuilder
+          ..extendedAttributes = tokens[0]! as List<Object>;
 
-    return <ElementBuilder>[
-      builder,
-      ...tokens[2]! as List<ElementBuilder>,
-    ];
+    return <ElementBuilder>[builder, ...tokens[2]! as List<ElementBuilder>];
   }
 
   @override
@@ -622,13 +615,11 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    final builder = tokens[1]! as ElementBuilder
-      ..extendedAttributes = tokens[0]! as List<Object>;
+    final builder =
+        tokens[1]! as ElementBuilder
+          ..extendedAttributes = tokens[0]! as List<Object>;
 
-    return <ElementBuilder>[
-      builder,
-      ...tokens[2]! as List<ElementBuilder>,
-    ];
+    return <ElementBuilder>[builder, ...tokens[2]! as List<ElementBuilder>];
   }
 
   @override
@@ -740,10 +731,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
   static List<String> _enumerationValueList(Object? value) {
     final tokens = value! as List<Object?>;
 
-    return <String>[
-      tokens[0]! as String,
-      ...tokens[1]! as List<String>,
-    ];
+    return <String>[tokens[0]! as String, ...tokens[1]! as List<String>];
   }
 
   @override
@@ -767,10 +755,7 @@ class WebIdlParserDefinition extends WebIdlGrammarDefinition {
     }
 
     final tokens = value as List<Object?>;
-    return <String>[
-      tokens[0]! as String,
-      ...tokens[1]! as List<String>,
-    ];
+    return <String>[tokens[0]! as String, ...tokens[1]! as List<String>];
   }
 
   @override

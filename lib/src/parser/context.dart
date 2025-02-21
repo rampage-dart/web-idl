@@ -52,8 +52,10 @@ class WebIdlContext {
   /// Registers the [element] with the context.
   void registerIncludes(IncludesElement element) {
     final name = element.on.name;
-    final definition =
-        _interfaces.putIfAbsent(name, _createInterfaceDefinition);
+    final definition = _interfaces.putIfAbsent(
+      name,
+      _createInterfaceDefinition,
+    );
 
     definition.includes.add(element);
   }

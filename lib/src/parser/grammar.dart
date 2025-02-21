@@ -39,8 +39,7 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser refBuiltinType(
     Parser Function(Object, String?) callback,
     String builtin,
-  ) =>
-      _refWholeWord(callback, builtin);
+  ) => _refWholeWord(callback, builtin);
 
   /// Reference to a production [callback] that takes a [keyword].
   ///
@@ -48,14 +47,12 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   Parser refKeyword(
     Parser Function(Object, String?) callback,
     keywords.Keyword keyword,
-  ) =>
-      _refWholeWord(callback, keyword.token);
+  ) => _refWholeWord(callback, keyword.token);
 
   Parser _refWholeWord(
     Parser Function(Object, String?) callback,
     String value,
-  ) =>
-      ref2(callback, value.toParser() & word().not(), value);
+  ) => ref2(callback, value.toParser() & word().not(), value);
 
   //------------------------------------------------------------------
   // Grammar definition
@@ -161,7 +158,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `InterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-InterfaceMembers).
   Parser interfaceMembers() {
-    final members = ref0(extendedAttributeList) &
+    final members =
+        ref0(extendedAttributeList) &
         ref0(interfaceMember) &
         ref0(interfaceMembers);
 
@@ -175,7 +173,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `PartialInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-PartialInterfaceMembers).
   Parser partialInterfaceMembers() {
-    final members = ref0(extendedAttributeList) &
+    final members =
+        ref0(extendedAttributeList) &
         ref0(partialInterfaceMember) &
         ref0(partialInterfaceMembers);
 
@@ -236,7 +235,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `CallbackRestOrInterface` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackRestOrInterface).
   Parser callbackRestOrInterface() {
-    final interface = ref0(interfaceKeyword) &
+    final interface =
+        ref0(interfaceKeyword) &
         ref0(identifier) &
         ref1(token, '{') &
         ref0(callbackInterfaceMembers) &
@@ -249,7 +249,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `CallbackInterfaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-CallbackInterfaceMembers).
   Parser callbackInterfaceMembers() {
-    final members = ref0(extendedAttributeList) &
+    final members =
+        ref0(extendedAttributeList) &
         ref0(callbackInterfaceMember) &
         ref0(callbackInterfaceMembers);
 
@@ -392,7 +393,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `ArgumentRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ArgumentRest).
   Parser argumentRest() {
-    final optional = ref1(token, 'optional') &
+    final optional =
+        ref1(token, 'optional') &
         ref0(typeWithExtendedAttributes) &
         ref0(argumentName) &
         ref0(defaultTo);
@@ -509,7 +511,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `NamespaceMembers` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-NamespaceMembers).
   Parser namespaceMembers() {
-    final members = ref0(extendedAttributeList) &
+    final members =
+        ref0(extendedAttributeList) &
         ref0(namespaceMember) &
         ref0(namespaceMembers);
 
@@ -547,7 +550,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `DictionaryMemberRest` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DictionaryMemberRest).
   Parser dictionaryMemberRest() {
-    final require = ref0(requiredKeyword) &
+    final require =
+        ref0(requiredKeyword) &
         ref0(typeWithExtendedAttributes) &
         ref0(identifier) &
         ref1(token, ';');
@@ -656,20 +660,24 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// A `DistinguishableType` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-DistinguishableType).
   Parser distinguishableType() {
-    final sequenceType = ref1(token, builtin.sequence) &
+    final sequenceType =
+        ref1(token, builtin.sequence) &
         ref1(token, '<') &
         ref0(typeWithExtendedAttributes) &
         ref1(token, '>');
-    final frozenArrayType = ref1(token, builtin.frozenArray) &
+    final frozenArrayType =
+        ref1(token, builtin.frozenArray) &
         ref1(token, '<') &
         ref0(typeWithExtendedAttributes) &
         ref1(token, '>');
-    final observableArrayType = ref1(token, builtin.observableArray) &
+    final observableArrayType =
+        ref1(token, builtin.observableArray) &
         ref1(token, '<') &
         ref0(typeWithExtendedAttributes) &
         ref1(token, '>');
 
-    final types = ref0(primitiveType) |
+    final types =
+        ref0(primitiveType) |
         ref0(stringType) |
         sequenceType |
         ref1(token, builtin.object) |
@@ -777,7 +785,8 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// An `ExtendedAttributeList` within the [WebIDL grammar]
   /// (https://heycam.github.io/webidl/#index-prod-ExtendedAttributeList).
   Parser extendedAttributeList() {
-    final attributes = ref1(token, '[') &
+    final attributes =
+        ref1(token, '[') &
         ref0(extendedAttribute) &
         ref0(extendedAttributes) &
         ref1(token, ']');
@@ -886,14 +895,16 @@ class WebIdlGrammarDefinition extends GrammarDefinition {
   /// (https://heycam.github.io/webidl/#prod-decimal).
   Parser decimal() {
     // [0-9]+\.[0-9]*|[0-9]*\.[0-9]+
-    final group0 = (digit().plus() & char('.') & digit().star()) |
+    final group0 =
+        (digit().plus() & char('.') & digit().star()) |
         (digit().star() & char('.') & digit().plus());
 
     // [Ee][+-]?[0-9]+
     final group1 = pattern('Ee') & pattern('+-').optional() & digit().plus();
 
     // [0-9]+[Ee][+-]?[0-9]+
-    final group2 = digit().plus() &
+    final group2 =
+        digit().plus() &
         pattern('Ee') &
         pattern('+-').optional() &
         digit().plus();

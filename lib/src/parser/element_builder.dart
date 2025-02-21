@@ -104,13 +104,12 @@ mixin _TypeDefiningElement on _Element implements TypeDefiningElement {
     Iterable<Object> extendedAttributes = const Iterable.empty(),
     bool isNullable = false,
     Iterable<WebIdlType> typeArguments = const Iterable.empty(),
-  }) =>
-      _SingleType(
-        element: this,
-        extendedAttributes: extendedAttributes,
-        isNullable: isNullable,
-        typeArguments: typeArguments,
-      );
+  }) => _SingleType(
+    element: this,
+    extendedAttributes: extendedAttributes,
+    isNullable: isNullable,
+    typeArguments: typeArguments,
+  );
 }
 
 class _SingleType implements SingleType {
@@ -119,8 +118,8 @@ class _SingleType implements SingleType {
     required Iterable<Object> extendedAttributes,
     required this.isNullable,
     required Iterable<WebIdlType> typeArguments,
-  })  : typeArguments = List<WebIdlType>.unmodifiable(typeArguments),
-        extendedAttributes = List<Object>.unmodifiable(extendedAttributes);
+  }) : typeArguments = List<WebIdlType>.unmodifiable(typeArguments),
+       extendedAttributes = List<Object>.unmodifiable(extendedAttributes);
 
   @override
   final List<Object> extendedAttributes;
@@ -170,17 +169,17 @@ class FragmentBuilder extends ElementBuilder<FragmentElement> {
 
   @override
   FragmentElement build() => _FragmentElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        dictionaries: dictionaries.buildList(),
-        enumerations: enumerations.buildList(),
-        functions: functions.buildList(),
-        includes: includes.buildList(),
-        interfaces: interfaces.buildList(),
-        namespaces: namespaces.buildList(),
-        typeDefinitions: typeDefinitions.buildList(),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    dictionaries: dictionaries.buildList(),
+    enumerations: enumerations.buildList(),
+    functions: functions.buildList(),
+    includes: includes.buildList(),
+    interfaces: interfaces.buildList(),
+    namespaces: namespaces.buildList(),
+    typeDefinitions: typeDefinitions.buildList(),
+  );
 }
 
 /// Helper for adding [ElementBuilder]s to the [FragmentBuilder].
@@ -267,13 +266,13 @@ class DictionaryBuilder extends ElementBuilder<DictionaryElement>
 
   @override
   DictionaryElement build() => _DictionaryElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        isPartial: isPartial,
-        supertype: supertype?.build(context),
-        members: members.buildList(),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    isPartial: isPartial,
+    supertype: supertype?.build(context),
+    members: members.buildList(),
+  );
 }
 
 @immutable
@@ -320,11 +319,11 @@ class EnumBuilder extends ElementBuilder<EnumElement> {
 
   @override
   EnumElement build() => _EnumElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        values: values,
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    values: values,
+  );
 }
 
 @immutable
@@ -352,12 +351,12 @@ class FunctionTypeAliasBuilder extends ElementBuilder<FunctionTypeAliasElement>
 
   @override
   FunctionTypeAliasElement build() => _FunctionTypeAliasElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        returnType: returnType.build(context),
-        arguments: arguments.buildList(),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    returnType: returnType.build(context),
+    arguments: arguments.buildList(),
+  );
 }
 
 @immutable
@@ -395,12 +394,12 @@ class IncludesBuilder extends ElementBuilder<IncludesElement> {
 
   @override
   IncludesElement build() => _IncludesElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        on: on.build(context),
-        mixin: mixin.build(context),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    on: on.build(context),
+    mixin: mixin.build(context),
+  );
 }
 
 class _IncludesElement extends _Element implements IncludesElement {
@@ -450,18 +449,18 @@ class InterfaceBuilder extends ElementBuilder<InterfaceElement>
 
   @override
   InterfaceElement build() => _InterfaceElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        isPartial: isPartial,
-        supertype: supertype?.build(context),
-        isMixin: isMixin,
-        isCallback: isCallback,
-        constructors: constructors.buildList(),
-        attributes: attributes.buildList(),
-        operations: operations.buildList(),
-        constants: constants.buildList(),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    isPartial: isPartial,
+    supertype: supertype?.build(context),
+    isMixin: isMixin,
+    isCallback: isCallback,
+    constructors: constructors.buildList(),
+    attributes: attributes.buildList(),
+    operations: operations.buildList(),
+    constants: constants.buildList(),
+  );
 }
 
 /// Helper for adding [ElementBuilder]s to the [InterfaceBuilder].
@@ -556,14 +555,14 @@ class NamespaceBuilder extends ElementBuilder<NamespaceElement>
 
   @override
   NamespaceElement build() => _NamespaceElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        isPartial: isPartial,
-        attributes: attributes.buildList(),
-        operations: operations.buildList(),
-        constants: constants.buildList(),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    isPartial: isPartial,
+    attributes: attributes.buildList(),
+    operations: operations.buildList(),
+    constants: constants.buildList(),
+  );
 }
 
 /// Helper for adding [ElementBuilder]s to the [NamespaceBuilder].
@@ -630,11 +629,11 @@ class TypeAliasBuilder extends ElementBuilder<TypeAliasElement> {
 
   @override
   TypeAliasElement build() => _TypeAliasElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        type: type.build(context),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    type: type.build(context),
+  );
 }
 
 @immutable
@@ -677,14 +676,14 @@ class ArgumentBuilder extends ElementBuilder<ArgumentElement> {
 
   @override
   ArgumentElement build() => _ArgumentElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        type: type.build(context),
-        isOptional: isOptional,
-        isVariadic: isVariadic,
-        defaultTo: defaultTo,
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    type: type.build(context),
+    isOptional: isOptional,
+    isVariadic: isVariadic,
+    defaultTo: defaultTo,
+  );
 }
 
 @immutable
@@ -729,14 +728,14 @@ class AttributeBuilder extends ElementBuilder<AttributeElement>
 
   @override
   AttributeElement build() => _AttributeElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        type: type.build(context),
-        isStringifier: isStringifier,
-        isStatic: isStatic,
-        readOnly: readOnly,
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    type: type.build(context),
+    isStringifier: isStringifier,
+    isStatic: isStatic,
+    readOnly: readOnly,
+  );
 }
 
 @immutable
@@ -782,12 +781,12 @@ class ConstantBuilder extends ElementBuilder<ConstantElement> {
 
   @override
   ConstantElement build() => _ConstantElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        type: type.build(context),
-        value: value,
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    type: type.build(context),
+    value: value,
+  );
 }
 
 @immutable
@@ -826,13 +825,13 @@ class DictionaryMemberBuilder extends ElementBuilder<DictionaryMemberElement> {
 
   @override
   DictionaryMemberElement build() => _DictionaryMemberElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        type: type.build(context),
-        isRequired: isRequired,
-        defaultTo: defaultTo,
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    type: type.build(context),
+    isRequired: isRequired,
+    defaultTo: defaultTo,
+  );
 }
 
 class _DictionaryMemberElement extends _Element
@@ -869,11 +868,11 @@ class ConstructorBuilder extends ElementBuilder<OperationElement> {
 
   @override
   OperationElement build() => _ConstructorElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        arguments: arguments.buildList(),
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    arguments: arguments.buildList(),
+  );
 }
 
 @immutable
@@ -913,14 +912,14 @@ class OperationBuilder extends ElementBuilder<OperationElement>
 
   @override
   OperationElement build() => _OperationElement(
-        context: context,
-        name: name,
-        extendedAttributes: extendedAttributes,
-        returnType: returnType.build(context),
-        arguments: arguments.buildList(),
-        isStatic: isStatic,
-        operationType: operationType,
-      );
+    context: context,
+    name: name,
+    extendedAttributes: extendedAttributes,
+    returnType: returnType.build(context),
+    arguments: arguments.buildList(),
+    isStatic: isStatic,
+    operationType: operationType,
+  );
 }
 
 @immutable

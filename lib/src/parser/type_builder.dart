@@ -39,10 +39,10 @@ class UnionTypeBuilder extends WebIdlTypeBuilder<UnionType> {
 
   @override
   UnionType build(WebIdlContext context) => _UnionType(
-        extendedAttributes: extendedAttributes,
-        isNullable: isNullable,
-        memberTypes: memberTypes.map((builder) => builder.build(context)),
-      );
+    extendedAttributes: extendedAttributes,
+    isNullable: isNullable,
+    memberTypes: memberTypes.map((builder) => builder.build(context)),
+  );
 }
 
 class _UnionType extends _WebIdlType implements UnionType {
@@ -66,12 +66,12 @@ class SingleTypeBuilder extends WebIdlTypeBuilder<SingleType> {
 
   @override
   SingleType build(WebIdlContext context) => _SingleType(
-        context: context,
-        extendedAttributes: extendedAttributes,
-        isNullable: isNullable,
-        name: name,
-        typeArguments: typeArguments.map((builder) => builder.build(context)),
-      );
+    context: context,
+    extendedAttributes: extendedAttributes,
+    isNullable: isNullable,
+    name: name,
+    typeArguments: typeArguments.map((builder) => builder.build(context)),
+  );
 }
 
 class _SingleType extends _WebIdlType implements SingleType {
