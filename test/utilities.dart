@@ -29,10 +29,7 @@ Stream<File> findTests(
 
   isTest ??= _isTest;
   return directory
-      .list(
-        recursive: recursive,
-        followLinks: followLinks,
-      )
+      .list(recursive: recursive, followLinks: followLinks)
       .where(isTest)
       .cast<File>();
 }

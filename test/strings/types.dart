@@ -77,10 +77,7 @@ const List<String> unrestrictedFloatTypes = <String>[
 ];
 
 /// Types matched by `FloatType`
-const List<String> floatTypes = <String>[
-  'float',
-  'double',
-];
+const List<String> floatTypes = <String>['float', 'double'];
 
 /// Types matched by `UnsignedIntegerType`
 const List<String> unsignedIntegerTypes = <String>[
@@ -91,11 +88,7 @@ const List<String> unsignedIntegerTypes = <String>[
 ];
 
 /// Types matched by `IntegerType`
-const List<String> integerTypes = <String>[
-  'short',
-  'long',
-  'long long',
-];
+const List<String> integerTypes = <String>['short', 'long', 'long long'];
 
 /// Types matched by `StringType`
 const List<String> stringTypes = <String>[

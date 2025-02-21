@@ -165,10 +165,11 @@ void main() {
   });
   test('Enum', () {
     final parser = grammar.buildFrom(grammar.enumeration()).end();
-    final enumeration = parser
-        .parse('enum MealType { "rice", "noodles", "other" };')
-        .value
-        .build();
+    final enumeration =
+        parser
+            .parse('enum MealType { "rice", "noodles", "other" };')
+            .value
+            .build();
     expect(enumeration.name, equals('MealType'));
     expect(enumeration.values, hasLength(3));
     expect(enumeration.values[0], equals('rice'));
@@ -184,7 +185,8 @@ void main() {
     expect(singleTypeAlias.name, equals('DOMTimeStamp'));
     acceptType(singleTypeAlias.type, _singleTypeFromString(singleTypeString));
 
-    const unionTypeString = '(Int8Array or Int16Array or Int32Array or '
+    const unionTypeString =
+        '(Int8Array or Int16Array or Int32Array or '
         'Uint8Array or Uint16Array or Uint32Array or Uint8ClampedArray or '
         'Float32Array or Float64Array or DataView)';
     final unionTypeAlias =
@@ -209,13 +211,11 @@ void main() {
     acceptAllUnionTypes(parser, _unionTypes);
 
     // Create a nested union type
-    final nestedUnionType = _unionType(
-      <Map<String, Object>>[
-        _singleType('double'),
-        _unionTypeFromString('(sequence<long> or Event)'),
-        _unionTypeFromString('(Node or DOMString)?'),
-      ],
-    );
+    final nestedUnionType = _unionType(<Map<String, Object>>[
+      _singleType('double'),
+      _unionTypeFromString('(sequence<long> or Event)'),
+      _unionTypeFromString('(Node or DOMString)?'),
+    ]);
 
     acceptAllUnionTypes(parser, <String, Map<String, Object>>{
       '(double or (sequence<long> or Event) or (Node or DOMString)?)':
@@ -366,11 +366,7 @@ const _integerValues = <String, int>{
   '02322': 1234,
 };
 
-const _decimalValues = <String, double>{
-  '0.0': 0.0,
-  '1.0': 1.0,
-  '2.0': 2.0,
-};
+const _decimalValues = <String, double>{'0.0': 0.0, '1.0': 1.0, '2.0': 2.0};
 
 //------------------------------------------------------------------
 // Type definitions
@@ -391,24 +387,22 @@ Map<String, Object> _singleType(
   List<Object> extendedAttributes = const <Object>[],
   bool isNullable = false,
   List<Map<String, Object>> typeArguments = const <Map<String, Object>>[],
-}) =>
-    <String, Object>{
-      'name': name,
-      'extendedAttributes': extendedAttributes,
-      'isNullable': isNullable,
-      'typeArguments': typeArguments,
-    };
+}) => <String, Object>{
+  'name': name,
+  'extendedAttributes': extendedAttributes,
+  'isNullable': isNullable,
+  'typeArguments': typeArguments,
+};
 
 Map<String, Object> _unionType(
   List<Map<String, Object>> memberTypes, {
   List<Object> extendedAttributes = const <Object>[],
   bool isNullable = false,
-}) =>
-    <String, Object>{
-      'memberTypes': memberTypes,
-      'extendedAttributes': extendedAttributes,
-      'isNullable': isNullable,
-    };
+}) => <String, Object>{
+  'memberTypes': memberTypes,
+  'extendedAttributes': extendedAttributes,
+  'isNullable': isNullable,
+};
 
 Map<String, Object> _singleTypeFromString(String type) {
   final match = _singleTypeMatcher.firstMatch(type);
@@ -417,13 +411,14 @@ Map<String, Object> _singleTypeFromString(String type) {
   }
 
   final typeArgumentsGroup = match.group(3);
-  final typeArguments = typeArgumentsGroup != null
-      ? typeArgumentsGroup
-          .split(',')
-          .map((str) => str.trim())
-          .map(_typeFromString)
-          .toList()
-      : const <Map<String, Object>>[];
+  final typeArguments =
+      typeArgumentsGroup != null
+          ? typeArgumentsGroup
+              .split(',')
+              .map((str) => str.trim())
+              .map(_typeFromString)
+              .toList()
+          : const <Map<String, Object>>[];
 
   return _singleType(
     match.group(1)!,
@@ -439,44 +434,43 @@ Map<String, Object> _unionTypeFromString(String type) {
   }
 
   final memberTypesGroup = match.group(1)!;
-  final memberTypes = memberTypesGroup
-      .split(' or ')
-      .map((str) => str.trim())
-      .map(_typeFromString)
-      .toList();
+  final memberTypes =
+      memberTypesGroup
+          .split(' or ')
+          .map((str) => str.trim())
+          .map(_typeFromString)
+          .toList();
 
   return _unionType(memberTypes, isNullable: match.group(2) != null);
 }
 
 Map<String, Map<String, Object>> _singleTypesFromStrings(
   Iterable<String> names,
-) =>
-    Map<String, Map<String, Object>>.fromEntries(
-      names.map(
-        (type) => MapEntry<String, Map<String, Object>>(
-          type,
-          _singleTypeFromString(type),
-        ),
-      ),
-    );
+) => Map<String, Map<String, Object>>.fromEntries(
+  names.map(
+    (type) => MapEntry<String, Map<String, Object>>(
+      type,
+      _singleTypeFromString(type),
+    ),
+  ),
+);
 
 Map<String, Map<String, Object>> _unionTypesFromString(
   Iterable<String> names,
-) =>
-    Map<String, Map<String, Object>>.fromEntries(
-      names.map(
-        (type) => MapEntry<String, Map<String, Object>>(
-          type,
-          _unionTypeFromString(type),
-        ),
-      ),
-    );
+) => Map<String, Map<String, Object>>.fromEntries(
+  names.map(
+    (type) =>
+        MapEntry<String, Map<String, Object>>(type, _unionTypeFromString(type)),
+  ),
+);
 
-final Map<String, Map<String, Object>> _singleTypes =
-    _singleTypesFromStrings(types.singleTypes);
+final Map<String, Map<String, Object>> _singleTypes = _singleTypesFromStrings(
+  types.singleTypes,
+);
 
-final Map<String, Map<String, Object>> _unionTypes =
-    _unionTypesFromString(types.unionTypes);
+final Map<String, Map<String, Object>> _unionTypes = _unionTypesFromString(
+  types.unionTypes,
+);
 
 final Map<String, Map<String, Object>> _nullableUnionTypes =
     _unionTypesFromString(types.unionTypes.map(types.nullable));
@@ -490,23 +484,28 @@ final Map<String, Map<String, Object>> _primitiveTypes =
 final Map<String, Map<String, Object>> _unrestrictedFloatTypes =
     _singleTypesFromStrings(types.unrestrictedFloatTypes);
 
-final Map<String, Map<String, Object>> _floatTypes =
-    _singleTypesFromStrings(types.floatTypes);
+final Map<String, Map<String, Object>> _floatTypes = _singleTypesFromStrings(
+  types.floatTypes,
+);
 
 final Map<String, Map<String, Object>> _unsignedIntegerTypes =
     _singleTypesFromStrings(types.unsignedIntegerTypes);
 
-final Map<String, Map<String, Object>> _integerTypes =
-    _singleTypesFromStrings(types.integerTypes);
+final Map<String, Map<String, Object>> _integerTypes = _singleTypesFromStrings(
+  types.integerTypes,
+);
 
-final Map<String, Map<String, Object>> _stringTypes =
-    _singleTypesFromStrings(types.stringTypes);
+final Map<String, Map<String, Object>> _stringTypes = _singleTypesFromStrings(
+  types.stringTypes,
+);
 
-final Map<String, Map<String, Object>> _promiseTypes =
-    _singleTypesFromStrings(types.promiseTypes);
+final Map<String, Map<String, Object>> _promiseTypes = _singleTypesFromStrings(
+  types.promiseTypes,
+);
 
-final Map<String, Map<String, Object>> _recordTypes =
-    _singleTypesFromStrings(types.recordTypes);
+final Map<String, Map<String, Object>> _recordTypes = _singleTypesFromStrings(
+  types.recordTypes,
+);
 
 final Map<String, Map<String, Object>> _bufferRelatedTypes =
     _singleTypesFromStrings(types.bufferRelatedTypes);

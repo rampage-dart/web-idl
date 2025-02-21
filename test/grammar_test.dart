@@ -616,9 +616,7 @@ void main() {
   });
 }
 
-final _definition = <String>[
-  ..._partial,
-];
+final _definition = <String>[..._partial];
 
 final _partial = <String>[
   'partial interface Foo {};',
@@ -684,10 +682,7 @@ final _validIdentifiers = <String>[
   'ArrayBufferView',
 ];
 
-final _invalidIdentifiers = <String>[
-  '0',
-  '*foo',
-];
+final _invalidIdentifiers = <String>['0', '*foo'];
 
 //------------------------------------------------------------------
 // Constant values
@@ -703,13 +698,6 @@ final _booleanLiterals = <String>['true', 'false'];
 
 final _floatLiterals = <String>['0.0'];
 
-final _integerLiterals = <String>[
-  '0',
-  '123456789',
-  '-987654321',
-];
+final _integerLiterals = <String>['0', '123456789', '-987654321'];
 
-final _stringLiterals = <String>[
-  '"foo bar"',
-  '"0123456789"',
-];
+final _stringLiterals = <String>['"foo bar"', '"0123456789"'];

@@ -58,19 +58,18 @@ class _GoldenFileGenerator implements ElementVisitor<Map<String, Object?>> {
 
   @override
   Map<String, Object?> visitEnum(EnumElement element) => <String, Object?>{
-        'name': element.name,
-        'values': element.values,
-      };
+    'name': element.name,
+    'values': element.values,
+  };
 
   @override
   Map<String, Object?> visitFunctionTypeAlias(
     FunctionTypeAliasElement element,
-  ) =>
-      <String, Object?>{
-        'name': element.name,
-        'returnType': _webIdlType(element.returnType),
-        'arguments': element.arguments.map(visitArgument).toList(),
-      };
+  ) => <String, Object?>{
+    'name': element.name,
+    'returnType': _webIdlType(element.returnType),
+    'arguments': element.arguments.map(visitArgument).toList(),
+  };
 
   @override
   Map<String, Object?> visitIncludesStatement(IncludesElement element) =>
@@ -181,9 +180,10 @@ class _GoldenFileGenerator implements ElementVisitor<Map<String, Object?>> {
 
   String _singleType(SingleType type) {
     final typeArguments = type.typeArguments;
-    final typeArgumentDeclaration = typeArguments.isNotEmpty
-        ? '<${typeArguments.map(_webIdlType).join(',')}>'
-        : '';
+    final typeArgumentDeclaration =
+        typeArguments.isNotEmpty
+            ? '<${typeArguments.map(_webIdlType).join(',')}>'
+            : '';
 
     return '${type.name}$typeArgumentDeclaration${type.isNullable ? '?' : ''}';
   }
