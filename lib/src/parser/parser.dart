@@ -9,7 +9,7 @@
 import 'package:petitparser/petitparser.dart';
 
 import '../element.dart';
-import 'builtin_types.dart' as builtin;
+import '../specs/builtin_types.dart' as builtin;
 import 'context.dart';
 import 'element_builder.dart';
 import 'grammar.dart';

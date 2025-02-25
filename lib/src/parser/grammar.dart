@@ -5,7 +5,7 @@
 
 import 'package:petitparser/petitparser.dart';
 
-import 'builtin_types.dart' as builtin;
+import '../specs/builtin_types.dart' as builtin;
 import 'keywords.dart' as keywords;
 
 /// WebIDL grammar definition.
