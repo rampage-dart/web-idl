@@ -11,24 +11,18 @@ import 'package:meta/meta.dart';
 import 'specs.dart';
 import 'type_system.dart';
 
-part 'attribute.g.dart';
+part 'setlike.g.dart';
 
 /// A data field with a given type and identifier whose value can be retrieved
 /// and (in some cases) changed.
 @immutable
-abstract class Attribute
-    implements
-        Built<Attribute, AttributeBuilder>,
-        Spec,
-        NamedSpec,
-        TypedSpec<WebIdlType>,
-        ReadOnlySpec,
-        StaticSpec {
-  factory Attribute([void Function(AttributeBuilder)? updates]) = _$Attribute;
-  const Attribute._();
+abstract class Setlike
+    implements Built<Setlike, SetlikeBuilder>, Spec, ReadOnlySpec {
+  factory Setlike([void Function(SetlikeBuilder)? updates]) = _$Setlike;
+  const Setlike._();
 
-  static Serializer<Attribute> get serializer => _$attributeSerializer;
+  static Serializer<Setlike> get serializer => _$setlikeSerializer;
 
-  /// Whether the attribute is a stringifier.
-  bool get isStringifier;
+  /// The value type contained.
+  WebIdlType get valueType;
 }

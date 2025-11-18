@@ -14,10 +14,13 @@ import 'specs.dart';
 part 'type_system.g.dart';
 
 /// Represents a type defined in the WebIDL specification.
-@immutable
+@BuiltValue(instantiable: false)
 abstract class WebIdlType implements Spec {
   /// Whether the type is nullable.
   bool get isNullable;
+
+  WebIdlType rebuild(void Function(WebIdlTypeBuilder) updates);
+  WebIdlTypeBuilder toBuilder();
 }
 
 /// A [WebIdlType] whose set of values is the union of those in two or more

@@ -34,7 +34,7 @@ abstract class Dictionary
   static Serializer<Dictionary> get serializer => _$dictionarySerializer;
 
   /// Returns the type of the inherited dictionary, or `null` if there is none.
-  //SingleType? get supertype;
+  SingleType? get supertype;
 
   /// The set of entries contained in this dictionary definition.
   ///

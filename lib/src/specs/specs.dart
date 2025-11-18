@@ -4,14 +4,21 @@
 // the LICENSE file.
 
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/built_value.dart';
 
 import 'argument.dart';
 import 'type_system.dart';
 
+part 'specs.g.dart';
+
 /// The base class for all of the constructs within the WebIDL specification.
+@BuiltValue(instantiable: false)
 abstract class Spec {
   /// Annotations that control how language bindings will handle the element.
-  //BuiltList<Object> get extendedAttributes;
+  BuiltList<Object> get extendedAttributes;
+
+  Spec rebuild(void Function(SpecBuilder) updates);
+  SpecBuilder toBuilder();
 }
 
 /// A [Spec] this has a name.
@@ -43,6 +50,11 @@ abstract mixin class FunctionTypedSpec {
 
   /// The arguments for the function.
   BuiltList<Argument> get arguments;
+}
+
+/// A [Spec] that specifies whether it can be written to.
+abstract mixin class ReadOnlySpec {
+  bool get readOnly;
 }
 
 /// A [Spec] that can be statically defined.
