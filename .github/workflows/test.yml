@@ -25,9 +25,12 @@ jobs:
         run: dart pub get
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
+      - name: Generate source code
+        id: generate
+        run: dart run build_runner build
       - name: Analyze project source
         run: dart analyze --fatal-infos
-        if: always() && steps.install.outcome == 'success'
+        if: always() && steps.generate.outcome == 'success' && steps.install.outcome == 'success'
 
   test:
     needs: analyze
@@ -44,6 +47,9 @@ jobs:
       - name: Install dependencies
         id: install
         run: dart pub get
+      - name: Generate source code
+        id: generate
+        run: dart run build_runner build
       - name: Run VM tests
         run: dart test --platform vm
-        if: always() && steps.install.outcome == 'success'
+        if: always() && steps.generate.outcome == 'success' && steps.install.outcome == 'success'

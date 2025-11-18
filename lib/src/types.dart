@@ -4,7 +4,7 @@
 // the LICENSE file.
 
 import 'element.dart';
-import 'parser/builtin_types.dart' as builtin;
+import 'specs/builtin_types.dart' as builtin;
 import 'type.dart';
 
 /// Checks for whether the [SingleType] represents the `any` type.
